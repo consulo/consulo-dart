@@ -8,7 +8,7 @@ import consulo.dataContext.DataContext;
 import consulo.document.Document;
 import consulo.codeEditor.Editor;
 import consulo.codeEditor.action.EditorActionHandler;
-import consulo.util.lang.ref.Ref;
+import consulo.util.lang.ref.SimpleReference;
 import consulo.language.psi.PsiDocumentManager;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
@@ -23,16 +23,13 @@ import static com.jetbrains.lang.dart.DartTokenTypes.*;
 @ExtensionImpl
 public final class DartEnterInStringHandler implements EnterHandlerDelegate {
 
-  @Override
-  public boolean invokeInsideIndent(int newLineCharOffset, @NotNull Editor editor, @NotNull DataContext dataContext) {
-    return EnterHandlerDelegate.super.invokeInsideIndent(newLineCharOffset, editor, dataContext);
-  }
+  // Consulo: no EnterHandlerDelegate.invokeInsideIndent
 
   @Override
   public Result preprocessEnter(final @NotNull PsiFile file,
                                 final @NotNull Editor editor,
-                                final @NotNull Ref<Integer> caretOffsetRef,
-                                final @NotNull Ref<Integer> caretAdvanceRef,
+                                final @NotNull SimpleReference<Integer> caretOffsetRef,
+                                final @NotNull SimpleReference<Integer> caretAdvanceRef,
                                 final @NotNull DataContext dataContext,
                                 final EditorActionHandler originalHandler) {
     if (file.getLanguage() != DartLanguage.INSTANCE && !HtmlUtil.isHtmlFile(file)) return Result.Continue;
@@ -100,8 +97,8 @@ public final class DartEnterInStringHandler implements EnterHandlerDelegate {
 
   private static void breakString(final @NotNull String startQuote,
                                   final @NotNull String endQuote,
-                                  final @NotNull Ref<Integer> caretOffsetRef,
-                                  final @NotNull Ref<Integer> caretAdvanceRef,
+                                  final @NotNull SimpleReference<Integer> caretOffsetRef,
+                                  final @NotNull SimpleReference<Integer> caretAdvanceRef,
                                   final @NotNull Document document) {
     // The final effect is to insert matching close-quote, newline, indent, matching open-quote.
     int caretOffset = caretOffsetRef.get().intValue();

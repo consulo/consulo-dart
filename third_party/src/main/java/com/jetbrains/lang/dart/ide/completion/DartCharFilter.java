@@ -2,7 +2,7 @@
 package com.jetbrains.lang.dart.ide.completion;
 
 import consulo.annotation.component.ExtensionImpl;
-import consulo.util.lang.CharFilter;
+import consulo.language.editor.completion.lookup.CharFilter;
 import consulo.language.editor.completion.lookup.Lookup;
 import consulo.language.psi.PsiElement;
 import com.jetbrains.lang.dart.psi.DartStringLiteralExpression;

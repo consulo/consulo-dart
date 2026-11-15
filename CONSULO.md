@@ -63,3 +63,13 @@ Places where upstream needs a platform API Consulo does not provide publicly; wo
 - `TemplateBuilderImpl.replaceRange(range, var, expression, alwaysStopAt)` is internal; `TemplateBuilder.replaceElement(file, range, ...)` is used.
 - `FileOffsetsManager`, `ModalityUiUtil`, `ConstantNode.withLookupItems`, `PsiBuilderUtil.parseBlockLazy`, `FileBasedIndex.getSingleEntryIndexData`
   and a few utilities are ported to `consulo.dart.compat`.
+- `XmlTypedHandlersAdditionalSupport` does not exist; `xml/DartXmlTypedHandlersAdditionalSupport` is disabled (`.java_`).
+- `EnterHandlerDelegate.invokeInsideIndent` does not exist; the no-op overrides are dropped.
+- `ColorSettingsPage.getIcon()` does not exist; the method is kept without `@Override`.
+- `UpdateJavaScriptFileCopyright` does not exist; `UpdateDartFileCopyright` scans leading comments itself.
+- `AllIcons.Nodes.Include` does not exist; extension completion items use the interface icon.
+- `LanguageCodeStyleSettingsProvider.customizeDefaults` does not exist; defaults come from `getDefaultCommonSettings()`.
+
+## Generated sources
+
+- `consulo.dart.template.DartLiveTemplateContributor` is generated from `liveTemplates/*.xml` by `tool/consulo/sync_upstream_resources.py`.

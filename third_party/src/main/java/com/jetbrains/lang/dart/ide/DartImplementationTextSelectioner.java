@@ -1,6 +1,8 @@
 // Copyright 2000-2019 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide;
 
+import com.jetbrains.lang.dart.DartLanguage;
+import consulo.language.Language;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.ImplementationTextSelectioner;
 import consulo.document.util.TextRange;
@@ -13,6 +15,11 @@ import org.jetbrains.annotations.NotNull;
 
 @ExtensionImpl
 public final class DartImplementationTextSelectioner implements ImplementationTextSelectioner {
+  @Override
+  public @NotNull Language getLanguage() {
+    return DartLanguage.INSTANCE;
+  }
+
   @Override
   public int getTextStartOffset(@NotNull PsiElement element) {
     if (element instanceof DartComponentName) {

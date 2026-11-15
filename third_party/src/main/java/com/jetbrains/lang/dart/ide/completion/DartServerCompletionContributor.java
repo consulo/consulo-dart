@@ -6,11 +6,9 @@ import consulo.ui.image.Image;
 import consulo.application.CommonBundle;
 import consulo.language.editor.AutoPopupController;
 import consulo.language.editor.CodeInsightSettings;
-import com.intellij.codeInsight.completion.*;
 import consulo.language.editor.completion.CompletionContributor;
 import consulo.language.editor.completion.CompletionInitializationContext;
 import consulo.language.editor.completion.CompletionParameters;
-import consulo.ide.impl.idea.codeInsight.completion.CompletionProgressIndicator;
 import consulo.language.editor.completion.CompletionProvider;
 import consulo.language.editor.completion.CompletionResultSet;
 import consulo.language.editor.completion.CompletionSorter;
@@ -22,8 +20,10 @@ import consulo.language.editor.completion.lookup.ParenthesesInsertHandler;
 import consulo.language.editor.completion.lookup.LookupElement;
 import consulo.language.editor.completion.lookup.LookupElementBuilder;
 import consulo.language.editor.completion.lookup.LookupElementWeigher;
+import consulo.language.editor.template.TemplateBuilder;
 import consulo.language.editor.template.TemplateBuilderFactory;
-import consulo.language.editor.impl.internal.template.TemplateBuilderImpl;
+import consulo.platform.base.icon.PlatformIconGroup;
+import consulo.ui.image.ImageEffects;
 import consulo.language.editor.template.TextExpression;
 import consulo.application.AllIcons;
 import consulo.language.file.inject.VirtualFileWindow;
@@ -50,9 +50,6 @@ import consulo.language.psi.PsiFile;
 import consulo.language.psi.PsiReference;
 import consulo.language.psi.PsiMultiReference;
 import consulo.language.editor.refactoring.util.CommonRefactoringUtil;
-import com.intellij.ui.IconManager;
-import com.intellij.ui.LayeredIcon;
-import consulo.ide.impl.idea.util.PlatformIcons;
 import consulo.language.util.ProcessingContext;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartLanguage;
@@ -80,6 +77,11 @@ import static consulo.language.pattern.StandardPatterns.or;
 
 @ExtensionImpl
 public final class DartServerCompletionContributor extends CompletionContributor {
+  @Override
+  public @NotNull Language getLanguage() {
+    return DartLanguage.INSTANCE;
+  }
+
   private static final Logger LOG = PluginLogger.INSTANCE.createLogger(DartServerCompletionContributor.class);
   @VisibleForTesting
   static final Set<String> DISABLED_EXTENSIONS = ConcurrentHashMap.newKeySet();
@@ -92,9 +94,9 @@ public final class DartServerCompletionContributor extends CompletionContributor
               psiElement().inFile(psiFile().withName("pubspec.yaml")),
               psiElement().inFile(psiFile().withName("fix_data.yaml"))
            ),
-           new CompletionProvider<>() {
+           new CompletionProvider() {
              @Override
-             protected void addCompletions(@NotNull CompletionParameters parameters,
+             public void addCompletions(@NotNull CompletionParameters parameters,
                                            @NotNull ProcessingContext context,
                                            @NotNull CompletionResultSet originalResultSet) {
                final PsiFile originalFile = parameters.getOriginalFile();
@@ -451,7 +453,7 @@ public final class DartServerCompletionContributor extends CompletionContributor
 
   private static Image applyOverlay(Image base, boolean condition, Image overlay) {
     if (condition) {
-      return LayeredIcon.layeredIcon(new Image[]{base, overlay});
+      return ImageEffects.layered(base, overlay);
     }
     return base;
   }
@@ -553,13 +555,12 @@ public final class DartServerCompletionContributor extends CompletionContributor
       // icon
       Image icon = getBaseImage(element);
       if (icon != null) {
-        IconManager iconManager = IconManager.getInstance();
         if (suggestion.getKind().equals(CompletionSuggestionKind.OVERRIDE)) {
-          icon = iconManager.createRowIcon(icon, AllIcons.Gutter.OverridingMethod);
+          icon = ImageEffects.appendRight(icon, AllIcons.Gutter.OverridingMethod);
         }
         else {
-          icon = iconManager.createRowIcon(icon, element.isPrivate() ? PlatformIcons.PRIVATE_ICON
-                                                                  : PlatformIcons.PUBLIC_ICON);
+          icon = ImageEffects.appendRight(icon, element.isPrivate() ? PlatformIconGroup.nodesC_private()
+                                                                         : PlatformIconGroup.nodesC_public());
           icon = applyOverlay(icon, element.isFinal(), AllIcons.Nodes.FinalMark);
           icon = applyOverlay(icon, element.isConst(), AllIcons.Nodes.FinalMark);
         }
@@ -629,8 +630,7 @@ public final class DartServerCompletionContributor extends CompletionContributor
 
           PsiDocumentManager.getInstance(context.getProject()).commitDocument(document);
 
-          final TemplateBuilderImpl builder =
-            (TemplateBuilderImpl)TemplateBuilderFactory.getInstance().createTemplateBuilder(context.getFile());
+          final TemplateBuilder builder = TemplateBuilderFactory.getInstance().createTemplateBuilder(context.getFile());
 
           final int[] ranges = suggestion.getDefaultArgumentListTextRanges();
           // Only proceed if ranges are provided and well-formed.
@@ -644,7 +644,8 @@ public final class DartServerCompletionContributor extends CompletionContributor
               final TextRange range = new TextRange(offset + start, offset + start + length);
 
               index += 2;
-              builder.replaceRange(range, "group_" + (index - 1), expression, true);
+              // Consulo: no public TemplateBuilder.replaceRange(range, name, expression, alwaysStopAt), file-relative range is the same
+              builder.replaceElement(context.getFile(), range, "group_" + (index - 1), expression, true);
             }
 
             builder.run(editor, true);
@@ -710,7 +711,7 @@ public final class DartServerCompletionContributor extends CompletionContributor
       case ElementKind.ENUM -> AllIcons.Nodes.Enum;
       case ElementKind.MIXIN -> AllIcons.Nodes.AbstractClass;
       case ElementKind.ENUM_CONSTANT, ElementKind.FIELD -> AllIcons.Nodes.Field;
-      case ElementKind.COMPILATION_UNIT -> PlatformIcons.FILE_ICON;
+      case ElementKind.COMPILATION_UNIT -> PlatformIconGroup.filetypesAny_type();
       case ElementKind.CONSTRUCTOR -> AllIcons.Nodes.ClassInitializer;
       case ElementKind.GETTER -> element.isTopLevelOrStatic() ? AllIcons.Nodes.PropertyReadStatic : AllIcons.Nodes.PropertyRead;
       case ElementKind.SETTER -> element.isTopLevelOrStatic() ? AllIcons.Nodes.PropertyWriteStatic : AllIcons.Nodes.PropertyWrite;
@@ -718,7 +719,7 @@ public final class DartServerCompletionContributor extends CompletionContributor
       case ElementKind.FUNCTION -> AllIcons.Nodes.Lambda;
       case ElementKind.FUNCTION_TYPE_ALIAS, ElementKind.TYPE_ALIAS -> AllIcons.Nodes.Annotationtype;
       case ElementKind.TOP_LEVEL_VARIABLE -> AllIcons.Nodes.Variable;
-      case ElementKind.EXTENSION -> AllIcons.Nodes.Include;
+      case ElementKind.EXTENSION -> PlatformIconGroup.nodesInterface(); // Consulo: no Nodes.Include icon
       default -> null;
     };
   }

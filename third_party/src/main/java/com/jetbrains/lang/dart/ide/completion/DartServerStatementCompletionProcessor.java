@@ -1,6 +1,8 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.completion;
 
+import com.jetbrains.lang.dart.DartLanguage;
+import consulo.language.Language;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.application.CommonBundle;
 import consulo.language.editor.action.SmartEnterProcessor;
@@ -19,6 +21,11 @@ import org.jetbrains.annotations.NotNull;
 
 @ExtensionImpl
 public final class DartServerStatementCompletionProcessor extends SmartEnterProcessor {
+  @Override
+  public @NotNull Language getLanguage() {
+    return DartLanguage.INSTANCE;
+  }
+
 
   @Override
   public boolean process(@NotNull Project project, @NotNull Editor editor, @NotNull PsiFile psiFile) {

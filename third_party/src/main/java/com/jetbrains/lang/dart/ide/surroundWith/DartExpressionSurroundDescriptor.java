@@ -1,5 +1,7 @@
 package com.jetbrains.lang.dart.ide.surroundWith;
 
+import com.jetbrains.lang.dart.DartLanguage;
+import consulo.language.Language;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.surroundWith.SurroundDescriptor;
 import consulo.language.editor.surroundWith.Surrounder;
@@ -14,6 +16,11 @@ import org.jetbrains.annotations.NotNull;
 
 @ExtensionImpl
 public final class DartExpressionSurroundDescriptor implements SurroundDescriptor {
+  @Override
+  public @NotNull Language getLanguage() {
+    return DartLanguage.INSTANCE;
+  }
+
   @Override
   public PsiElement @NotNull [] getElementsToSurround(PsiFile file, int startOffset, int endOffset) {
     final DartExpression result = DartRefactoringUtil.findExpressionInRange(file, startOffset, endOffset);

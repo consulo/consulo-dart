@@ -1,5 +1,7 @@
 package com.jetbrains.lang.dart.ide;
 
+import com.jetbrains.lang.dart.DartLanguage;
+import consulo.language.Language;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.language.BracePair;
 import consulo.language.PairedBraceMatcher;
@@ -12,6 +14,11 @@ import org.jetbrains.annotations.Nullable;
 
 @ExtensionImpl
 public final class DartBraceMatcher implements PairedBraceMatcher {
+  @Override
+  public @NotNull Language getLanguage() {
+    return DartLanguage.INSTANCE;
+  }
+
   private static final BracePair[] BRACE_PAIRS = {
     new BracePair(DartTokenTypes.LBRACE, DartTokenTypes.RBRACE, true),
     new BracePair(DartTokenTypes.LBRACKET, DartTokenTypes.RBRACKET, false),

@@ -1,6 +1,8 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.folding;
 
+import com.jetbrains.lang.dart.DartLanguage;
+import consulo.language.Language;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.folding.CodeFoldingSettings;
 import consulo.language.ast.ASTNode;
@@ -32,6 +34,11 @@ import static com.jetbrains.lang.dart.DartParserDefinition.DART_FILE;
 
 @ExtensionImpl
 public final class DartFoldingBuilder extends CustomFoldingBuilder implements DumbAware {
+  @Override
+  public @NotNull Language getLanguage() {
+    return DartLanguage.INSTANCE;
+  }
+
 
   private static final String SMILEY = "<~>";
   private static final String DOT_DOT_DOT = "...";

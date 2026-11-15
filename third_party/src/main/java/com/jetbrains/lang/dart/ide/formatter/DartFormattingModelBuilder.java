@@ -1,6 +1,8 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.formatter;
 
+import com.jetbrains.lang.dart.DartLanguage;
+import consulo.language.Language;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.language.codeStyle.FormattingContext;
 import consulo.language.codeStyle.FormattingModel;
@@ -14,6 +16,11 @@ import org.jetbrains.annotations.NotNull;
 
 @ExtensionImpl
 public final class DartFormattingModelBuilder implements FormattingModelBuilder {
+  @Override
+  public @NotNull Language getLanguage() {
+    return DartLanguage.INSTANCE;
+  }
+
 
   @Override
   public @NotNull FormattingModel createModel(@NotNull FormattingContext formattingContext) {

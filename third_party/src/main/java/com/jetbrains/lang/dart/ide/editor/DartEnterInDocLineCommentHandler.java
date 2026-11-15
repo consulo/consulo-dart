@@ -7,7 +7,7 @@ import consulo.dataContext.DataContext;
 import consulo.document.Document;
 import consulo.codeEditor.Editor;
 import consulo.codeEditor.action.EditorActionHandler;
-import consulo.util.lang.ref.Ref;
+import consulo.util.lang.ref.SimpleReference;
 import consulo.util.lang.StringUtil;
 import consulo.language.psi.PsiDocumentManager;
 import consulo.language.psi.PsiElement;
@@ -23,17 +23,14 @@ import org.jetbrains.annotations.NotNull;
 @ExtensionImpl
 public final class DartEnterInDocLineCommentHandler implements EnterHandlerDelegate {
 
-  @Override
-  public boolean invokeInsideIndent(int newLineCharOffset, @NotNull Editor editor, @NotNull DataContext dataContext) {
-    return EnterHandlerDelegate.super.invokeInsideIndent(newLineCharOffset, editor, dataContext);
-  }
+  // Consulo: no EnterHandlerDelegate.invokeInsideIndent
 
   // EnterInLineCommentHandler doesn't work well enough for Dart doc comments
   @Override
   public Result preprocessEnter(final @NotNull PsiFile file,
                                 final @NotNull Editor editor,
-                                final @NotNull Ref<Integer> caretOffsetRef,
-                                final @NotNull Ref<Integer> caretAdvance,
+                                final @NotNull SimpleReference<Integer> caretOffsetRef,
+                                final @NotNull SimpleReference<Integer> caretAdvance,
                                 final @NotNull DataContext dataContext,
                                 final EditorActionHandler originalHandler) {
     if (file.getLanguage() != DartLanguage.INSTANCE && !HtmlUtil.isHtmlFile(file)) return Result.Continue;

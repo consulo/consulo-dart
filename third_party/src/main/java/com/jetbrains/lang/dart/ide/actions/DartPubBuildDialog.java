@@ -14,6 +14,7 @@ import consulo.util.lang.StringUtil;
 import consulo.virtualFileSystem.VirtualFile;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.util.PathUtil;
+import consulo.localize.LocalizeValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -42,10 +43,13 @@ public class DartPubBuildDialog extends DialogWrapper {
     setOKButtonText(DartBundle.message("button.text.build2"));
 
     var packagePathSlash = FileUtil.toSystemDependentName(packageDir.getPath() + "/");
+    // Consulo: title goes to addBrowseFolderListener instead of FileChooserDescriptor.withTitle()
     myOutputFolderField.addBrowseFolderListener(
+      DartBundle.messageValue("button.browse.dialog.title.output.folder"),
+      LocalizeValue.empty(),
       myProject,
-      FileChooserDescriptorFactory.createSingleFolderDescriptor().withTitle(DartBundle.message("button.browse.dialog.title.output.folder")),
-      new TextComponentAccessor<>() {
+      FileChooserDescriptorFactory.createSingleFolderDescriptor(),
+      new TextComponentAccessor<JTextField>() {
         @Override
         public String getText(JTextField component) {
           final String path = component.getText();

@@ -10,6 +10,7 @@ import consulo.colorScheme.setting.ColorDescriptor;
 import consulo.language.editor.colorScheme.setting.ColorSettingsPage;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartFileType;
+import consulo.localize.LocalizeValue;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -270,11 +271,11 @@ public final class DartColorsAndFontsPage implements ColorSettingsPage {
   }
 
   @Override
-  public @NotNull String getDisplayName() {
-    return DartBundle.message("dart.title");
+  public @NotNull LocalizeValue getDisplayName() {
+    return DartBundle.messageValue("dart.title");
   }
 
-  @Override
+  // Consulo: ColorSettingsPage has no getIcon()
   public Image getIcon() {
     return DartFileType.INSTANCE.getIcon();
   }

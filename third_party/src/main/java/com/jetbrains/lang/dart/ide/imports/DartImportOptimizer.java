@@ -1,6 +1,8 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.imports;
 
+import com.jetbrains.lang.dart.DartLanguage;
+import consulo.language.Language;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.refactoring.ImportOptimizer;
 import consulo.document.Document;
@@ -13,11 +15,17 @@ import com.jetbrains.lang.dart.assists.AssistUtils;
 import com.jetbrains.lang.dart.psi.DartFile;
 import com.jetbrains.lang.dart.util.DartResolveUtil;
 import org.dartlang.analysis.server.protocol.SourceFileEdit;
+import consulo.localize.LocalizeValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @ExtensionImpl
 public final class DartImportOptimizer implements ImportOptimizer {
+  @Override
+  public @NotNull Language getLanguage() {
+    return DartLanguage.INSTANCE;
+  }
+
   @Override
   public @NotNull Runnable processFile(final @NotNull PsiFile file) {
     DartAnalysisServerService das = DartAnalysisServerService.getInstance(file.getProject());
@@ -46,8 +54,8 @@ public final class DartImportOptimizer implements ImportOptimizer {
       }
 
       @Override
-      public @Nullable String getUserNotificationInfo() {
-        return myFileChanged ? DartBundle.message("organized.directives") : null;
+      public @NotNull LocalizeValue getUserNotificationInfo() {
+        return myFileChanged ? DartBundle.messageValue("organized.directives") : LocalizeValue.empty();
       }
     };
   }

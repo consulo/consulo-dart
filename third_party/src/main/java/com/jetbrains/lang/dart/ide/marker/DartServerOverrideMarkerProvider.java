@@ -1,6 +1,8 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.marker;
 
+import com.jetbrains.lang.dart.DartLanguage;
+import consulo.language.Language;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.ui.image.Image;
 import consulo.language.editor.DaemonBundle;
@@ -31,6 +33,11 @@ import java.util.List;
 
 @ExtensionImpl
 public final class DartServerOverrideMarkerProvider implements LineMarkerProvider {
+  @Override
+  public @NotNull Language getLanguage() {
+    return DartLanguage.INSTANCE;
+  }
+
   @Override
   public LineMarkerInfo<?> getLineMarkerInfo(@NotNull PsiElement element) {
     if (!(element instanceof DartComponentName)) {

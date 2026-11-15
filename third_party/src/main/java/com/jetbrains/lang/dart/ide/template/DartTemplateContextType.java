@@ -2,7 +2,9 @@
 package com.jetbrains.lang.dart.ide.template;
 
 import consulo.annotation.component.ExtensionImpl;
+import consulo.language.editor.template.context.BaseTemplateContextType;
 import consulo.language.editor.template.context.TemplateActionContext;
+import consulo.language.editor.template.context.EverywhereContextType;
 import consulo.language.editor.template.context.TemplateContextType;
 import consulo.language.editor.highlight.SyntaxHighlighter;
 
@@ -15,20 +17,14 @@ import com.jetbrains.lang.dart.DartLanguage;
 import com.jetbrains.lang.dart.highlight.DartSyntaxHighlighter;
 import com.jetbrains.lang.dart.psi.IDartBlock;
 
+import consulo.localize.LocalizeValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class DartTemplateContextType extends TemplateContextType {
-  protected DartTemplateContextType(@NotNull String presentableName) {
-    super(presentableName);
-  }
-
-  /**
-   * @deprecated Set contextId and baseContextId in plugin.xml instead
-   */
-  @Deprecated
+// Consulo: contextId and baseContextId from upstream plugin.xml are passed to the constructor
+public abstract class DartTemplateContextType extends BaseTemplateContextType {
   protected DartTemplateContextType(@NotNull String id,
-                                    @NotNull String presentableName,
+                                    @NotNull LocalizeValue presentableName,
                                     @Nullable Class<? extends TemplateContextType> baseContextType) {
     super(id, presentableName, baseContextType);
   }
@@ -53,7 +49,7 @@ public abstract class DartTemplateContextType extends TemplateContextType {
   @ExtensionImpl
   public static final class Generic extends DartTemplateContextType {
     public Generic() {
-      super(DartBundle.message("template.context.type.dart"));
+      super("DART", DartBundle.messageValue("template.context.type.dart"), EverywhereContextType.class);
     }
 
     @Override
@@ -65,7 +61,7 @@ public abstract class DartTemplateContextType extends TemplateContextType {
   @ExtensionImpl
   public static final class Statement extends DartTemplateContextType {
     public Statement() {
-      super(DartBundle.message("template.context.type.dart.statement"));
+      super("DART_STATEMENT", DartBundle.messageValue("template.context.type.dart.statement"), Generic.class);
     }
 
     @Override

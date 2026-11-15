@@ -6,7 +6,7 @@ import consulo.ide.navigation.ChooseByNameContributorEx;
 import consulo.navigation.NavigationItem;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiManager;
-import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.content.scope.SearchScope;
 import java.util.function.Function;
 import consulo.application.util.function.Processor;
 import consulo.util.collection.JBIterable;
@@ -27,13 +27,13 @@ import java.util.Objects;
 @ExtensionImpl
 public final class DartClassContributor implements ChooseByNameContributorEx {
   @Override
-  public void processNames(@NotNull Processor<? super String> processor, @NotNull GlobalSearchScope scope, @Nullable IdFilter filter) {
+  public void processNames(@NotNull Processor<String> processor, @NotNull SearchScope scope, @Nullable IdFilter filter) {
     FileBasedIndex.getInstance().processAllKeys(DartClassIndex.DART_CLASS_INDEX, processor, scope, filter);
   }
 
   @Override
   public void processElementsWithName(@NotNull String name,
-                                      @NotNull Processor<? super NavigationItem> processor,
+                                      @NotNull Processor<NavigationItem> processor,
                                       @NotNull FindSymbolParameters parameters) {
     doProcessElements(DartClassIndex.DART_CLASS_INDEX, DartResolveUtil::getClassDeclarations, name, processor, parameters);
   }
@@ -41,7 +41,7 @@ public final class DartClassContributor implements ChooseByNameContributorEx {
   static void doProcessElements(@NotNull ID<String, Void> index,
                                 @NotNull Function<PsiElement, Iterable<? extends DartComponent>> componentGetter,
                                 @NotNull String name,
-                                @NotNull Processor<? super NavigationItem> processor,
+                                @NotNull Processor<NavigationItem> processor,
                                 @NotNull FindSymbolParameters parameters) {
     PsiManager psiManager = PsiManager.getInstance(parameters.getProject());
     FileBasedIndex.getInstance().getFilesWithKey(

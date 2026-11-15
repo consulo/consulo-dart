@@ -1,6 +1,8 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.generation;
 
+import com.jetbrains.lang.dart.DartLanguage;
+import consulo.language.Language;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.util.lang.Pair;
 import consulo.util.collection.ContainerUtil;
@@ -17,6 +19,11 @@ import java.util.Map;
 
 @ExtensionImpl
 public final class DartOverrideMethodHandler extends BaseDartGenerateHandler {
+  @Override
+  public @NotNull Language getLanguage() {
+    return DartLanguage.INSTANCE;
+  }
+
   @Override
   protected @NotNull String getTitle() {
     return DartBundle.message("dialog.title.choose.methods.to.override");

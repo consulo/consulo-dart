@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.actions;
 
+import consulo.language.Language;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.CodeInsightBundle;
 import consulo.language.editor.ui.navigation.PsiTargetNavigator;
@@ -29,6 +30,11 @@ import java.util.List;
 
 @ExtensionImpl
 public final class DartServerGotoSuperHandler implements LanguageCodeInsightActionHandler {
+  @Override
+  public @NotNull Language getLanguage() {
+    return DartLanguage.INSTANCE;
+  }
+
   @Override
   public void invoke(@NotNull Project project, @NotNull Editor editor, @NotNull PsiFile psiFile) {
     final PsiElement at = psiFile.findElementAt(editor.getCaretModel().getOffset());

@@ -5,11 +5,12 @@ import consulo.annotation.component.ExtensionImpl;
 import consulo.language.codeStyle.ui.setting.CodeStyleAbstractConfigurable;
 import consulo.language.codeStyle.ui.setting.CodeStyleAbstractPanel;
 import consulo.language.Language;
-import com.intellij.psi.codeStyle.*;
+import consulo.configurable.Configurable;
 import consulo.language.codeStyle.CodeStyleSettings;
 import consulo.language.codeStyle.setting.CodeStyleSettingsCustomizable;
 import consulo.language.codeStyle.CommonCodeStyleSettings;
 import consulo.language.codeStyle.setting.LanguageCodeStyleSettingsProvider;
+import consulo.language.codeStyle.setting.LanguageCodeStyleSettingsProvider.SettingsType;
 import com.jetbrains.lang.dart.DartLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -27,8 +28,15 @@ public final class DartLanguageCodeStyleSettingsProvider extends LanguageCodeSty
     return null;
   }
 
+  // Consulo: no customizeDefaults(), called from getDefaultCommonSettings()
   @Override
-  protected void customizeDefaults(@NotNull CommonCodeStyleSettings commonSettings,
+  public @Nullable CommonCodeStyleSettings getDefaultCommonSettings() {
+    CommonCodeStyleSettings commonSettings = new CommonCodeStyleSettings(getLanguage());
+    customizeDefaults(commonSettings, commonSettings.initIndentOptions());
+    return commonSettings;
+  }
+
+  private static void customizeDefaults(@NotNull CommonCodeStyleSettings commonSettings,
                                    @NotNull CommonCodeStyleSettings.IndentOptions indentOptions) {
     commonSettings.RIGHT_MARGIN = 80;
 
@@ -49,8 +57,8 @@ public final class DartLanguageCodeStyleSettingsProvider extends LanguageCodeSty
   }
 
   @Override
-  public @NotNull CodeStyleConfigurable createConfigurable(@NotNull CodeStyleSettings baseSettings, @NotNull CodeStyleSettings modelSettings) {
-    return new CodeStyleAbstractConfigurable(baseSettings, modelSettings, getConfigurableDisplayName()) {
+  public @NotNull Configurable createSettingsPage(@NotNull CodeStyleSettings baseSettings, @NotNull CodeStyleSettings modelSettings) {
+    return new CodeStyleAbstractConfigurable(baseSettings, modelSettings, getLanguageName()) {
       @Override
       protected @NotNull CodeStyleAbstractPanel createPanel(@NotNull CodeStyleSettings settings) {
         return new DartCodeStylePanel(getCurrentSettings(), settings);
