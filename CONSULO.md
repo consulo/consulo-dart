@@ -34,24 +34,33 @@ Each usage should move to an API module when one appears. Current usages
 (`grep -rhoE "^import (static )?consulo\.ide\.impl\.[\w.]+" third_party/src/main/java`):
 
 - `consulo.ide.impl.idea.execution.filters.TextConsoleBuilderImpl` (3)
+- `consulo.ide.impl.idea.util.net.NetUtils` (2)
 - `consulo.ide.impl.idea.ui.HoverHyperlinkLabel` (2)
-- `consulo.ide.impl.idea.util.PlatformIcons` (1)
-- `consulo.ide.impl.idea.util.net.NetUtils` (1)
-- `consulo.ide.impl.idea.util.IconUtil` (1)
-- `consulo.ide.impl.idea.util.FunctionUtil` (1)
-- `consulo.ide.impl.idea.ui.PortField` (1)
-- `consulo.ide.impl.idea.ui.EditorNotificationPanel` (1)
 - `consulo.ide.impl.idea.ide.util.MemberChooser` (1)
+- `consulo.ide.impl.idea.ide.projectView.impl.ProjectViewPaneImpl` (1)
 - `consulo.ide.impl.idea.ide.projectView.impl.nodes.NamedLibraryElementNode` (1)
-- `consulo.ide.impl.idea.ide.projectView.impl.nodes.ExternalLibrariesNode` (1)
 - `consulo.ide.impl.idea.execution.impl.ConsoleViewImpl` (1)
 - `consulo.ide.impl.idea.codeInsight.hints.DeclarativeInlayHintsPassFactory` (1)
-- `consulo.ide.impl.idea.codeInsight.hint.HintManagerImpl` (1)
 - `consulo.ide.impl.idea.codeInsight.editorActions.TypedHandler` (1)
 - `consulo.ide.impl.idea.codeInsight.editorActions.TextBlockTransferableData` (1)
 - `consulo.ide.impl.idea.codeInsight.editorActions.CopyPastePostProcessor` (1)
-- `consulo.ide.impl.idea.codeInsight.completion.CompletionProgressIndicator` (1)
 - `consulo.ide.impl.find.PsiElement2UsageTargetAdapter` (1)
+
+## Registrations
+
+- Upstream `META-INF/plugin.xml` is kept as `plugin.xml_` (with `dart-yaml.xml` / `dart-copyright.xml`) as the list of
+  upstream registrations; Consulo registrations are annotations (`@ExtensionImpl`, `@ActionImpl`, `@ServiceImpl`, `@TopicImpl`).
+  After an upstream merge, compare its diff with the annotations.
+- Actions get text/description from the `action.<id>.text` / `.description` keys in their constructor.
+  The `Dart.pub.actions.context.menu.group` group is `consulo.dart.action.DartPubActionsContextMenuGroup`.
+- An extension registered for several languages upstream has one Consulo extension per language:
+  `consulo.dart.annotator.DartAnnotatorFactories` (Dart, XML, YAML), `consulo.dart.yaml.DartYamlServerCompletionContributor`,
+  `psi.DartXmlReferenceContributor`, `consulo.dart.highlight.DartSyntaxHighlighterFactory`.
+- Settings: `consulo.dart.settings.DartSettingsConfigurable` (analysis server toggle, webdev port), code folding / auto import /
+  code completion sections are configurables under the Consulo editor pages.
+- Forms (`*.form`) are instrumented by the parent pom (`ui-designer-maven-plugin`); their IntelliJ component classes are mapped
+  to Consulo ones. `sdk/DartConfigurable.form` is not used (`.form_`).
+- Upstream tests (`src/test`) use the IntelliJ test framework and are not built (`maven.test.skip`).
 
 ## Missing Consulo APIs
 
