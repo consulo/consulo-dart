@@ -21,7 +21,10 @@ import consulo.annotation.component.ExtensionImpl;
 import consulo.configurable.ProjectConfigurable;
 import consulo.configurable.SimpleConfigurableByProperties;
 import consulo.configurable.StandardConfigurableIds;
+import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
+import consulo.application.ReadAction;
 import consulo.dart.analyzer.DartAnalysisServerSettings;
+import consulo.language.editor.DaemonCodeAnalyzer;
 import consulo.dart.localize.DartConsuloLocalize;
 import consulo.disposer.Disposable;
 import consulo.localize.LocalizeValue;
@@ -72,7 +75,15 @@ public final class DartSettingsConfigurable extends SimpleConfigurableByProperti
     CheckBox analysisServerEnabled = CheckBox.create(DartConsuloLocalize.settingsAnalysisServerEnabled());
     propertyBuilder.add(analysisServerEnabled,
                         () -> DartAnalysisServerSettings.isEnabled(myProject),
-                        value -> DartAnalysisServerSettings.setEnabled(myProject, value));
+                        value -> {
+                          if (value == DartAnalysisServerSettings.isEnabled(myProject)) return;
+                          DartAnalysisServerSettings.setEnabled(myProject, value);
+                          // starts or stops the server, as on project open, and re-highlights with or without its results
+                          myProject.getApplication().executeOnPooledThread(() -> {
+                            ReadAction.run(() -> DartAnalysisServerService.getInstance(myProject).serverReadyForRequest());
+                            DaemonCodeAnalyzer.getInstance(myProject).restart();
+                          });
+                        });
     layout.add(analysisServerEnabled);
 
     IntBox webdevPort = IntBox.create(DartConfigurable.WEBDEV_PORT_DEFAULT);
