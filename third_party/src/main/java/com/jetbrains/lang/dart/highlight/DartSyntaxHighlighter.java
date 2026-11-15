@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.highlight;
 
+import consulo.xml.language.XMLLanguage;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.xml.editor.EmbeddedTokenHighlighter;
 import consulo.language.lexer.Lexer;
@@ -76,7 +77,7 @@ public final class DartSyntaxHighlighter extends SyntaxHighlighterBase implement
   }
 
   @Override
-  public @NotNull MultiMap<IElementType, TextAttributesKey> getEmbeddedTokenAttributes() {
+  public @NotNull MultiMap<IElementType, TextAttributesKey> getEmbeddedTokenAttributes(@NotNull XMLLanguage language) {
     MultiMap<IElementType, TextAttributesKey> map = MultiMap.create();
     map.putAllValues(ATTRIBUTES);
     return map;

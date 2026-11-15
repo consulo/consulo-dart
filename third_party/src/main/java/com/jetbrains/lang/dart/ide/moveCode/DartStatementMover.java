@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.moveCode;
 
+import consulo.dart.compat.PsiTreeUtilCompat;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.moveUpDown.LineMover;
 import consulo.language.editor.moveUpDown.LineRange;
@@ -399,7 +400,7 @@ public final class DartStatementMover extends LineMover {
     }
     PsiElement sibling =
       StatementUpDownMover.firstNonWhiteElement(down ? range.lastElement.getNextSibling() : range.firstElement.getPrevSibling(), down);
-    DartFunctionExpression fn = PsiTreeUtil.findChildOfType(sibling, DartFunctionExpression.class, true, DartPsiCompositeElement.class);
+    DartFunctionExpression fn = PsiTreeUtilCompat.findChildOfType(sibling, DartFunctionExpression.class, true, DartPsiCompositeElement.class);
     if (fn != null && PsiTreeUtil.getParentOfType(fn, DartPsiCompositeElement.class) == sibling) {
       destLine =
         editor.getDocument().getLineNumber(down ? sibling.getTextRange().getEndOffset() + 1 : sibling.getTextRange().getStartOffset());

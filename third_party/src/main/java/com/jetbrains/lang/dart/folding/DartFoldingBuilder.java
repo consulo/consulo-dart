@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.folding;
 
+import consulo.dart.compat.PsiTreeUtilCompat;
 import com.jetbrains.lang.dart.DartLanguage;
 import consulo.language.Language;
 import consulo.annotation.component.ExtensionImpl;
@@ -283,7 +284,7 @@ public final class DartFoldingBuilder extends CustomFoldingBuilder implements Du
   }
 
   private static void foldClassBodies(final @NotNull List<FoldingDescriptor> descriptors, final @NotNull DartFile dartFile) {
-    for (PsiElement element : PsiTreeUtil.getChildrenOfAnyType(dartFile,
+    for (PsiElement element : PsiTreeUtilCompat.getChildrenOfAnyType(dartFile,
                                                                DartClass.class,
                                                                DartExtensionDeclaration.class,
                                                                DartExtensionTypeDeclaration.class)) {

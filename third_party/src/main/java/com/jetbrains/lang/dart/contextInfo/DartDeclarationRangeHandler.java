@@ -12,6 +12,11 @@ import org.jetbrains.annotations.Nullable;
 @ExtensionImpl
 public final class DartDeclarationRangeHandler implements DeclarationRangeHandler<DartPsiCompositeElement> {
   @Override
+  public @NotNull Class<DartPsiCompositeElement> getElementClass() {
+    return DartPsiCompositeElement.class;
+  }
+
+  @Override
   public @Nullable TextRange getDeclarationRange(@NotNull DartPsiCompositeElement element) {
     // returned range is extended to full line(s) in platform
     if (element instanceof DartCallExpression) {

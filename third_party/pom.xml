@@ -72,6 +72,7 @@
                 <configuration>
                     <dependencies>
                         <dependency>com.intellij.xml</dependency>
+                        <dependency>consulo.library.flexmark</dependency>
                         <dependency>org.jetbrains.plugins.yaml</dependency>
                     </dependencies>
                     <packaging>
@@ -492,5 +493,13 @@
             <scope>provided</scope>
         </dependency>
 
+
+        <!-- replaces IntelliJ's bundled markdown converter (DartDocUtil) -->
+        <dependency>
+            <groupId>consulo.plugin.library</groupId>
+            <artifactId>consulo.library.flexmark</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

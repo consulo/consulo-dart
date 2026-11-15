@@ -6,6 +6,7 @@ import consulo.language.ast.ASTNode;
 import consulo.language.Language;
 import consulo.document.Document;
 import consulo.language.editor.PsiBasedStripTrailingSpacesFilter;
+import consulo.language.editor.PsiBasedStripTrailingSpacesFilterFactory;
 import consulo.language.psi.PsiElementVisitor;
 import consulo.language.psi.PsiFile;
 import consulo.language.ast.IElementType;
@@ -18,7 +19,7 @@ import static com.jetbrains.lang.dart.DartTokenTypes.RAW_TRIPLE_QUOTED_STRING;
 import static com.jetbrains.lang.dart.DartTokenTypes.REGULAR_STRING_PART;
 
 @ExtensionImpl
-public final class DartStripTrailingSpacesFilterFactory extends PsiBasedStripTrailingSpacesFilter.Factory {
+public final class DartStripTrailingSpacesFilterFactory extends PsiBasedStripTrailingSpacesFilterFactory {
 
   @Override
   protected @NotNull PsiBasedStripTrailingSpacesFilter createFilter(final @NotNull Document document) {

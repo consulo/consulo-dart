@@ -16,8 +16,8 @@ import consulo.language.psi.PsiComment;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiWhiteSpace;
 import consulo.language.psi.util.PsiTreeUtil;
-import consulo.ide.impl.idea.util.FunctionUtil;
-import consulo.ide.impl.idea.util.IconUtil;
+import consulo.language.editor.Pass;
+import consulo.ui.image.Image;
 import com.jetbrains.lang.dart.psi.*;
 import com.jetbrains.lang.dart.psi.impl.AbstractDartMethodDeclarationImpl;
 import org.jetbrains.annotations.NotNull;
@@ -66,11 +66,11 @@ public final class DartMethodLineMarkerProvider implements LineMarkerProvider {
       // finally, create the marker
         LineMarkerInfo<PsiElement> info = new LineMarkerInfo<>(anchor,
                 anchor.getTextRange(),
-                IconUtil.getEmptyIcon(true),
-                FunctionUtil.<Object, String>nullConstant(),
+                Image.empty(Image.DEFAULT_ICON_SIZE),
+                Pass.LINE_MARKERS,
+                element -> null,
                 null,
-                GutterIconRenderer.Alignment.RIGHT,
-                () -> "Method separator");
+                GutterIconRenderer.Alignment.RIGHT);
         EditorColorsScheme scheme = EditorColorsManager.getInstance().getGlobalScheme();
       info.separatorColor = scheme.getColor(CodeInsightColors.METHOD_SEPARATORS_COLOR);
       info.separatorPlacement = SeparatorPlacement.TOP;

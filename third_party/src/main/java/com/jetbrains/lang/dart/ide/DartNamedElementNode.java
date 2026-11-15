@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide;
 
+import consulo.language.icon.IconDescriptorUpdaters;
 import consulo.language.editor.generation.ClassMember;
 import consulo.language.editor.generation.MemberChooserObject;
 import consulo.language.editor.generation.PsiElementMemberChooserObject;
@@ -15,7 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class DartNamedElementNode extends PsiElementMemberChooserObject implements ClassMember {
   public DartNamedElementNode(final DartComponent dartComponent) {
-    super(dartComponent, buildPresentationText(dartComponent), dartComponent.getIcon(Iconable.ICON_FLAG_VISIBILITY));
+    super(dartComponent, buildPresentationText(dartComponent), IconDescriptorUpdaters.getIcon(dartComponent, Iconable.ICON_FLAG_VISIBILITY));
   }
 
   private static @Nullable String buildPresentationText(DartComponent dartComponent) {
@@ -31,7 +32,7 @@ public class DartNamedElementNode extends PsiElementMemberChooserObject implemen
       return dartComponent.getName();
     }
     else {
-      return presentation.getPresentableText();
+      return presentation.getPresentableText().get();
     }
   }
 

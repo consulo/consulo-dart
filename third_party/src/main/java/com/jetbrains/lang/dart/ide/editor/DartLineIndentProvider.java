@@ -5,7 +5,8 @@ import consulo.annotation.component.ExtensionImpl;
 import static consulo.language.codeStyle.lineIndent.JavaLikeLangLineIndentProvider.JavaLikeElement.*;
 import consulo.language.codeStyle.Indent;
 import consulo.language.Language;
-import consulo.codeEditor.Editor;
+import consulo.document.Document;
+import consulo.language.codeStyle.lineIndent.SemanticEditorPositionFactory;
 import consulo.project.Project;
 import consulo.language.codeStyle.lineIndent.SemanticEditorPosition;
 import consulo.language.codeStyle.lineIndent.IndentCalculator;
@@ -77,12 +78,16 @@ public final class DartLineIndentProvider extends JavaLikeLangLineIndentProvider
   }
 
   @Override
-  protected @Nullable IndentCalculator getIndent(@NotNull Project project, @NotNull Editor editor, @Nullable Language language, int offset) {
-    if (getPosition(editor, offset).matchesRule(position -> position.before().isAt(LeftParenthesis))) {
+  protected @Nullable IndentCalculator getIndent(@NotNull Project project,
+                                                 @NotNull Document document,
+                                                 @NotNull SemanticEditorPositionFactory factory,
+                                                 @Nullable Language language,
+                                                 int offset) {
+    if (getPosition(factory, offset).matchesRule(position -> position.before().isAt(LeftParenthesis))) {
       // Need to skip a common logic and force formatter-based line indent provider to work, because
       // there may be different indents inside parentheses, see https://github.com/dart-lang/dart_style/issues/551
       return null;
     }
-    return super.getIndent(project, editor, language, offset);
+    return super.getIndent(project, document, factory, language, offset);
   }
 }

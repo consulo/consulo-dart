@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import static com.intellij.markdown.utils.MarkdownToHtmlConverterKt.convertMarkdownToHtml;
+import static consulo.dart.compat.MarkdownToHtmlConverterKt.convertMarkdownToHtml;
 
 public final class DartDocUtil {
   private static final String FORMATTED_HOVER_SDK_VERSION = "2.14";

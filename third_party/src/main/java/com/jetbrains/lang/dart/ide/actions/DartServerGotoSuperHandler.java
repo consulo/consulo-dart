@@ -1,10 +1,13 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.actions;
 
+import com.jetbrains.lang.dart.psi.DartComponentName;
+import consulo.localize.LocalizeValue;
+import consulo.language.editor.ui.navigation.PsiTargetNavigationService;
+import consulo.application.Application;
 import consulo.language.Language;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.CodeInsightBundle;
-import consulo.language.editor.ui.navigation.PsiTargetNavigator;
 import consulo.language.editor.action.LanguageCodeInsightActionHandler;
 import consulo.codeEditor.Editor;
 import consulo.project.Project;
@@ -57,7 +60,7 @@ public final class DartServerGotoSuperHandler implements LanguageCodeInsightActi
     final int offset = inComponent.getComponentName().getTextRange().getStartOffset();
 
     // ask for the super type hierarchy
-    new PsiTargetNavigator<>(() -> {
+    Application.get().getInstance(PsiTargetNavigationService.class).<DartComponentName>newNavigator(() -> {
         final List<TypeHierarchyItem> items = DartAnalysisServerService.getInstance(project).search_getTypeHierarchy(virtualFile, offset, true);
         // build list of DartComponent(s)
         final List<DartComponent> supers = new ArrayList<>();
@@ -82,7 +85,8 @@ public final class DartServerGotoSuperHandler implements LanguageCodeInsightActi
         return DartResolveUtil.getComponentNames(supers);
     })
     // open DartComponent(s)
-    .navigate(editor, title);
+    .title(LocalizeValue.of(title))
+    .navigate(editor, project);
   }
 
   @Override

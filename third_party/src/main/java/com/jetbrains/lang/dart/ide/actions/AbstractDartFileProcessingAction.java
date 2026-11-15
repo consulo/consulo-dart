@@ -3,8 +3,6 @@ package com.jetbrains.lang.dart.ide.actions;
 
 import consulo.ui.ex.action.AnActionWithSyncUpdate;
 import consulo.language.editor.hint.HintManager;
-import consulo.ide.impl.idea.codeInsight.hint.HintManagerImpl;
-import consulo.language.editor.ui.awt.HintUtil;
 import consulo.ui.ex.action.AnAction;
 import consulo.ui.ex.action.AnActionEvent;
 import consulo.language.editor.CommonDataKeys;
@@ -26,7 +24,6 @@ import consulo.language.psi.PsiFile;
 import consulo.language.psi.search.FileTypeIndex;
 import consulo.language.psi.scope.GlobalSearchScope;
 import consulo.language.psi.scope.GlobalSearchScopesCore;
-import consulo.ui.ex.awt.hint.LightweightHint;
 import consulo.util.collection.SmartList;
 import com.jetbrains.lang.dart.DartFileType;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
@@ -119,12 +116,17 @@ public abstract class AbstractDartFileProcessingAction extends AnAction implemen
 
   public static void showHintLater(final @NotNull Editor editor, final @NotNull String text, final boolean error) {
     ApplicationManager.getApplication().invokeLater(() -> {
-      final JComponent component = error ? HintUtil.createErrorLabel(text) : HintUtil.createInformationLabel(text);
-      final LightweightHint hint = new LightweightHint(component);
-      HintManagerImpl.getInstanceImpl().showEditorHint(hint, editor, HintManager.UNDER, HintManager.HIDE_BY_ANY_KEY |
-                                                                                        HintManager.HIDE_BY_TEXT_CHANGE |
-                                                                                        HintManager.HIDE_BY_SCROLLING, 0, false);
-    }, ModalityState.nonModal(), o -> editor.isDisposed() || !editor.getComponent().isShowing());
+      // Consulo: no public HintManager.showEditorHint(LightweightHint, ...)
+      if (error) {
+        final int offset = editor.getCaretModel().getOffset();
+        HintManager.getInstance().showErrorHint(editor, text, offset, offset, HintManager.UNDER, HintManager.HIDE_BY_ANY_KEY |
+                                                                                                 HintManager.HIDE_BY_TEXT_CHANGE |
+                                                                                                 HintManager.HIDE_BY_SCROLLING, 0);
+      }
+      else {
+        HintManager.getInstance().showInformationHint(editor, text, HintManager.UNDER);
+      }
+    }, ModalityState.nonModal(), () -> editor.isDisposed() || !editor.getComponent().isShowing());
   }
 
   private static @NotNull List<VirtualFile> getApplicableVirtualFiles(final @NotNull Project project,

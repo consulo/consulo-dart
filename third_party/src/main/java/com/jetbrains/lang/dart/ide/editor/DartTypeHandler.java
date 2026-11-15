@@ -5,7 +5,7 @@ import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.CodeInsightSettings;
 import consulo.ide.impl.idea.codeInsight.editorActions.TypedHandler;
 import consulo.language.editor.action.TypedHandlerDelegate;
-import com.intellij.codeInsight.editorActions.TypedHandlerUtil;
+import consulo.dart.compat.TypedHandlerUtil;
 import consulo.codeEditor.Editor;
 import consulo.codeEditor.util.EditorModificationUtil;
 import consulo.virtualFileSystem.fileType.FileType;

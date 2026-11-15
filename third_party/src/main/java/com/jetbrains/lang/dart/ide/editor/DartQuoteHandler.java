@@ -14,7 +14,7 @@ public final class DartQuoteHandler extends SimpleTokenSetQuoteHandler {
 
   @Override
   public boolean isOpeningQuote(final HighlighterIterator iterator, final int offset) {
-    final IElementType type = iterator.getTokenType();
+    final IElementType type = (IElementType)iterator.getTokenType();
 
     if (type == DartTokenTypes.OPEN_QUOTE) return true;
 
@@ -24,7 +24,7 @@ public final class DartQuoteHandler extends SimpleTokenSetQuoteHandler {
 
   @Override
   public boolean isClosingQuote(final HighlighterIterator iterator, final int offset) {
-    final IElementType type = iterator.getTokenType();
+    final IElementType type = (IElementType)iterator.getTokenType();
 
     if (type == DartTokenTypes.CLOSING_QUOTE) return true;
 

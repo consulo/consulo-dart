@@ -24,6 +24,8 @@ import com.jetbrains.lang.dart.psi.DartClassDefinition;
 import com.jetbrains.lang.dart.psi.DartComponent;
 import com.jetbrains.lang.dart.psi.DartFile;
 import com.jetbrains.lang.dart.util.DartResolveUtil;
+import consulo.language.Language;
+import com.jetbrains.lang.dart.DartLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,6 +36,12 @@ import java.util.List;
 
 public abstract class BaseDartGenerateHandler implements LanguageCodeInsightActionHandler {
   private static final Logger LOG = PluginLogger.INSTANCE.createLogger(BaseDartGenerateHandler.class);
+
+  // Consulo: LanguageCodeInsightActionHandler is a LanguageExtension
+  @Override
+  public @NotNull Language getLanguage() {
+    return DartLanguage.INSTANCE;
+  }
 
   @Override
   public boolean isValidFor(final @NotNull Editor editor, final @NotNull PsiFile file) {

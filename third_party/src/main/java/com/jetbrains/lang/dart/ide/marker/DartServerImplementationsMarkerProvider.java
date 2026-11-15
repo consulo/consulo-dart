@@ -1,13 +1,16 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.marker;
 
+import consulo.language.editor.Pass;
+import consulo.localize.LocalizeValue;
+import consulo.language.editor.ui.navigation.PsiTargetNavigationService;
+import consulo.application.Application;
 import com.jetbrains.lang.dart.DartLanguage;
 import consulo.language.Language;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.DaemonBundle;
 import consulo.language.editor.gutter.LineMarkerInfo;
 import consulo.language.editor.gutter.LineMarkerProvider;
-import consulo.language.editor.ui.navigation.PsiTargetNavigator;
 import consulo.application.AllIcons;
 import consulo.codeEditor.markup.GutterIconRenderer;
 import consulo.virtualFileSystem.VirtualFile;
@@ -81,11 +84,12 @@ public final class DartServerImplementationsMarkerProvider implements LineMarker
                 anchor,
                 anchor.getTextRange(),
                 AllIcons.Gutter.OverridenMethod,
+                Pass.LINE_MARKERS,
                 element -> accessibleName,
                 (e, __) -> {
                     String findUsagesTitle = DartBundle.message("tab.title.subclasses.of.0", name.getName());
                     String popupTitle = DaemonBundle.message("navigation.title.subclass", name.getName(), 0, "");
-                    new PsiTargetNavigator<>(() -> {
+                    Application.get().getInstance(PsiTargetNavigationService.class).<DartComponentName>newNavigator(() -> {
                         DartAnalysisServerService das = DartAnalysisServerService.getInstance(name.getProject());
                         final List<TypeHierarchyItem> items = das.search_getTypeHierarchy(file, anchor.getTextRange().getStartOffset(), false);
                         if (items.isEmpty()) {
@@ -96,12 +100,11 @@ public final class DartServerImplementationsMarkerProvider implements LineMarker
                                 DartInheritorsSearcher.getSubClasses(name.getProject(), GlobalSearchScope.allScope(name.getProject()), items);
                         return DartResolveUtil.getComponentNames(components);
                     })
-                            .tabTitle(findUsagesTitle)
-                            .navigate(e, popupTitle, name.getProject());
+                            .findUsagesTitle(LocalizeValue.of(findUsagesTitle))
+                            .title(LocalizeValue.of(popupTitle))
+                            .navigate(e, name.getProject());
                 },
-                GutterIconRenderer.Alignment.RIGHT,
-                () -> accessibleName
-        );
+                GutterIconRenderer.Alignment.RIGHT);
     }
 
 
@@ -114,11 +117,12 @@ public final class DartServerImplementationsMarkerProvider implements LineMarker
                 anchor,
                 anchor.getTextRange(),
                 AllIcons.Gutter.OverridenMethod,
+                Pass.LINE_MARKERS,
                 element -> accessibleName,
                 (e, __) -> {
                     String findUsagesTitle = DartBundle.message("tab.title.overriding.methods.of.0", name.getName());
                     String popupTitle = DaemonBundle.message("navigation.title.overrider.method", name.getName(), "");
-                    new PsiTargetNavigator<>(() -> {
+                    Application.get().getInstance(PsiTargetNavigationService.class).<DartComponentName>newNavigator(() -> {
                         DartAnalysisServerService das = DartAnalysisServerService.getInstance(name.getProject());
                         final List<TypeHierarchyItem> items = das.search_getTypeHierarchy(file, anchor.getTextRange().getStartOffset(), false);
                         if (items.isEmpty()) {
@@ -129,12 +133,11 @@ public final class DartServerImplementationsMarkerProvider implements LineMarker
                                 DartInheritorsSearcher.getSubMembers(name.getProject(), GlobalSearchScope.allScope(name.getProject()), items);
                         return DartResolveUtil.getComponentNames(components);
                     })
-                            .tabTitle(findUsagesTitle)
-                            .navigate(e, popupTitle, name.getProject());
+                            .findUsagesTitle(LocalizeValue.of(findUsagesTitle))
+                            .title(LocalizeValue.of(popupTitle))
+                            .navigate(e, name.getProject());
                 },
-                GutterIconRenderer.Alignment.RIGHT,
-                () -> accessibleName
-        );
+                GutterIconRenderer.Alignment.RIGHT);
     }
 
 }

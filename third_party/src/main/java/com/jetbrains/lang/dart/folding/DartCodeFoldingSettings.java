@@ -7,13 +7,12 @@ import consulo.annotation.component.ServiceImpl;
 import consulo.annotation.component.ServiceAPI;
 import consulo.application.ApplicationManager;
 import consulo.component.persist.PersistentStateComponent;
-import com.intellij.openapi.components.SettingsCategory;
 import consulo.component.persist.State;
 import consulo.component.persist.Storage;
 import consulo.util.xml.serializer.XmlSerializerUtil;
 import org.jetbrains.annotations.NotNull;
 
-@State(name = "DartCodeFoldingSettings", storages = @Storage("editor.xml"), category = SettingsCategory.CODE)
+@State(name = "DartCodeFoldingSettings", storages = @Storage("editor.xml"))
 @ServiceAPI(ComponentScope.APPLICATION)
 @ServiceImpl
 @Singleton

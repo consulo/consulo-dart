@@ -1,6 +1,10 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.marker;
 
+import consulo.language.editor.Pass;
+import consulo.localize.LocalizeValue;
+import consulo.language.editor.ui.navigation.PsiTargetNavigationService;
+import consulo.application.Application;
 import com.jetbrains.lang.dart.DartLanguage;
 import consulo.language.Language;
 import consulo.annotation.component.ExtensionImpl;
@@ -8,7 +12,6 @@ import consulo.ui.image.Image;
 import consulo.language.editor.DaemonBundle;
 import consulo.language.editor.gutter.LineMarkerInfo;
 import consulo.language.editor.gutter.LineMarkerProvider;
-import consulo.language.editor.ui.navigation.PsiTargetNavigator;
 import consulo.application.AllIcons;
 import consulo.codeEditor.markup.GutterIconRenderer;
 import consulo.project.Project;
@@ -116,16 +119,17 @@ public final class DartServerOverrideMarkerProvider implements LineMarkerProvide
         final Image icon = overrides ? AllIcons.Gutter.OverridingMethod : AllIcons.Gutter.ImplementingMethod;
         PsiElement anchor = PsiTreeUtil.getDeepestFirst(componentName);
 
-        return new LineMarkerInfo<>(anchor, anchor.getTextRange(), icon, __ -> accessibleName, (e, __) -> {
+        return new LineMarkerInfo<>(anchor, anchor.getTextRange(), icon, Pass.LINE_MARKERS, __ -> accessibleName, (e, __) -> {
             List<DartComponent> superComponents = new ArrayList<>();
             if (superclassComponent != null) {
                 superComponents.add(superclassComponent);
             }
             superComponents.addAll(interfaceComponents);
-            new PsiTargetNavigator<>(() -> DartResolveUtil.getComponentNames(superComponents))
-                    .tabTitle(DaemonBundle.message("navigation.findUsages.title.super.method", name))
-                    .navigate(e, DaemonBundle.message("navigation.title.super.method", name), componentName.getProject());
-        }, GutterIconRenderer.Alignment.LEFT, () -> accessibleName);
+            Application.get().getInstance(PsiTargetNavigationService.class).<DartComponentName>newNavigator(() -> DartResolveUtil.getComponentNames(superComponents))
+                    .findUsagesTitle(LocalizeValue.of(DaemonBundle.message("navigation.findUsages.title.super.method", name)))
+                    .title(LocalizeValue.of(DaemonBundle.message("navigation.title.super.method", name)))
+                    .navigate(e, componentName.getProject());
+        }, GutterIconRenderer.Alignment.LEFT);
     }
 
 }

@@ -30,6 +30,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 
 @ExtensionImpl
 public final class DartInheritorsSearcher extends QueryExecutorBase<PsiElement, DefinitionsScopedSearch.SearchParameters> {
@@ -52,7 +53,7 @@ public final class DartInheritorsSearcher extends QueryExecutorBase<PsiElement, 
 
   @Override
   public void processQuery(final @NotNull DefinitionsScopedSearch.SearchParameters parameters,
-                           final @NotNull Processor<? super PsiElement> consumer) {
+                           final @NotNull Predicate<? super PsiElement> consumer) {
     final Ref<VirtualFile> fileRef = Ref.create();
     final Ref<Integer> offsetRef = Ref.create();
     final Ref<DartComponentType> componentTypeRef = Ref.create();
@@ -67,7 +68,7 @@ public final class DartInheritorsSearcher extends QueryExecutorBase<PsiElement, 
                                             ? getSubClasses(parameters.getElement().getProject(), parameters.getScope(), hierarchyItems)
                                             : getSubMembers(parameters.getElement().getProject(), parameters.getScope(), hierarchyItems);
       for (DartComponent component : components) {
-        if (!consumer.process(component)) {
+        if (!consumer.test(component)) {
           return;
         }
       }

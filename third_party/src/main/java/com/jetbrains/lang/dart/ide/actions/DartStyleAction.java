@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.actions;
 
+import consulo.dart.compat.ReadonlyStatusHandlerCompat;
 import consulo.application.CommonBundle;
 import consulo.language.codeStyle.CodeStyle;
 import consulo.application.ApplicationManager;
@@ -79,7 +80,7 @@ public class DartStyleAction extends AbstractDartFileProcessingAction {
       return inputRange;
     }
 
-    if (!ReadonlyStatusHandler.ensureDocumentWritable(project, document)) return inputRange;
+    if (!ReadonlyStatusHandlerCompat.ensureDocumentWritable(project, document)) return inputRange;
 
     final boolean wholeFile = inputRange.equalsToRange(0, psiFile.getTextLength());
     final int caretOffset = editor != null ? editor.getCaretModel().getOffset() : 0;

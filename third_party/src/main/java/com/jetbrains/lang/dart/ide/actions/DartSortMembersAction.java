@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.actions;
 
+import consulo.dart.compat.ReadonlyStatusHandlerCompat;
 import consulo.application.CommonBundle;
 import consulo.application.ApplicationManager;
 
@@ -46,7 +47,7 @@ public class DartSortMembersAction extends AbstractDartFileProcessingAction {
   @Override
   protected void runOverEditor(final @NotNull Project project, final @NotNull Editor editor, final @NotNull PsiFile psiFile) {
     final Document document = editor.getDocument();
-    if (!ReadonlyStatusHandler.ensureDocumentWritable(project, document)) return;
+    if (!ReadonlyStatusHandlerCompat.ensureDocumentWritable(project, document)) return;
 
     final String path = psiFile.getVirtualFile().getPath();
 
