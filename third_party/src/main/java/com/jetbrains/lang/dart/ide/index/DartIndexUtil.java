@@ -1,11 +1,11 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.index;
 
-import com.intellij.openapi.util.Key;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.indexing.FileContent;
+import consulo.util.dataholder.Key;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.language.psi.stub.FileContent;
 import com.jetbrains.lang.dart.DartComponentType;
 import com.jetbrains.lang.dart.psi.*;
 import com.jetbrains.lang.dart.util.DartControlFlowUtil;

@@ -1,19 +1,19 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.resolve;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
-import com.intellij.psi.PsiNameIdentifierOwner;
-import com.intellij.psi.impl.source.resolve.ResolveCache;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.ObjectUtils;
-import com.intellij.util.Processor;
-import com.intellij.util.SmartList;
+import consulo.language.ast.ASTNode;
+import consulo.project.Project;
+import consulo.document.util.TextRange;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiManager;
+import consulo.language.psi.PsiNameIdentifierOwner;
+import consulo.language.psi.resolve.ResolveCache;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.util.lang.ObjectUtil;
+import consulo.application.util.function.Processor;
+import consulo.util.collection.SmartList;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.analyzer.DartServerData;
 import com.jetbrains.lang.dart.analyzer.DartServerData.DartNavigationRegion;

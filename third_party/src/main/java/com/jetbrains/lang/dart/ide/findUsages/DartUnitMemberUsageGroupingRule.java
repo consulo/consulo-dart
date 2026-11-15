@@ -1,15 +1,15 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.findUsages;
 
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.usages.Usage;
-import com.intellij.usages.UsageGroup;
-import com.intellij.usages.UsageInfo2UsageAdapter;
-import com.intellij.usages.UsageTarget;
-import com.intellij.usages.rules.PsiElementUsage;
-import com.intellij.usages.rules.SingleParentUsageGroupingRule;
+import consulo.application.dumb.DumbAware;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.usage.Usage;
+import consulo.usage.UsageGroup;
+import consulo.usage.UsageInfo2UsageAdapter;
+import consulo.usage.UsageTarget;
+import consulo.usage.rule.PsiElementUsage;
+import consulo.usage.rule.SingleParentUsageGroupingRule;
 import com.jetbrains.lang.dart.DartLanguage;
 import com.jetbrains.lang.dart.psi.DartComponent;
 import com.jetbrains.lang.dart.psi.DartFile;

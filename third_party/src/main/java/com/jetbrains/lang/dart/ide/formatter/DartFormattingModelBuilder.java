@@ -1,13 +1,13 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.formatter;
 
-import com.intellij.formatting.FormattingContext;
-import com.intellij.formatting.FormattingModel;
-import com.intellij.formatting.FormattingModelBuilder;
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.codeStyle.CodeStyleSettings;
-import com.intellij.psi.formatter.DocumentBasedFormattingModel;
+import consulo.language.codeStyle.FormattingContext;
+import consulo.language.codeStyle.FormattingModel;
+import consulo.language.codeStyle.FormattingModelBuilder;
+import consulo.language.ast.ASTNode;
+import consulo.language.psi.PsiFile;
+import consulo.language.codeStyle.CodeStyleSettings;
+import consulo.language.codeStyle.DocumentBasedFormattingModel;
 import com.jetbrains.lang.dart.psi.DartFile;
 import org.jetbrains.annotations.NotNull;
 

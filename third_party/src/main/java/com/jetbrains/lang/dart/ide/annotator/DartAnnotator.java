@@ -1,19 +1,23 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.annotator;
 
-import com.intellij.codeInspection.ProblemHighlightType;
-import com.intellij.lang.annotation.*;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.editor.colors.TextAttributesKey;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Key;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiElement;
+import consulo.language.editor.inspection.ProblemHighlightType;
+import consulo.language.editor.annotation.AnnotationBuilder;
+import consulo.language.editor.annotation.AnnotationHolder;
+import consulo.language.editor.annotation.AnnotationSession;
+import consulo.language.editor.annotation.Annotator;
+import consulo.language.editor.annotation.HighlightSeverity;
+import consulo.application.ApplicationManager;
+import consulo.colorScheme.TextAttributesKey;
+import consulo.project.Project;
+import consulo.util.dataholder.Key;
+import consulo.util.lang.Pair;
+import consulo.document.util.TextRange;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiElement;
 import com.intellij.util.Consumer;
-import com.intellij.util.ObjectUtils;
+import consulo.util.lang.ObjectUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartTokenTypes;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;

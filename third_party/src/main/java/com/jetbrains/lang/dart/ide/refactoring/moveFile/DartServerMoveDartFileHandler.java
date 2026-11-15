@@ -1,18 +1,18 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.refactoring.moveFile;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.NlsContexts;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiDirectory;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.refactoring.move.moveFilesOrDirectories.MoveFileHandler;
-import com.intellij.usageView.UsageInfo;
-import com.intellij.util.IncorrectOperationException;
+import consulo.application.ApplicationManager;
+import consulo.project.Project;
+import consulo.ui.ex.awt.Messages;
+
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiDirectory;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.editor.refactoring.move.MoveFileHandler;
+import consulo.usage.UsageInfo;
+import consulo.language.util.IncorrectOperationException;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.assists.AssistUtils;
@@ -27,7 +27,7 @@ import org.dartlang.analysis.server.protocol.SourceChange;
 import org.eclipse.lsp4j.FileRename;
 import org.eclipse.lsp4j.RenameFilesParams;
 import org.eclipse.lsp4j.WorkspaceEdit;
-import com.intellij.openapi.diagnostic.Logger;
+import consulo.logging.Logger;
 import com.jetbrains.lang.dart.logging.PluginLogger;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -35,7 +35,7 @@ import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.List;
 import java.util.Map;
-import com.intellij.openapi.progress.ProcessCanceledException;
+import consulo.component.ProcessCanceledException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -144,7 +144,7 @@ public final class DartServerMoveDartFileHandler extends MoveFileHandler {
     // the Dart Analysis Server would now be pointing to incorrect file paths if we tried to use them at this point.
   }
 
-  private static void showMoveFileExceptionDialog(final @NotNull Project project, @NotNull @NlsContexts.DialogMessage String message) {
+  private static void showMoveFileExceptionDialog(final @NotNull Project project, @NotNull String message) {
     ApplicationManager.getApplication()
       .invokeLater(() -> Messages.showErrorDialog(project, message, DartBundle.message("dart.refactoring.move.file.dialog.title")));
   }

@@ -2,10 +2,10 @@
 package com.jetbrains.lang.dart.assists;
 
 import com.google.dart.server.utilities.general.ObjectUtilities;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.editor.Caret;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.psi.PsiFile;
+import consulo.application.ApplicationManager;
+import consulo.codeEditor.Caret;
+import consulo.codeEditor.Editor;
+import consulo.language.psi.PsiFile;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import org.dartlang.analysis.server.protocol.SourceChange;
 import org.jetbrains.annotations.NotNull;

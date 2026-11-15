@@ -1,21 +1,21 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.generation;
 
-import com.intellij.ide.util.MemberChooser;
-import com.intellij.lang.LanguageCodeInsightActionHandler;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.command.CommandProcessor;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.util.NlsContexts;
-import com.intellij.openapi.util.Pair;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.IncorrectOperationException;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.ide.impl.idea.ide.util.MemberChooser;
+import consulo.language.editor.action.LanguageCodeInsightActionHandler;
+import consulo.application.ApplicationManager;
+import consulo.undoRedo.CommandProcessor;
+import consulo.logging.Logger;
+import consulo.codeEditor.Editor;
+import consulo.project.Project;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.util.lang.function.Condition;
+
+import consulo.util.lang.Pair;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.language.util.IncorrectOperationException;
+import consulo.util.collection.ContainerUtil;
 import com.jetbrains.lang.dart.logging.PluginLogger;
 import com.jetbrains.lang.dart.DartComponentType;
 import com.jetbrains.lang.dart.ide.DartNamedElementNode;
@@ -103,7 +103,7 @@ public abstract class BaseDartGenerateHandler implements LanguageCodeInsightActi
 
   protected abstract @NotNull BaseCreateMethodsFix createFix(final @NotNull DartClass dartClass);
 
-  protected abstract @NotNull @NlsContexts.DialogTitle String getTitle();
+  protected abstract @NotNull String getTitle();
 
   protected abstract void collectCandidates(final @NotNull DartClass dartClass, final @NotNull List<DartComponent> candidates);
 
@@ -163,7 +163,7 @@ public abstract class BaseDartGenerateHandler implements LanguageCodeInsightActi
   protected MemberChooser<DartNamedElementNode> createMemberChooserDialog(final @NotNull Project project,
                                                                           final @NotNull DartClass dartClass,
                                                                           final @NotNull Collection<DartComponent> candidates,
-                                                                          @NotNull @NlsContexts.DialogTitle String title) {
+                                                                          @NotNull String title) {
     final List<DartNamedElementNode> nodes = ContainerUtil.map(candidates, DartNamedElementNode::new);
     final MemberChooser<DartNamedElementNode> chooser =
       new MemberChooser<>(nodes.toArray(new DartNamedElementNode[0]), doAllowEmptySelection(), true, project, false) {

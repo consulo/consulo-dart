@@ -1,7 +1,6 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.refactoring.status;
 
-import com.intellij.openapi.util.NlsSafe;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,7 +11,7 @@ import org.jetbrains.annotations.Nullable;
 public class RefactoringStatusEntry {
 
   private final @NotNull RefactoringStatusSeverity mySeverity;
-  private final @NotNull @NlsSafe String myMessage;
+  private final @NotNull String myMessage;
 
   /**
    * The {@link RefactoringStatusContext} which can be used to show more detailed information
@@ -45,7 +44,7 @@ public class RefactoringStatusEntry {
   /**
    * @return the message of the status entry.
    */
-  public @NotNull @NlsSafe String getMessage() {
+  public @NotNull String getMessage() {
     return myMessage;
   }
 

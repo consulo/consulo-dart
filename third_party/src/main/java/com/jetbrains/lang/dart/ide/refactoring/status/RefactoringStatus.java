@@ -1,7 +1,6 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.refactoring.status;
 
-import com.intellij.openapi.util.NlsSafe;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -86,7 +85,7 @@ public class RefactoringStatus {
    * Return the message from the {@link RefactoringStatusEntry} with the highest severity; may be
    * {@code null} if no entries are present.
    */
-  public @Nullable @NlsSafe String getMessage() {
+  public @Nullable String getMessage() {
     RefactoringStatusEntry entry = getEntryWithHighestSeverity();
     if (entry == null) {
       return null;

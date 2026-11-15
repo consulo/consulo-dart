@@ -1,12 +1,12 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.highlight;
 
-import com.intellij.ide.highlighter.EmbeddedTokenHighlighter;
-import com.intellij.lexer.Lexer;
-import com.intellij.openapi.editor.colors.TextAttributesKey;
-import com.intellij.openapi.fileTypes.SyntaxHighlighterBase;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.util.containers.MultiMap;
+import consulo.xml.editor.EmbeddedTokenHighlighter;
+import consulo.language.lexer.Lexer;
+import consulo.colorScheme.TextAttributesKey;
+import consulo.language.editor.highlight.SyntaxHighlighterBase;
+import consulo.language.ast.IElementType;
+import consulo.util.collection.MultiMap;
 import com.jetbrains.lang.dart.lexer.DartLexer;
 import org.jetbrains.annotations.NotNull;
 

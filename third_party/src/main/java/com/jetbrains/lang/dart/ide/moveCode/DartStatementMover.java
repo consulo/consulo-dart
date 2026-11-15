@@ -1,18 +1,22 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.moveCode;
 
-import com.intellij.codeInsight.editorActions.moveUpDown.LineMover;
-import com.intellij.codeInsight.editorActions.moveUpDown.LineRange;
-import com.intellij.codeInsight.editorActions.moveUpDown.StatementUpDownMover;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.LogicalPosition;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.*;
-import com.intellij.psi.impl.source.tree.LeafPsiElement;
-import com.intellij.psi.tree.TokenSet;
-import com.intellij.psi.util.PsiTreeUtil;
+import consulo.language.editor.moveUpDown.LineMover;
+import consulo.language.editor.moveUpDown.LineRange;
+import consulo.language.editor.moveUpDown.StatementUpDownMover;
+import consulo.document.Document;
+import consulo.codeEditor.Editor;
+import consulo.codeEditor.LogicalPosition;
+import consulo.util.lang.Pair;
+import consulo.document.util.TextRange;
+import consulo.language.psi.PsiComment;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.SmartPointerManager;
+import consulo.language.psi.SmartPsiElementPointer;
+import consulo.language.impl.psi.LeafPsiElement;
+import consulo.language.ast.TokenSet;
+import consulo.language.psi.util.PsiTreeUtil;
 import com.jetbrains.lang.dart.DartLanguage;
 import com.jetbrains.lang.dart.DartTokenTypes;
 import com.jetbrains.lang.dart.psi.*;

@@ -1,10 +1,10 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.refactoring;
 
-import com.intellij.lang.refactoring.RefactoringSupportProvider;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.search.LocalSearchScope;
-import com.intellij.refactoring.RefactoringActionHandler;
+import consulo.language.editor.refactoring.RefactoringSupportProvider;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.scope.LocalSearchScope;
+import consulo.language.editor.refactoring.action.RefactoringActionHandler;
 import com.jetbrains.lang.dart.ide.refactoring.extract.DartServerExtractMethodHandler;
 import com.jetbrains.lang.dart.ide.refactoring.introduce.DartServerExtractLocalVariableHandler;
 import com.jetbrains.lang.dart.psi.DartNamedElement;

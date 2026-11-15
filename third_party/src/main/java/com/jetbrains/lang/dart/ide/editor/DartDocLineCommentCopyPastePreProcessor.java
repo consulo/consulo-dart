@@ -5,16 +5,16 @@
  */
 package com.jetbrains.lang.dart.ide.editor;
 
-import com.intellij.application.options.CodeStyle;
-import com.intellij.codeInsight.editorActions.CopyPastePreProcessor;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.RawText;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.codeStyle.CodeStyleSettings;
-import com.intellij.util.DocumentUtil;
-import com.intellij.util.text.CharArrayUtil;
+import consulo.language.codeStyle.CodeStyle;
+import consulo.language.editor.action.CopyPastePreProcessor;
+import consulo.document.Document;
+import consulo.codeEditor.Editor;
+import consulo.codeEditor.RawText;
+import consulo.project.Project;
+import consulo.language.psi.PsiFile;
+import consulo.language.codeStyle.CodeStyleSettings;
+import consulo.document.util.DocumentUtil;
+import consulo.util.lang.CharArrayUtil;
 import com.jetbrains.lang.dart.DartLanguage;
 import com.jetbrains.lang.dart.ide.documentation.DartDocUtil;
 import org.jetbrains.annotations.NotNull;

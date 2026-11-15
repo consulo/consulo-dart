@@ -1,8 +1,8 @@
 package com.jetbrains.lang.dart.ide.editor;
 
-import com.intellij.codeInsight.editorActions.SimpleTokenSetQuoteHandler;
-import com.intellij.openapi.editor.highlighter.HighlighterIterator;
-import com.intellij.psi.tree.IElementType;
+import consulo.language.editor.action.SimpleTokenSetQuoteHandler;
+import consulo.codeEditor.HighlighterIterator;
+import consulo.language.ast.IElementType;
 import com.jetbrains.lang.dart.DartTokenTypes;
 import com.jetbrains.lang.dart.DartTokenTypesSets;
 

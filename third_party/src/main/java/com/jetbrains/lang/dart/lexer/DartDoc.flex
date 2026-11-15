@@ -1,7 +1,7 @@
 package com.jetbrains.lang.dart.lexer;
 
-import com.intellij.lexer.FlexLexer;
-import com.intellij.psi.tree.IElementType;
+import consulo.language.lexer.FlexLexer;
+import consulo.language.ast.IElementType;
 import static com.jetbrains.lang.dart.DartTokenTypesSets.*;
 
 %%

@@ -1,8 +1,8 @@
 package com.jetbrains.lang.dart.ide.editor;
 
-import com.intellij.openapi.editor.DefaultLineWrapPositionStrategy;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.project.Project;
+import consulo.codeEditor.DefaultLineWrapPositionStrategy;
+import consulo.document.Document;
+import consulo.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

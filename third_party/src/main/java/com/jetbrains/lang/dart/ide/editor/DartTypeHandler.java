@@ -1,21 +1,21 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.editor;
 
-import com.intellij.codeInsight.CodeInsightSettings;
-import com.intellij.codeInsight.editorActions.TypedHandler;
-import com.intellij.codeInsight.editorActions.TypedHandlerDelegate;
+import consulo.language.editor.CodeInsightSettings;
+import consulo.ide.impl.idea.codeInsight.editorActions.TypedHandler;
+import consulo.language.editor.action.TypedHandlerDelegate;
 import com.intellij.codeInsight.editorActions.TypedHandlerUtil;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.EditorModificationUtil;
-import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiWhiteSpace;
-import com.intellij.psi.codeStyle.CodeStyleManager;
-import com.intellij.psi.tree.TokenSet;
-import com.intellij.psi.util.PsiTreeUtil;
+import consulo.codeEditor.Editor;
+import consulo.codeEditor.util.EditorModificationUtil;
+import consulo.virtualFileSystem.fileType.FileType;
+import consulo.project.Project;
+import consulo.language.psi.PsiDocumentManager;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiWhiteSpace;
+import consulo.language.codeStyle.CodeStyleManager;
+import consulo.language.ast.TokenSet;
+import consulo.language.psi.util.PsiTreeUtil;
 import com.jetbrains.lang.dart.DartFileType;
 import com.jetbrains.lang.dart.DartTokenTypes;
 import com.jetbrains.lang.dart.psi.*;

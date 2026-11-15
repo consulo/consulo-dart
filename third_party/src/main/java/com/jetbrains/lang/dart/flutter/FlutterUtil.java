@@ -1,11 +1,11 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.flutter;
 
-import com.intellij.ide.plugins.PluginManagerCore;
-import com.intellij.openapi.extensions.PluginId;
-import com.intellij.openapi.module.Module;
+import consulo.ide.impl.idea.ide.plugins.PluginManagerCore;
+import consulo.container.plugin.PluginId;
+import consulo.module.Module;
 import com.intellij.openapi.module.ModuleType;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.virtualFileSystem.VirtualFile;
 import com.jetbrains.lang.dart.sdk.DartSdk;
 import com.jetbrains.lang.dart.sdk.DartSdkLibUtil;
 import org.jetbrains.annotations.NotNull;

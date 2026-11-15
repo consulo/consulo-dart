@@ -1,10 +1,10 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.editor;
 
-import com.intellij.codeInsight.editorActions.wordSelection.AbstractWordSelectioner;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
+import consulo.language.editor.action.AbstractWordSelectioner;
+import consulo.codeEditor.Editor;
+import consulo.document.util.TextRange;
+import consulo.language.psi.PsiElement;
 import com.jetbrains.lang.dart.DartLanguage;
 import org.jetbrains.annotations.NotNull;
 

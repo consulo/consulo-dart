@@ -5,17 +5,17 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.intellij.execution.ExecutionException;
-import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.process.CapturingProcessHandler;
-import com.intellij.execution.process.ProcessOutput;
-import com.intellij.openapi.diagnostic.Logger;
+import consulo.process.ExecutionException;
+import consulo.process.cmd.GeneralCommandLine;
+import consulo.process.internal.CapturingProcessHandler;
+import consulo.process.util.ProcessOutput;
+import consulo.logging.Logger;
 import com.jetbrains.lang.dart.logging.PluginLogger;
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VirtualFile;
+
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.VirtualFile;
 import com.jetbrains.lang.dart.sdk.DartSdkUtil;
-import org.jetbrains.annotations.NonNls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,15 +31,15 @@ public class DartCreate {
    * Describes a `dart create` template.
    */
   public static class DartCreateTemplate {
-    public final @NotNull @NonNls String myId;
-    public final @NotNull @NlsSafe String myLabel;
-    public final @NotNull @NlsSafe String myDescription;
-    public final @Nullable @NonNls String myEntrypoint;
+    public final @NotNull String myId;
+    public final @NotNull String myLabel;
+    public final @NotNull String myDescription;
+    public final @Nullable String myEntrypoint;
 
-    public DartCreateTemplate(@NotNull @NonNls String id,
-                              @NotNull @NlsSafe String label,
-                              @NotNull @NlsSafe String description,
-                              @Nullable @NonNls String entrypoint) {
+    public DartCreateTemplate(@NotNull String id,
+                              @NotNull String label,
+                              @NotNull String description,
+                              @Nullable String entrypoint) {
       myId = id;
       myLabel = label;
       myDescription = description;

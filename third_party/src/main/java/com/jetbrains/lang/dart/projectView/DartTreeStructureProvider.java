@@ -1,20 +1,20 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.projectView;
 
-import com.intellij.ide.projectView.PresentationData;
-import com.intellij.ide.projectView.TreeStructureProvider;
-import com.intellij.ide.projectView.ViewSettings;
-import com.intellij.ide.projectView.impl.nodes.ExternalLibrariesNode;
-import com.intellij.ide.projectView.impl.nodes.NamedLibraryElement;
-import com.intellij.ide.projectView.impl.nodes.NamedLibraryElementNode;
-import com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode;
-import com.intellij.ide.util.treeView.AbstractTreeNode;
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiDirectory;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.ui.ex.tree.PresentationData;
+import consulo.project.ui.view.tree.TreeStructureProvider;
+import consulo.project.ui.view.tree.ViewSettings;
+import consulo.ide.impl.idea.ide.projectView.impl.nodes.ExternalLibrariesNode;
+import consulo.project.ui.view.internal.node.NamedLibraryElement;
+import consulo.ide.impl.idea.ide.projectView.impl.nodes.NamedLibraryElementNode;
+import consulo.project.ui.view.tree.PsiDirectoryNode;
+import consulo.project.ui.view.tree.AbstractTreeNode;
+import consulo.application.dumb.DumbAware;
+import consulo.project.Project;
+import consulo.util.io.FileUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiDirectory;
+import consulo.util.collection.ContainerUtil;
 import com.jetbrains.lang.dart.sdk.DartConfigurable;
 import com.jetbrains.lang.dart.sdk.DartPackagesLibraryType;
 import com.jetbrains.lang.dart.sdk.DartSdk;

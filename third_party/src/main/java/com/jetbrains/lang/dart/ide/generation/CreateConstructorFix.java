@@ -1,11 +1,11 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.generation;
 
-import com.intellij.codeInsight.template.Template;
-import com.intellij.codeInsight.template.TemplateManager;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.NlsContexts;
+import consulo.language.editor.template.Template;
+import consulo.language.editor.template.TemplateManager;
+import consulo.codeEditor.Editor;
+import consulo.project.Project;
+
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.psi.DartClass;
 import com.jetbrains.lang.dart.psi.DartComponent;
@@ -28,7 +28,7 @@ public class CreateConstructorFix extends BaseCreateMethodsFix<DartComponent> {
   }
 
   @Override
-  protected @NotNull @NlsContexts.Command String getCommandName() {
+  protected @NotNull String getCommandName() {
     return DartBundle.message("dart.generate.constructor");
   }
 

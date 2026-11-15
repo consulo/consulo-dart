@@ -1,15 +1,14 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.surroundWith.statement;
 
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.psi.PsiElement;
+import consulo.language.psi.PsiElement;
 import com.jetbrains.lang.dart.psi.DartForLoopPartsInBraces;
 import org.jetbrains.annotations.Nullable;
 
 public class DartWithForSurrounder extends DartBlockAndChildStatementSurrounderBase<DartForLoopPartsInBraces> {
   @Override
   public String getTemplateDescription() {
-    @NlsSafe String description = "for";
+    String description = "for";
     return description;
   }
 

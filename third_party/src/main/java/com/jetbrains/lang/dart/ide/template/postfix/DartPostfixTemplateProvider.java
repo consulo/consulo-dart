@@ -1,11 +1,11 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.template.postfix;
 
-import com.intellij.codeInsight.template.postfix.templates.PostfixTemplate;
-import com.intellij.codeInsight.template.postfix.templates.PostfixTemplateProvider;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.psi.PsiFile;
+import consulo.language.editor.postfixTemplate.PostfixTemplate;
+import consulo.language.editor.postfixTemplate.PostfixTemplateProvider;
+import consulo.logging.Logger;
+import consulo.codeEditor.Editor;
+import consulo.language.psi.PsiFile;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.logging.PluginLogger;
 import org.dartlang.analysis.server.protocol.PostfixTemplateDescriptor;

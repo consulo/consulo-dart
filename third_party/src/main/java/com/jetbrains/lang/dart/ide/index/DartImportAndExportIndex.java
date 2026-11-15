@@ -1,14 +1,19 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.index;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.indexing.*;
-import com.intellij.util.io.DataExternalizer;
-import com.intellij.util.io.DataInputOutputUtil;
-import com.intellij.util.io.IOUtil;
+import consulo.project.Project;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.util.collection.ContainerUtil;
+import consulo.language.psi.stub.DefaultFileTypeSpecificInputFilter;
+import consulo.language.psi.stub.FileBasedIndex;
+import consulo.language.psi.stub.FileContent;
+import consulo.index.io.ID;
+import consulo.language.psi.stub.SingleEntryFileBasedIndexExtension;
+import consulo.language.psi.stub.SingleEntryIndexer;
+import consulo.index.io.data.DataExternalizer;
+import consulo.index.io.data.DataInputOutputUtil;
+import consulo.index.io.data.IOUtil;
 import com.jetbrains.lang.dart.DartFileType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

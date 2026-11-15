@@ -1,22 +1,26 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.runner.server.vmService.frame;
 
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.fileEditor.*;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.xdebugger.XSourcePosition;
-import com.intellij.xdebugger.evaluation.ExpressionInfo;
-import com.intellij.xdebugger.evaluation.XDebuggerEvaluator;
-import com.intellij.xdebugger.frame.XValue;
+import consulo.document.Document;
+import consulo.fileEditor.FileEditor;
+import consulo.fileEditor.FileEditorLocation;
+import consulo.fileEditor.FileEditorManager;
+import consulo.fileEditor.TextEditor;
+import consulo.fileEditor.TextEditorLocation;
+import consulo.project.Project;
+
+import consulo.document.util.TextRange;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiDocumentManager;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiManager;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.execution.debug.XSourcePosition;
+import consulo.execution.debug.evaluation.ExpressionInfo;
+import consulo.execution.debug.evaluation.XDebuggerEvaluator;
+import consulo.execution.debug.frame.XValue;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.DartVmServiceDebugProcess;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.VmServiceWrapper;
@@ -24,7 +28,7 @@ import com.jetbrains.lang.dart.ide.runner.server.vmService.vmServiceDrivers.serv
 import com.jetbrains.lang.dart.psi.*;
 import com.jetbrains.lang.dart.util.DartResolveUtil;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.vmServiceDrivers.service.consumer.GetObjectConsumer;
-import org.jetbrains.annotations.Nls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -127,7 +131,7 @@ public class DartVmServiceEvaluator extends XDebuggerEvaluator {
 
           @Override
           public void onError(RPCError error) {
-            @NlsSafe String message = error.getMessage();
+            String message = error.getMessage();
             wrappedCallback.errorOccurred(message);
           }
 
@@ -147,7 +151,7 @@ public class DartVmServiceEvaluator extends XDebuggerEvaluator {
 
           @Override
           public void received(Sentinel response) {
-            @NlsSafe String errorMessage = response.getValueAsString();
+            String errorMessage = response.getValueAsString();
             wrappedCallback.errorOccurred(errorMessage);
           }
         });
@@ -185,7 +189,7 @@ public class DartVmServiceEvaluator extends XDebuggerEvaluator {
     return contextElement == null ? null : getExpressionInfo(contextElement);
   }
 
-  public static @NotNull @Nls String getPresentableError(@NotNull String rawError) {
+  public static @NotNull String getPresentableError(@NotNull String rawError) {
     //Error: Unhandled exception:
     //No top-level getter 'foo' declared.
     //

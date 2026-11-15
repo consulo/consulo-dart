@@ -1,16 +1,24 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.runner.server.vmService.frame;
 
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.openapi.util.text.StringUtil;
+import consulo.application.AllIcons;
+import consulo.application.ApplicationManager;
+
+import consulo.util.lang.StringUtil;
 import com.intellij.ui.LayeredIcon;
-import com.intellij.xdebugger.XSourcePosition;
-import com.intellij.xdebugger.frame.*;
-import com.intellij.xdebugger.frame.presentation.XKeywordValuePresentation;
-import com.intellij.xdebugger.frame.presentation.XNumericValuePresentation;
-import com.intellij.xdebugger.frame.presentation.XStringValuePresentation;
+import consulo.execution.debug.XSourcePosition;
+import consulo.execution.debug.frame.ImmediateFullValueEvaluator;
+import consulo.execution.debug.frame.XCompositeNode;
+import consulo.execution.debug.frame.XFullValueEvaluator;
+import consulo.execution.debug.frame.XNamedValue;
+import consulo.execution.debug.frame.XNavigatable;
+import consulo.execution.debug.frame.XValue;
+import consulo.execution.debug.frame.XValueChildrenList;
+import consulo.execution.debug.frame.XValueNode;
+import consulo.execution.debug.frame.XValuePlace;
+import consulo.execution.debug.frame.presentation.XKeywordValuePresentation;
+import consulo.execution.debug.frame.presentation.XNumericValuePresentation;
+import consulo.execution.debug.frame.presentation.XStringValuePresentation;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.DartVmServiceDebugProcess;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.VmServiceConsumers;
@@ -227,13 +235,13 @@ public final class DartVmServiceValue extends XNamedValue {
 
           @Override
           public void received(Sentinel response) {
-            @NlsSafe String message = response.getValueAsString();
+            String message = response.getValueAsString();
             callback.errorOccurred(message);
           }
 
           @Override
           public void onError(RPCError error) {
-            @NlsSafe String message = error.getMessage();
+            String message = error.getMessage();
             callback.errorOccurred(message);
           }
         });

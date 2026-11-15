@@ -1,10 +1,10 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.server.vmService;
 
-import com.intellij.util.SmartList;
-import com.intellij.xdebugger.breakpoints.XBreakpointHandler;
-import com.intellij.xdebugger.breakpoints.XBreakpointProperties;
-import com.intellij.xdebugger.breakpoints.XLineBreakpoint;
+import consulo.util.collection.SmartList;
+import consulo.execution.debug.breakpoint.XBreakpointHandler;
+import consulo.execution.debug.breakpoint.XBreakpointProperties;
+import consulo.execution.debug.breakpoint.XLineBreakpoint;
 import com.jetbrains.lang.dart.ide.runner.DartLineBreakpointType;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.vmServiceDrivers.service.element.Breakpoint;
 import org.jetbrains.annotations.NotNull;

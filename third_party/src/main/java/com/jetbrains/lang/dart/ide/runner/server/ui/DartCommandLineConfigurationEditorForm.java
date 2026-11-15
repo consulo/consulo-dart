@@ -1,21 +1,21 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.server.ui;
 
-import com.intellij.execution.configuration.EnvironmentVariablesComponent;
-import com.intellij.ide.util.TreeFileChooser;
-import com.intellij.ide.util.TreeFileChooserFactory;
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.options.SettingsEditor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
-import com.intellij.ui.RawCommandLineEditor;
-import com.intellij.ui.components.JBCheckBox;
+import consulo.execution.ui.awt.EnvironmentVariablesComponent;
+import consulo.language.editor.ui.TreeFileChooser;
+import consulo.language.editor.ui.TreeFileChooserFactory;
+import consulo.fileChooser.FileChooserDescriptorFactory;
+import consulo.execution.configuration.ui.SettingsEditor;
+import consulo.project.Project;
+import consulo.ui.ex.awt.TextFieldWithBrowseButton;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.LocalFileSystem;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiManager;
+import consulo.execution.ui.awt.RawCommandLineEditor;
+import consulo.ui.ex.awt.JBCheckBox;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartFileType;
 import com.jetbrains.lang.dart.ide.runner.server.DartCommandLineRunConfiguration;

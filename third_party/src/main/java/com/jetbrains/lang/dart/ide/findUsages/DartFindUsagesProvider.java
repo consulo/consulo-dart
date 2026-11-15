@@ -1,10 +1,10 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.findUsages;
 
-import com.intellij.lang.findUsages.FindUsagesProvider;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiNamedElement;
+import consulo.language.findUsage.FindUsagesProvider;
+import consulo.util.lang.StringUtil;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiNamedElement;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartComponentType;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;

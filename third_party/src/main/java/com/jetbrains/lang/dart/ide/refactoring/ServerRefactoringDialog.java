@@ -1,18 +1,18 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.refactoring;
 
-import com.intellij.CommonBundle;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.application.WriteAction;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.refactoring.ui.RefactoringDialog;
+import consulo.application.CommonBundle;
+import consulo.application.ApplicationManager;
+import consulo.ui.ModalityState;
+import consulo.application.WriteAction;
+import consulo.codeEditor.Editor;
+import consulo.configurable.ConfigurationException;
+import consulo.project.Project;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.ui.ex.awt.Messages;
+import consulo.util.lang.function.Condition;
+
+import consulo.language.editor.refactoring.ui.RefactoringDialog;
 import com.jetbrains.lang.dart.assists.AssistUtils;
 import com.jetbrains.lang.dart.assists.DartSourceEditException;
 import com.jetbrains.lang.dart.ide.refactoring.status.RefactoringStatus;
@@ -111,7 +111,7 @@ public abstract class ServerRefactoringDialog<T extends ServerRefactoring> exten
       return;
     }
 
-    @NlsSafe String error = WriteAction.compute(() -> {
+    String error = WriteAction.compute(() -> {
       try {
         AssistUtils.applySourceChange(myProject, change, false, excludedIds);
       }

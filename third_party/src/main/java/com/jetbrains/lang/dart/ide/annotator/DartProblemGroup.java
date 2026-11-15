@@ -1,16 +1,16 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.annotator;
 
-import com.intellij.codeInsight.intention.IntentionAction;
-import com.intellij.codeInspection.SuppressIntentionAction;
-import com.intellij.codeInspection.SuppressableProblemGroup;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.PsiElement;
-import com.intellij.util.IncorrectOperationException;
+import consulo.language.editor.intention.IntentionAction;
+import consulo.language.editor.intention.SuppressIntentionAction;
+import consulo.language.editor.annotation.SuppressableProblemGroup;
+import consulo.document.Document;
+import consulo.codeEditor.Editor;
+import consulo.project.Project;
+
+import consulo.util.lang.StringUtil;
+import consulo.language.psi.PsiElement;
+import consulo.language.util.IncorrectOperationException;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.fixes.DartQuickFix;
 import com.jetbrains.lang.dart.psi.DartFile;
@@ -77,7 +77,7 @@ public class DartProblemGroup implements SuppressableProblemGroup {
 
     @Override
     public @NotNull String getText() {
-      @NlsSafe String message = mySourceChange.getMessage();
+      String message = mySourceChange.getMessage();
       return message;
     }
 

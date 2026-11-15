@@ -1,21 +1,21 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.refactoring;
 
-import com.intellij.CommonBundle;
-import com.intellij.lang.Language;
-import com.intellij.lang.refactoring.InlineActionHandler;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.DialogWrapper;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.refactoring.RefactoringBundle;
-import com.intellij.refactoring.inline.InlineOptionsDialog;
-import com.intellij.refactoring.util.CommonRefactoringUtil;
+import consulo.application.CommonBundle;
+import consulo.language.Language;
+import consulo.language.editor.refactoring.inline.InlineActionHandler;
+import consulo.application.ApplicationManager;
+import consulo.document.Document;
+import consulo.codeEditor.Editor;
+import consulo.project.Project;
+import consulo.ui.ex.awt.DialogWrapper;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiDocumentManager;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.editor.refactoring.RefactoringBundle;
+import consulo.language.editor.refactoring.inline.InlineOptionsDialog;
+import consulo.language.editor.refactoring.util.CommonRefactoringUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartLanguage;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;

@@ -1,11 +1,11 @@
 // Copyright 2000-2019 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide;
 
-import com.intellij.openapi.fileEditor.impl.NonProjectFileWritingAccessExtension;
-import com.intellij.openapi.fileTypes.FileTypeRegistry;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ProjectRootManager;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.fileEditor.NonProjectFileWritingAccessExtension;
+import consulo.virtualFileSystem.fileType.FileTypeRegistry;
+import consulo.project.Project;
+import consulo.module.content.ProjectRootManager;
+import consulo.virtualFileSystem.VirtualFile;
 import com.jetbrains.lang.dart.DartFileType;
 import org.jetbrains.annotations.NotNull;
 

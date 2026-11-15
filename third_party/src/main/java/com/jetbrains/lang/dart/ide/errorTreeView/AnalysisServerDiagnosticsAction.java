@@ -2,15 +2,15 @@
 package com.jetbrains.lang.dart.ide.errorTreeView;
 
 import com.google.dart.server.GetServerPortConsumer;
-import com.intellij.ide.BrowserUtil;
-import com.intellij.notification.Notification;
-import com.intellij.notification.NotificationType;
+import consulo.webBrowser.BrowserUtil;
+import consulo.project.ui.notification.Notification;
+import consulo.project.ui.notification.NotificationType;
 import com.intellij.notification.Notifications;
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.ActionUpdateThread;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.project.DumbAwareAction;
-import com.intellij.openapi.project.Project;
+import consulo.ui.ex.action.ActionManager;
+import consulo.ui.ex.action.ActionUpdateThread;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.DumbAwareAction;
+import consulo.project.Project;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.lsp.DartLspService;

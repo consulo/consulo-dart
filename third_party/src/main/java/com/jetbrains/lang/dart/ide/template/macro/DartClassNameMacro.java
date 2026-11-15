@@ -2,12 +2,12 @@
 package com.jetbrains.lang.dart.ide.template.macro;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.intellij.codeInsight.template.Expression;
-import com.intellij.codeInsight.template.ExpressionContext;
-import com.intellij.codeInsight.template.Result;
-import com.intellij.codeInsight.template.TextResult;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.util.PsiTreeUtil;
+import consulo.language.editor.template.Expression;
+import consulo.language.editor.template.ExpressionContext;
+import consulo.language.editor.template.Result;
+import consulo.language.editor.template.TextResult;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.util.PsiTreeUtil;
 import com.jetbrains.lang.dart.psi.DartClass;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

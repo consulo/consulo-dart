@@ -1,23 +1,23 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.actions;
 
-import com.intellij.ide.BrowserUtil;
+import consulo.webBrowser.BrowserUtil;
 import com.intellij.notification.NotificationGroupManager;
-import com.intellij.notification.NotificationAction;
-import com.intellij.notification.NotificationType;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.editor.colors.EditorColors;
-import com.intellij.openapi.fileEditor.FileEditor;
-import com.intellij.openapi.fileTypes.FileTypeRegistry;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleUtilCore;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.NlsContexts;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
-import com.intellij.ui.EditorNotificationPanel;
-import com.intellij.ui.EditorNotificationProvider;
+import consulo.project.ui.notification.NotificationAction;
+import consulo.project.ui.notification.NotificationType;
+import consulo.application.ApplicationManager;
+import consulo.codeEditor.EditorColors;
+import consulo.fileEditor.FileEditor;
+import consulo.virtualFileSystem.fileType.FileTypeRegistry;
+import consulo.module.Module;
+import consulo.language.util.ModuleUtilCore;
+import consulo.project.Project;
+
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiManager;
+import consulo.ide.impl.idea.ui.EditorNotificationPanel;
+import consulo.fileEditor.EditorNotificationProvider;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartFileType;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
@@ -90,7 +90,7 @@ public final class DartEditorNotificationsProvider implements EditorNotification
 
   public @NotNull EditorNotificationPanel createNoDartSdkPanel(@NotNull FileEditor fileEditor,
                                                                @NotNull Project project,
-                                                               @NlsContexts.Label String message) {
+                                                               String message) {
     final String downloadUrl = DartSdkUpdateChecker.SDK_STABLE_DOWNLOAD_URL;
 
     final EditorNotificationPanel panel =

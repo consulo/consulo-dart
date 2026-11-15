@@ -1,23 +1,23 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.runner.server.vmService.frame;
 
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.testFramework.LightVirtualFile;
-import com.intellij.ui.ColoredTextContainer;
-import com.intellij.ui.SimpleTextAttributes;
-import com.intellij.util.SmartList;
-import com.intellij.xdebugger.XSourcePosition;
-import com.intellij.xdebugger.evaluation.XDebuggerEvaluator;
-import com.intellij.xdebugger.frame.XCompositeNode;
-import com.intellij.xdebugger.frame.XStackFrame;
-import com.intellij.xdebugger.frame.XValueChildrenList;
+import consulo.application.AllIcons;
+
+import consulo.util.lang.StringUtil;
+import consulo.language.file.light.LightVirtualFile;
+import consulo.ui.ex.ColoredTextContainer;
+import consulo.ui.ex.SimpleTextAttributes;
+import consulo.util.collection.SmartList;
+import consulo.execution.debug.XSourcePosition;
+import consulo.execution.debug.evaluation.XDebuggerEvaluator;
+import consulo.execution.debug.frame.XCompositeNode;
+import consulo.execution.debug.frame.XStackFrame;
+import consulo.execution.debug.frame.XValueChildrenList;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.DartVmServiceDebugProcess;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.vmServiceDrivers.service.consumer.GetObjectConsumer;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.vmServiceDrivers.service.element.*;
-import org.jetbrains.annotations.NonNls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -82,8 +82,8 @@ public class DartVmServiceStackFrame extends XStackFrame {
     String name;
     if (code != null) {
       // trim specific prefix and setter postfix
-      @NonNls String unoptimizedPrefix = "[Unoptimized] ";
-      @NlsSafe String codeName = code.getName();
+      String unoptimizedPrefix = "[Unoptimized] ";
+      String codeName = code.getName();
       name = StringUtil.trimStart(StringUtil.trimEnd(codeName, "="), unoptimizedPrefix);
     }
     else {

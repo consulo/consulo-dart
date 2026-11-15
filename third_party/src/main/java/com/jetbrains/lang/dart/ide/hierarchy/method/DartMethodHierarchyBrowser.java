@@ -1,18 +1,18 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.hierarchy.method;
 
-import com.intellij.ide.IdeBundle;
-import com.intellij.ide.hierarchy.HierarchyNodeDescriptor;
-import com.intellij.ide.hierarchy.HierarchyTreeStructure;
+import consulo.ide.IdeBundle;
+import consulo.language.editor.hierarchy.HierarchyNodeDescriptor;
+import consulo.language.editor.hierarchy.HierarchyTreeStructure;
 import com.intellij.ide.hierarchy.MethodHierarchyBrowserBase;
-import com.intellij.ide.util.treeView.NodeDescriptor;
-import com.intellij.openapi.actionSystem.ActionPlaces;
-import com.intellij.openapi.actionSystem.IdeActions;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.ui.PopupHandler;
+import consulo.ui.ex.tree.NodeDescriptor;
+import consulo.ui.ex.action.ActionPlaces;
+import consulo.ui.ex.action.IdeActions;
+import consulo.logging.Logger;
+import consulo.project.Project;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.ui.ex.awt.PopupHandler;
 import com.jetbrains.lang.dart.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

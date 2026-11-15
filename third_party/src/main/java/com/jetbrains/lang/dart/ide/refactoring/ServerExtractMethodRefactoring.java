@@ -1,10 +1,10 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.refactoring;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.ArrayUtilRt;
+import consulo.project.Project;
+
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.util.collection.ArrayUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import org.dartlang.analysis.server.protocol.*;
@@ -56,7 +56,7 @@ public class ServerExtractMethodRefactoring extends ServerRefactoring {
     return options.getParameters();
   }
 
-  public @NotNull @NlsSafe String getSignature() {
+  public @NotNull String getSignature() {
     // TODO(scheglov) consider moving to server
     StringBuilder sb = new StringBuilder();
     sb.append(options.getReturnType());

@@ -1,14 +1,14 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.editor;
 
-import com.intellij.formatting.Indent;
-import com.intellij.lang.Language;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.impl.source.codeStyle.SemanticEditorPosition;
-import com.intellij.psi.impl.source.codeStyle.lineIndent.IndentCalculator;
-import com.intellij.psi.impl.source.codeStyle.lineIndent.JavaLikeLangLineIndentProvider;
-import com.intellij.psi.tree.IElementType;
+import consulo.language.codeStyle.Indent;
+import consulo.language.Language;
+import consulo.codeEditor.Editor;
+import consulo.project.Project;
+import consulo.language.codeStyle.lineIndent.SemanticEditorPosition;
+import consulo.language.codeStyle.lineIndent.IndentCalculator;
+import consulo.language.codeStyle.lineIndent.JavaLikeLangLineIndentProvider;
+import consulo.language.ast.IElementType;
 import com.jetbrains.lang.dart.DartLanguage;
 import com.jetbrains.lang.dart.DartTokenTypes;
 import com.jetbrains.lang.dart.DartTokenTypesSets;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.intellij.psi.impl.source.codeStyle.lineIndent.JavaLikeLangLineIndentProvider.JavaLikeElement.*;
+
 
 public final class DartLineIndentProvider extends JavaLikeLangLineIndentProvider {
 

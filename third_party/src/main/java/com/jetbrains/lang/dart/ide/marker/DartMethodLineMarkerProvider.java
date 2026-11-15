@@ -1,20 +1,20 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.marker;
 
-import com.intellij.codeInsight.daemon.DaemonCodeAnalyzerSettings;
-import com.intellij.codeInsight.daemon.LineMarkerInfo;
-import com.intellij.codeInsight.daemon.LineMarkerProvider;
-import com.intellij.openapi.editor.colors.CodeInsightColors;
-import com.intellij.openapi.editor.colors.EditorColorsManager;
-import com.intellij.openapi.editor.colors.EditorColorsScheme;
-import com.intellij.openapi.editor.markup.GutterIconRenderer;
-import com.intellij.openapi.editor.markup.SeparatorPlacement;
-import com.intellij.psi.PsiComment;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiWhiteSpace;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.FunctionUtil;
-import com.intellij.util.IconUtil;
+import consulo.language.editor.DaemonCodeAnalyzerSettings;
+import consulo.language.editor.gutter.LineMarkerInfo;
+import consulo.language.editor.gutter.LineMarkerProvider;
+import consulo.codeEditor.CodeInsightColors;
+import consulo.colorScheme.EditorColorsManager;
+import consulo.colorScheme.EditorColorsScheme;
+import consulo.codeEditor.markup.GutterIconRenderer;
+import consulo.codeEditor.markup.SeparatorPlacement;
+import consulo.language.psi.PsiComment;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiWhiteSpace;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.ide.impl.idea.util.FunctionUtil;
+import consulo.ide.impl.idea.util.IconUtil;
 import com.jetbrains.lang.dart.psi.*;
 import com.jetbrains.lang.dart.psi.impl.AbstractDartMethodDeclarationImpl;
 import org.jetbrains.annotations.NotNull;

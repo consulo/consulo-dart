@@ -2,8 +2,8 @@
 package com.jetbrains.lang.dart;
 
 import com.intellij.application.options.CodeCompletionConfigurable;
-import com.intellij.ide.ui.search.SearchableOptionContributor;
-import com.intellij.ide.ui.search.SearchableOptionProcessor;
+import consulo.configurable.search.SearchableOptionContributor;
+import consulo.configurable.search.SearchableOptionProcessor;
 import org.jetbrains.annotations.NotNull;
 
 final class DartSearchableOptionContributor extends SearchableOptionContributor {

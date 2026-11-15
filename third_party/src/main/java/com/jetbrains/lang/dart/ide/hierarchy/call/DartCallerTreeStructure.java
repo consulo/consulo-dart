@@ -1,13 +1,13 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.hierarchy.call;
 
-import com.intellij.find.findUsages.FindUsagesHandler;
-import com.intellij.find.findUsages.FindUsagesOptions;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.usageView.UsageInfo;
-import com.intellij.util.CommonProcessors;
+import consulo.find.FindUsagesHandler;
+import consulo.find.FindUsagesOptions;
+import consulo.project.Project;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.usage.UsageInfo;
+import consulo.application.util.function.CommonProcessors;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;

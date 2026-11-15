@@ -3,9 +3,9 @@ package com.jetbrains.lang.dart.projectWizard;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.ProjectBuilder;
 import com.intellij.ide.util.projectWizard.WizardContext;
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.util.Disposer;
+import consulo.disposer.Disposable;
+import consulo.configurable.ConfigurationException;
+import consulo.disposer.Disposer;
 
 import javax.swing.*;
 

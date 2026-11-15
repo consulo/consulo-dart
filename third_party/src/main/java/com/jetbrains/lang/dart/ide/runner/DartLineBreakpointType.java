@@ -1,10 +1,10 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner;
 
-import com.intellij.openapi.fileTypes.FileTypeRegistry;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.xdebugger.breakpoints.XLineBreakpointTypeBase;
+import consulo.virtualFileSystem.fileType.FileTypeRegistry;
+import consulo.project.Project;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.execution.debug.breakpoint.XLineBreakpointTypeBase;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartFileType;
 import com.jetbrains.lang.dart.ide.runner.base.DartDebuggerEditorsProvider;

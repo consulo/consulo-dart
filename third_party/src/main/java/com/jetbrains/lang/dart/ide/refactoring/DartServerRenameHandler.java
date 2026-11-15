@@ -1,19 +1,19 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.refactoring;
 
-import com.intellij.CommonBundle;
-import com.intellij.ide.TitledHandler;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.editor.Caret;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.search.LocalSearchScope;
-import com.intellij.refactoring.rename.RenameHandler;
-import com.intellij.refactoring.util.CommonRefactoringUtil;
+import consulo.application.CommonBundle;
+import consulo.language.editor.refactoring.TitledHandler;
+import consulo.language.editor.CommonDataKeys;
+import consulo.dataContext.DataContext;
+import consulo.codeEditor.Caret;
+import consulo.codeEditor.Editor;
+import consulo.project.Project;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.scope.LocalSearchScope;
+import consulo.language.editor.refactoring.rename.RenameHandler;
+import consulo.language.editor.refactoring.util.CommonRefactoringUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartLanguage;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;

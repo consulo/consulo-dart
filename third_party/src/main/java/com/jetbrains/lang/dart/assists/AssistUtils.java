@@ -1,30 +1,34 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.assists;
 
-import com.intellij.codeInsight.FileModificationService;
-import com.intellij.codeInsight.lookup.LookupElement;
-import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.codeInsight.lookup.LookupElementPresentation;
-import com.intellij.codeInsight.lookup.LookupElementRenderer;
-import com.intellij.codeInsight.template.TemplateBuilderFactory;
-import com.intellij.codeInsight.template.TemplateBuilderImpl;
-import com.intellij.codeInsight.template.impl.ConstantNode;
-import com.intellij.openapi.command.CommandProcessor;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.ScrollType;
-import com.intellij.openapi.fileEditor.*;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ProjectRootManager;
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
-import com.intellij.util.PlatformIcons;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.language.editor.FileModificationService;
+import consulo.language.editor.completion.lookup.LookupElement;
+import consulo.language.editor.completion.lookup.LookupElementBuilder;
+import consulo.language.editor.completion.lookup.LookupElementPresentation;
+import consulo.language.editor.completion.lookup.LookupElementRenderer;
+import consulo.language.editor.template.TemplateBuilderFactory;
+import consulo.language.editor.impl.internal.template.TemplateBuilderImpl;
+import consulo.language.editor.template.ConstantNode;
+import consulo.undoRedo.CommandProcessor;
+import consulo.document.Document;
+import consulo.codeEditor.Editor;
+import consulo.codeEditor.ScrollType;
+import consulo.document.FileDocumentManager;
+import consulo.fileEditor.FileEditor;
+import consulo.fileEditor.FileEditorManager;
+import consulo.navigation.OpenFileDescriptor;
+import consulo.fileEditor.TextEditor;
+import consulo.project.Project;
+import consulo.module.content.ProjectRootManager;
+
+import consulo.document.util.TextRange;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiDocumentManager;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiManager;
+import consulo.ide.impl.idea.util.PlatformIcons;
+import consulo.util.collection.ContainerUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.analyzer.DartFileInfo;
@@ -72,7 +76,7 @@ public final class AssistUtils {
     }
 
     // do apply the change
-    @NlsSafe String message = sourceChange.getMessage();
+    String message = sourceChange.getMessage();
     CommandProcessor.getInstance().executeCommand(project, () -> {
       final ChangeTarget linkedEditTarget = withLinkedEdits ? findChangeTarget(project, sourceChange) : null;
       List<SourceEditInfo> sourceEditInfos = null;

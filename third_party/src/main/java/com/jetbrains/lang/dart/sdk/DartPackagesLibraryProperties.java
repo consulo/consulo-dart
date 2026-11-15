@@ -1,9 +1,9 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.sdk;
 
-import com.intellij.openapi.roots.libraries.LibraryProperties;
-import com.intellij.util.xmlb.XmlSerializerUtil;
-import com.intellij.util.xmlb.annotations.MapAnnotation;
+import consulo.content.library.LibraryProperties;
+import consulo.util.xml.serializer.XmlSerializerUtil;
+import consulo.util.xml.serializer.annotation.MapAnnotation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

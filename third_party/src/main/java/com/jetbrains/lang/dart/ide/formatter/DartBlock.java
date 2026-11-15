@@ -1,15 +1,21 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.formatter;
 
-import com.intellij.formatting.*;
-import com.intellij.formatting.templateLanguages.BlockWithParent;
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.TokenType;
-import com.intellij.psi.codeStyle.CodeStyleSettings;
-import com.intellij.psi.formatter.FormatterUtil;
-import com.intellij.psi.formatter.common.AbstractBlock;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.TokenSet;
+import consulo.language.codeStyle.Alignment;
+import consulo.language.codeStyle.Block;
+import consulo.language.codeStyle.ChildAttributes;
+import consulo.language.codeStyle.Indent;
+import consulo.language.codeStyle.Spacing;
+import consulo.language.codeStyle.Wrap;
+import consulo.language.codeStyle.WrapType;
+import consulo.language.codeStyle.template.BlockWithParent;
+import consulo.language.ast.ASTNode;
+import consulo.language.ast.TokenType;
+import consulo.language.codeStyle.CodeStyleSettings;
+import consulo.language.codeStyle.FormatterUtil;
+import consulo.language.codeStyle.AbstractBlock;
+import consulo.language.ast.IElementType;
+import consulo.language.ast.TokenSet;
 import com.jetbrains.lang.dart.DartFileType;
 import org.jetbrains.annotations.NotNull;
 

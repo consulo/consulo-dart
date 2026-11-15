@@ -2,9 +2,15 @@
 package com.jetbrains.lang.dart.ide.runner.server.vmService.frame;
 
 import com.google.gson.JsonElement;
-import com.intellij.icons.AllIcons;
-import com.intellij.util.SmartList;
-import com.intellij.xdebugger.frame.*;
+import consulo.application.AllIcons;
+import consulo.util.collection.SmartList;
+import consulo.execution.debug.frame.XCompositeNode;
+import consulo.execution.debug.frame.XNamedValue;
+import consulo.execution.debug.frame.XNavigatable;
+import consulo.execution.debug.frame.XValueChildrenList;
+import consulo.execution.debug.frame.XValueGroup;
+import consulo.execution.debug.frame.XValueNode;
+import consulo.execution.debug.frame.XValuePlace;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.DartVmServiceDebugProcess;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.vmServiceDrivers.service.consumer.GetObjectConsumer;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.vmServiceDrivers.service.element.*;

@@ -1,13 +1,13 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.formatter;
 
-import com.intellij.formatting.Indent;
-import com.intellij.lang.ASTNode;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.formatter.FormatterUtil;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.TokenSet;
+import consulo.language.codeStyle.Indent;
+import consulo.language.ast.ASTNode;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.codeStyle.FormatterUtil;
+import consulo.language.ast.IElementType;
+import consulo.language.ast.TokenSet;
 import com.jetbrains.lang.dart.util.UsefulPsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 

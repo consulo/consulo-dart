@@ -3,20 +3,20 @@ package com.jetbrains.lang.dart.ide.refactoring;
 
 import com.google.common.util.concurrent.Uninterruptibles;
 import com.google.dart.server.GetRefactoringConsumer;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.progress.util.ProgressIndicatorUtils;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.NlsContexts;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.application.progress.Task;
+import consulo.application.internal.ProgressIndicatorUtils;
+import consulo.project.Project;
+
+import consulo.virtualFileSystem.VirtualFile;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.ide.refactoring.status.RefactoringStatus;
 import com.jetbrains.lang.dart.ide.refactoring.status.RefactoringStatusEntry;
 import com.jetbrains.lang.dart.ide.refactoring.status.RefactoringStatusSeverity;
 import org.dartlang.analysis.server.protocol.*;
-import org.jetbrains.annotations.NonNls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,8 +31,8 @@ import java.util.concurrent.TimeUnit;
  */
 public abstract class ServerRefactoring {
   private final @NotNull Project myProject;
-  private final @NotNull @NlsContexts.DialogTitle String myRefactoringProgressTitle;
-  private final @NotNull @NonNls String kind;
+  private final @NotNull String myRefactoringProgressTitle;
+  private final @NotNull String kind;
 
   private final @NotNull VirtualFile file;
   private final int offset;
@@ -50,8 +50,8 @@ public abstract class ServerRefactoring {
   private @Nullable ServerRefactoringListener listener;
 
   public ServerRefactoring(@NotNull Project project,
-                           @NotNull @NlsContexts.DialogTitle String refactoringProgressTitle,
-                           @NotNull @NonNls String kind,
+                           @NotNull String refactoringProgressTitle,
+                           @NotNull String kind,
                            @NotNull VirtualFile file,
                            int offset,
                            int length) {

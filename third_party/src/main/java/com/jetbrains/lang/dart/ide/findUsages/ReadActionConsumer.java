@@ -16,7 +16,7 @@
 
 package com.jetbrains.lang.dart.ide.findUsages;
 
-import com.intellij.openapi.application.ApplicationManager;
+import consulo.application.ApplicationManager;
 import com.intellij.util.Consumer;
 
 public abstract class ReadActionConsumer<T> implements Consumer<T> {

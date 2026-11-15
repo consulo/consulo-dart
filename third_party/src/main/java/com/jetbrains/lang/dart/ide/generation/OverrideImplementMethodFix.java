@@ -1,10 +1,10 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.generation;
 
-import com.intellij.codeInsight.template.Template;
-import com.intellij.codeInsight.template.TemplateManager;
-import com.intellij.openapi.util.NlsContexts;
-import com.intellij.psi.util.PsiTreeUtil;
+import consulo.language.editor.template.Template;
+import consulo.language.editor.template.TemplateManager;
+
+import consulo.language.psi.util.PsiTreeUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.psi.*;
 import com.jetbrains.lang.dart.util.DartPresentableUtil;
@@ -19,7 +19,7 @@ public class OverrideImplementMethodFix extends BaseCreateMethodsFix<DartCompone
   }
 
   @Override
-  protected @NotNull @NlsContexts.Command String getCommandName() {
+  protected @NotNull String getCommandName() {
     return myImplementNotOverride ? DartBundle.message("command.implement.methods")
                                   : DartBundle.message("command.override.methods");
   }

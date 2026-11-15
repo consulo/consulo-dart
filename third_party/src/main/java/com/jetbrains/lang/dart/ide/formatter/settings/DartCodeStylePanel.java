@@ -1,14 +1,14 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.formatter.settings;
 
-import com.intellij.application.options.CodeStyleAbstractPanel;
-import com.intellij.openapi.editor.colors.EditorColorsScheme;
-import com.intellij.openapi.editor.highlighter.EditorHighlighter;
-import com.intellij.openapi.fileTypes.FileType;
-import com.intellij.psi.codeStyle.CodeStyleSettings;
-import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
-import com.intellij.ui.components.JBLabel;
-import com.intellij.ui.components.JBTextField;
+import consulo.language.codeStyle.ui.setting.CodeStyleAbstractPanel;
+import consulo.colorScheme.EditorColorsScheme;
+import consulo.codeEditor.EditorHighlighter;
+import consulo.virtualFileSystem.fileType.FileType;
+import consulo.language.codeStyle.CodeStyleSettings;
+import consulo.language.codeStyle.CommonCodeStyleSettings;
+import consulo.ui.ex.awt.JBLabel;
+import consulo.ui.ex.awt.JBTextField;
 import com.jetbrains.lang.dart.DartFileType;
 import com.jetbrains.lang.dart.DartLanguage;
 import org.jetbrains.annotations.NotNull;

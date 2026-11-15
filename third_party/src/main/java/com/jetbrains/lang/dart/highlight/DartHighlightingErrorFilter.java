@@ -1,10 +1,10 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.highlight;
 
-import com.intellij.codeInsight.highlighting.HighlightErrorFilter;
-import com.intellij.openapi.roots.ProjectFileIndex;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiErrorElement;
+import consulo.language.editor.HighlightErrorFilter;
+import consulo.module.content.ProjectFileIndex;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiErrorElement;
 import com.jetbrains.lang.dart.DartLanguage;
 import com.jetbrains.lang.dart.util.DartResolveUtil;
 import org.jetbrains.annotations.NotNull;

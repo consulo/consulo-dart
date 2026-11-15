@@ -1,20 +1,20 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.server.vmService;
 
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.concurrency.Semaphore;
-import com.intellij.xdebugger.XExpression;
-import com.intellij.xdebugger.XSourcePosition;
-import com.intellij.xdebugger.breakpoints.XBreakpoint;
-import com.intellij.xdebugger.breakpoints.XBreakpointProperties;
-import com.intellij.xdebugger.breakpoints.XLineBreakpoint;
-import com.intellij.xdebugger.evaluation.XDebuggerEvaluator;
-import com.intellij.xdebugger.frame.XStackFrame;
-import com.intellij.xdebugger.frame.XSuspendContext;
-import com.intellij.xdebugger.frame.XValue;
+import consulo.application.ApplicationManager;
+import consulo.logging.Logger;
+import consulo.util.lang.ref.Ref;
+import consulo.util.lang.StringUtil;
+import consulo.application.util.Semaphore;
+import consulo.execution.debug.breakpoint.XExpression;
+import consulo.execution.debug.XSourcePosition;
+import consulo.execution.debug.breakpoint.XBreakpoint;
+import consulo.execution.debug.breakpoint.XBreakpointProperties;
+import consulo.execution.debug.breakpoint.XLineBreakpoint;
+import consulo.execution.debug.evaluation.XDebuggerEvaluator;
+import consulo.execution.debug.frame.XStackFrame;
+import consulo.execution.debug.frame.XSuspendContext;
+import consulo.execution.debug.frame.XValue;
 import com.jetbrains.lang.dart.ide.runner.DartExceptionBreakpointProperties;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.frame.DartVmServiceSuspendContext;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.frame.DartVmServiceValue;

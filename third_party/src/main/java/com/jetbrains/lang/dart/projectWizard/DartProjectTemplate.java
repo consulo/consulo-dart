@@ -1,14 +1,14 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.projectWizard;
 
-import com.intellij.execution.RunManager;
-import com.intellij.execution.RunnerAndConfigurationSettings;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.diagnostic.Logger;
+import consulo.execution.RunManager;
+import consulo.execution.RunnerAndConfigurationSettings;
+import consulo.application.ApplicationManager;
+import consulo.ui.ModalityState;
+import consulo.logging.Logger;
 import com.jetbrains.lang.dart.logging.PluginLogger;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.module.Module;
+import consulo.virtualFileSystem.VirtualFile;
 import com.intellij.util.Consumer;
 import com.jetbrains.lang.dart.ide.runner.server.DartCommandLineRunConfiguration;
 import com.jetbrains.lang.dart.ide.runner.server.DartCommandLineRunConfigurationType;
@@ -19,8 +19,7 @@ import com.jetbrains.lang.dart.ide.runner.test.DartTestRunConfiguration;
 import com.jetbrains.lang.dart.ide.runner.test.DartTestRunConfigurationType;
 import com.jetbrains.lang.dart.ide.runner.test.DartTestRunnerParameters;
 import com.jetbrains.lang.dart.projectWizard.DartCreate.DartCreateTemplate;
-import org.jetbrains.annotations.Nls;
-import org.jetbrains.annotations.NonNls;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -36,19 +35,19 @@ public abstract class DartProjectTemplate {
 
   private static final Logger LOG = PluginLogger.INSTANCE.createLogger(DartProjectTemplate.class);
 
-  private final @NotNull @Nls String myName;
-  private final @NotNull @Nls String myDescription;
+  private final @NotNull String myName;
+  private final @NotNull String myDescription;
 
-  public DartProjectTemplate(@NotNull @Nls String name, @NotNull @Nls String description) {
+  public DartProjectTemplate(@NotNull String name, @NotNull String description) {
     myName = name;
     myDescription = description;
   }
 
-  public @NotNull @Nls String getName() {
+  public @NotNull String getName() {
     return myName;
   }
 
-  public @NotNull @Nls String getDescription() {
+  public @NotNull String getDescription() {
     return myDescription;
   }
 
@@ -125,7 +124,7 @@ public abstract class DartProjectTemplate {
     }, module);
   }
 
-  static void createTestRunConfiguration(@NotNull Module module, @NotNull @NonNls String baseDirPath) {
+  static void createTestRunConfiguration(@NotNull Module module, @NotNull String baseDirPath) {
     DartModuleBuilder.runWhenNonModalIfModuleNotDisposed(() -> {
       final RunManager runManager = RunManager.getInstance(module.getProject());
       final RunnerAndConfigurationSettings settings = runManager.createConfiguration("", DartTestRunConfigurationType.class);

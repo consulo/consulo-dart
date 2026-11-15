@@ -2,7 +2,7 @@
 package com.jetbrains.lang.dart.folding;
 
 import com.intellij.application.options.editor.CodeFoldingOptionsProvider;
-import com.intellij.openapi.options.BeanConfigurable;
+import consulo.configurable.BeanConfigurable;
 import com.jetbrains.lang.dart.DartBundle;
 
 public final class DartCodeFoldingOptionsProvider extends BeanConfigurable<DartCodeFoldingSettings> implements CodeFoldingOptionsProvider {

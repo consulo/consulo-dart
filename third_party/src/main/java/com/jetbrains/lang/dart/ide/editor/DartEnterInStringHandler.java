@@ -1,17 +1,17 @@
 // Copyright 2000-2025 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.editor;
 
-import com.intellij.codeInsight.editorActions.enter.EnterHandlerDelegate;
-import com.intellij.lang.ASTNode;
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.actionSystem.EditorActionHandler;
-import com.intellij.openapi.util.Ref;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.tree.IElementType;
+import consulo.language.editor.action.EnterHandlerDelegate;
+import consulo.language.ast.ASTNode;
+import consulo.dataContext.DataContext;
+import consulo.document.Document;
+import consulo.codeEditor.Editor;
+import consulo.codeEditor.action.EditorActionHandler;
+import consulo.util.lang.ref.Ref;
+import consulo.language.psi.PsiDocumentManager;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.ast.IElementType;
 import com.intellij.xml.util.HtmlUtil;
 import com.jetbrains.lang.dart.DartLanguage;
 import org.jetbrains.annotations.NotNull;

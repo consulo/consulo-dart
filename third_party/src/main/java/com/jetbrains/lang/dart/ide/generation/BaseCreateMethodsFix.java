@@ -1,20 +1,20 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.generation;
 
-import com.intellij.codeInsight.FileModificationService;
-import com.intellij.codeInsight.hint.HintManager;
-import com.intellij.codeInsight.template.Template;
-import com.intellij.codeInsight.template.TemplateManager;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.NlsContexts;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiWhiteSpace;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.IncorrectOperationException;
+import consulo.language.editor.FileModificationService;
+import consulo.language.editor.hint.HintManager;
+import consulo.language.editor.template.Template;
+import consulo.language.editor.template.TemplateManager;
+import consulo.application.ApplicationManager;
+import consulo.codeEditor.Editor;
+import consulo.project.Project;
+
+import consulo.document.util.TextRange;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiWhiteSpace;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.language.util.IncorrectOperationException;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ide.DartNamedElementNode;
 import com.jetbrains.lang.dart.psi.DartClass;
@@ -97,11 +97,11 @@ public abstract class BaseCreateMethodsFix<T extends DartComponent> {
   /**
    * Implementations should override this method; it's not abstract ony for compatibility reasons.
    */
-  protected @NotNull @NlsContexts.Command String getCommandName() {
+  protected @NotNull String getCommandName() {
     return DartBundle.message("dart.generate.code");
   }
 
-  protected abstract @NotNull @NlsContexts.HintText String getNothingFoundMessage();
+  protected abstract @NotNull String getNothingFoundMessage();
 
   protected abstract @Nullable Template buildFunctionsText(TemplateManager templateManager, T e);
 

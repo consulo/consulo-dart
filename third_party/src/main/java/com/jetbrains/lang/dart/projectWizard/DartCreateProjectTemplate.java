@@ -1,17 +1,17 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.projectWizard;
 
-import com.intellij.execution.ExecutionException;
-import com.intellij.ide.highlighter.HtmlFileType;
-import com.intellij.openapi.fileTypes.FileTypeRegistry;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.process.ExecutionException;
+import consulo.html.language.HtmlFileType;
+import consulo.virtualFileSystem.fileType.FileTypeRegistry;
+import consulo.module.Module;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.LocalFileSystem;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.util.collection.ContainerUtil;
 import com.jetbrains.lang.dart.DartFileType;
 import com.jetbrains.lang.dart.util.PubspecYamlUtil;
-import org.jetbrains.annotations.NonNls;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
@@ -54,7 +54,7 @@ class DartCreateProjectTemplate extends DartProjectTemplate {
     if (pubspec != null && entrypoint != null) {
       String projectName = PubspecYamlUtil.getDartProjectName(pubspec);
       if (projectName != null) {
-        @NonNls String projectNamePlaceholder = "__projectName__";
+        String projectNamePlaceholder = "__projectName__";
         entrypoint = StringUtil.replace(entrypoint, projectNamePlaceholder, projectName);
       }
     }

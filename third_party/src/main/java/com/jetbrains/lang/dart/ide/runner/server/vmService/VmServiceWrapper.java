@@ -4,25 +4,25 @@ package com.jetbrains.lang.dart.ide.runner.server.vmService;
 import com.google.common.collect.Lists;
 import com.google.common.net.PercentEscaper;
 import com.google.gson.JsonObject;
-import com.intellij.execution.ui.ConsoleViewContentType;
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.fileTypes.FileTypeRegistry;
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.Alarm;
-import com.intellij.util.concurrency.Semaphore;
+import consulo.execution.ui.console.ConsoleViewContentType;
+import consulo.disposer.Disposable;
+import consulo.application.ApplicationManager;
+import consulo.logging.Logger;
+import consulo.virtualFileSystem.fileType.FileTypeRegistry;
+
+import consulo.util.lang.ref.Ref;
+import consulo.application.util.SystemInfo;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.ui.ex.awt.util.Alarm;
+import consulo.application.util.Semaphore;
 import com.intellij.util.concurrency.ThreadingAssertions;
-import com.intellij.xdebugger.XDebugSession;
-import com.intellij.xdebugger.XSourcePosition;
-import com.intellij.xdebugger.breakpoints.XBreakpointProperties;
-import com.intellij.xdebugger.breakpoints.XLineBreakpoint;
-import com.intellij.xdebugger.evaluation.XDebuggerEvaluator;
-import com.intellij.xdebugger.frame.XExecutionStack;
-import com.intellij.xdebugger.frame.XStackFrame;
+import consulo.execution.debug.XDebugSession;
+import consulo.execution.debug.XSourcePosition;
+import consulo.execution.debug.breakpoint.XBreakpointProperties;
+import consulo.execution.debug.breakpoint.XLineBreakpoint;
+import consulo.execution.debug.evaluation.XDebuggerEvaluator;
+import consulo.execution.debug.frame.XExecutionStack;
+import consulo.execution.debug.frame.XStackFrame;
 import com.jetbrains.lang.dart.DartFileType;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.frame.DartAsyncMarkerFrame;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.frame.DartVmServiceEvaluator;
@@ -646,13 +646,13 @@ public final class VmServiceWrapper implements Disposable {
 
       @Override
       public void onError(final RPCError error) {
-        @NlsSafe String message = error.getMessage();
+        String message = error.getMessage();
         container.errorOccurred(message);
       }
 
       @Override
       public void received(Sentinel response) {
-        @NlsSafe String message = response.getValueAsString();
+        String message = response.getValueAsString();
         container.errorOccurred(message);
       }
     }));
@@ -712,7 +712,7 @@ public final class VmServiceWrapper implements Disposable {
 
       @Override
       public void received(Sentinel sentinel) {
-        @NlsSafe String message = sentinel.getValueAsString();
+        String message = sentinel.getValueAsString();
         callback.errorOccurred(message);
       }
 
@@ -723,7 +723,7 @@ public final class VmServiceWrapper implements Disposable {
 
       @Override
       public void onError(RPCError error) {
-        @NlsSafe String message = error.getMessage();
+        String message = error.getMessage();
         callback.errorOccurred(message);
       }
     }));
@@ -749,7 +749,7 @@ public final class VmServiceWrapper implements Disposable {
 
       @Override
       public void received(Sentinel sentinel) {
-        @NlsSafe String message = sentinel.getValueAsString();
+        String message = sentinel.getValueAsString();
         callback.errorOccurred(message);
       }
 
@@ -760,7 +760,7 @@ public final class VmServiceWrapper implements Disposable {
 
       @Override
       public void onError(RPCError error) {
-        @NlsSafe String message = error.getMessage();
+        String message = error.getMessage();
         callback.errorOccurred(message);
       }
     });

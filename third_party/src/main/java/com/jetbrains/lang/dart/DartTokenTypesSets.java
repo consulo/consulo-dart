@@ -1,12 +1,17 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart;
 
-import com.intellij.lang.*;
-import com.intellij.openapi.util.Pair;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.TokenType;
-import com.intellij.psi.text.BlockSupport;
-import com.intellij.psi.tree.*;
+import consulo.language.ast.ASTNode;
+import consulo.language.parser.PsiBuilder;
+import consulo.language.parser.PsiBuilderFactory;
+import consulo.util.lang.Pair;
+import consulo.language.psi.PsiElement;
+import consulo.language.ast.TokenType;
+import consulo.language.impl.internal.psi.diff.BlockSupport;
+import consulo.language.ast.IElementType;
+import consulo.language.ast.ILazyParseableElementType;
+import consulo.language.ast.IReparseableElementType;
+import consulo.language.ast.TokenSet;
 import com.jetbrains.lang.dart.lexer.DartDocLexer;
 import com.jetbrains.lang.dart.psi.impl.DartLazyParseableBlockImpl;
 import org.jetbrains.annotations.NotNull;

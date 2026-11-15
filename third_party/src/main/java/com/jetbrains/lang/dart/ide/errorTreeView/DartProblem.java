@@ -1,19 +1,18 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.errorTreeView;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ProjectRootManager;
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.openapi.util.registry.Registry;
-import com.intellij.openapi.util.text.HtmlBuilder;
-import com.intellij.openapi.util.text.HtmlChunk;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VfsUtilCore;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.PathUtil;
-import com.intellij.util.concurrency.annotations.RequiresBackgroundThread;
-import com.intellij.util.concurrency.annotations.RequiresReadLock;
+import consulo.project.Project;
+import consulo.module.content.ProjectRootManager;
+
+import consulo.application.util.registry.Registry;
+import consulo.application.util.HtmlBuilder;
+import consulo.application.util.HtmlChunk;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.LocalFileSystem;
+import consulo.virtualFileSystem.util.VirtualFileUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.util.io.PathUtil;
+
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.analyzer.*;
 import com.jetbrains.lang.dart.util.DartBuildFileUtil;
@@ -21,8 +20,7 @@ import com.jetbrains.lang.dart.util.PubspecYamlUtil;
 import org.dartlang.analysis.server.protocol.AnalysisError;
 import org.dartlang.analysis.server.protocol.DiagnosticMessage;
 import org.dartlang.analysis.server.protocol.Location;
-import org.jetbrains.annotations.Nls;
-import org.jetbrains.annotations.NonNls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -41,23 +39,21 @@ public class DartProblem {
   private @Nullable VirtualFile myContentRoot;
   private String myPresentableLocationWithoutLineNumber;
 
-  @RequiresBackgroundThread
-  @RequiresReadLock
   public DartProblem(@NotNull Project project, @NotNull AnalysisError error) {
     myProject = project;
     myAnalysisError = error;
     initialize();
   }
 
-  public @NotNull @NlsSafe String getErrorMessage() {
+  public @NotNull String getErrorMessage() {
     return myAnalysisError.getMessage();
   }
 
-  public @Nullable @NlsSafe String getCorrectionMessage() {
+  public @Nullable String getCorrectionMessage() {
     return StringUtil.notNullize(myAnalysisError.getCorrection());
   }
 
-  public @Nullable @NonNls String getUrl() {
+  public @Nullable String getUrl() {
     return myAnalysisError.getUrl();
   }
 
@@ -65,11 +61,11 @@ public class DartProblem {
     return myAnalysisError.getContextMessages();
   }
 
-  public @NotNull @NonNls String getCode() {
+  public @NotNull String getCode() {
     return StringUtil.notNullize(myAnalysisError.getCode());
   }
 
-  public @NotNull @NonNls String getSeverity() {
+  public @NotNull String getSeverity() {
     return myAnalysisError.getSeverity();
   }
 
@@ -92,8 +88,6 @@ public class DartProblem {
     return mySystemIndependentPath;
   }
 
-  @RequiresBackgroundThread
-  @RequiresReadLock
   private void initialize() {
     if (myPresentableLocationWithoutLineNumber != null) return;
 
@@ -176,10 +170,10 @@ public class DartProblem {
     return myContentRoot;
   }
 
-  public static @NotNull @Nls String generateTooltipText(@NotNull @Nls String message,
+  public static @NotNull String generateTooltipText(@NotNull String message,
                                                          @Nullable List<DiagnosticMessage> contextMessages,
-                                                         @Nullable @Nls String correction,
-                                                         @Nullable @NonNls String url) {
+                                                         @Nullable String correction,
+                                                         @Nullable String url) {
     // First include the error message.
     HtmlBuilder htmlBuilder = new HtmlBuilder().append(message);
 
@@ -195,7 +189,7 @@ public class DartProblem {
       HtmlBuilder listBuilder = new HtmlBuilder();
       for (DiagnosticMessage contextMessage : contextMessages) {
         Location location = contextMessage.getLocation();
-        @NlsSafe String msg = StringUtil.trimEnd(contextMessage.getMessage(), '.');
+        String msg = StringUtil.trimEnd(contextMessage.getMessage(), '.');
         String filePathOrUri = location.getFile();
         String locationText = PathUtil.getFileName(filePathOrUri) + ":" + location.getStartLine();
         listBuilder.append(HtmlChunk.li().addText(msg + " (" + locationText + ")."));

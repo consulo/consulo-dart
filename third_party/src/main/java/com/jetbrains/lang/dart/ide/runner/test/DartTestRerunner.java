@@ -1,16 +1,16 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.test;
 
-import com.intellij.execution.ExecutionException;
-import com.intellij.execution.ExecutionResult;
-import com.intellij.execution.Executor;
-import com.intellij.execution.configurations.RunProfileState;
-import com.intellij.execution.runners.ExecutionEnvironment;
-import com.intellij.execution.runners.ProgramRunner;
-import com.intellij.execution.testframework.AbstractTestProxy;
-import com.intellij.execution.testframework.sm.runner.SMTestProxy;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.util.text.StringUtil;
+import consulo.process.ExecutionException;
+import consulo.execution.ExecutionResult;
+import consulo.execution.executor.Executor;
+import consulo.execution.configuration.RunProfileState;
+import consulo.execution.runner.ExecutionEnvironment;
+import consulo.execution.runner.ProgramRunner;
+import consulo.execution.test.AbstractTestProxy;
+import consulo.execution.test.sm.runner.SMTestProxy;
+import consulo.module.Module;
+import consulo.util.lang.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

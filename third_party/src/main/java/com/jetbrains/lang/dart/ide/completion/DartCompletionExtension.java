@@ -1,9 +1,9 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.completion;
 
-import com.intellij.codeInsight.lookup.LookupElementBuilder;
-import com.intellij.openapi.extensions.ExtensionPointName;
-import com.intellij.openapi.project.Project;
+import consulo.language.editor.completion.lookup.LookupElementBuilder;
+import consulo.component.extension.ExtensionPointName;
+import consulo.project.Project;
 import org.dartlang.analysis.server.protocol.CompletionSuggestion;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

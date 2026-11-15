@@ -1,53 +1,52 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.sdk;
 
-import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer;
-import com.intellij.icons.AllIcons;
+import consulo.language.editor.DaemonCodeAnalyzer;
+import consulo.application.AllIcons;
 import com.intellij.ide.actions.ShowSettingsUtilImpl;
 import com.intellij.ide.util.PropertiesComponent;
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleManager;
+import consulo.disposer.Disposable;
+import consulo.application.ApplicationManager;
+import consulo.ui.ModalityState;
+import consulo.module.Module;
+import consulo.module.ModuleManager;
 import com.intellij.openapi.module.ModuleType;
-import com.intellij.openapi.options.Configurable.NoScroll;
-import com.intellij.openapi.options.SearchableConfigurable;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.ComboBox;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.Disposer;
+import consulo.configurable.Configurable.NoScroll;
+import consulo.configurable.SearchableConfigurable;
+import consulo.application.progress.ProgressManager;
+import consulo.project.Project;
+import consulo.ui.ex.awt.ComboBox;
+import consulo.ui.ex.awt.Messages;
+import consulo.disposer.Disposer;
 import com.intellij.openapi.util.IconLoader;
-import com.intellij.openapi.util.NlsContexts;
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.openapi.util.io.FileUtilRt;
-import com.intellij.openapi.util.text.HtmlBuilder;
-import com.intellij.openapi.util.text.HtmlChunk;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.wm.IdeFocusManager;
-import com.intellij.ui.CheckboxTree;
+
+import consulo.util.io.FileUtil;
+import consulo.application.util.HtmlBuilder;
+import consulo.application.util.HtmlChunk;
+import consulo.util.lang.StringUtil;
+import consulo.application.ui.wm.IdeFocusManager;
+import consulo.ui.ex.awt.tree.CheckboxTree;
 import com.intellij.ui.CheckboxTreeListener;
 import com.intellij.ui.CheckboxTreeTable;
-import com.intellij.ui.CheckedTreeNode;
-import com.intellij.ui.ColorUtil;
-import com.intellij.ui.DocumentAdapter;
-import com.intellij.ui.JBColor;
-import com.intellij.ui.PortField;
-import com.intellij.ui.SimpleListCellRenderer;
-import com.intellij.ui.components.JBCheckBox;
-import com.intellij.ui.components.JBLabel;
-import com.intellij.ui.treeStructure.treetable.TreeColumnInfo;
-import com.intellij.util.ui.ColumnInfo;
-import com.intellij.util.ui.JBUI;
-import com.intellij.util.ui.UIUtil;
+import consulo.ui.ex.awt.tree.CheckedTreeNode;
+import consulo.ui.ex.awt.util.ColorUtil;
+import consulo.ui.ex.awt.event.DocumentAdapter;
+import consulo.ui.ex.JBColor;
+import consulo.ide.impl.idea.ui.PortField;
+import consulo.ui.ex.awt.SimpleListCellRenderer;
+import consulo.ui.ex.awt.JBCheckBox;
+import consulo.ui.ex.awt.JBLabel;
+import consulo.ui.ex.awt.tree.table.TreeColumnInfo;
+import consulo.ui.ex.awt.ColumnInfo;
+import consulo.ui.ex.awt.JBUI;
+import consulo.ui.ex.awt.UIUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.flutter.FlutterUtil;
 import com.jetbrains.lang.dart.lsp.DartBridgeLspServerManager;
 import com.jetbrains.lang.dart.lsp.LspMethod;
 import com.jetbrains.lang.dart.ui.BasicComboBoxWithBrowseButton;
-import org.jetbrains.annotations.Nls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.VisibleForTesting;
@@ -240,7 +239,7 @@ public final class DartConfigurable implements SearchableConfigurable, NoScroll,
   }
 
   @Override
-  public @Nls String getDisplayName() {
+  public String getDisplayName() {
     return DartBundle.message("dart.title");
   }
 
@@ -308,7 +307,7 @@ public final class DartConfigurable implements SearchableConfigurable, NoScroll,
 
     // reset UI
     myEnableDartSupportCheckBox.setSelected(myDartSupportEnabledInitial);
-    @NlsSafe String sdkInitialPath = mySdkInitial == null ? "" : FileUtilRt.toSystemDependentName(mySdkInitial.getHomePath());
+    String sdkInitialPath = mySdkInitial == null ? "" : FileUtilRt.toSystemDependentName(mySdkInitial.getHomePath());
     mySdkPathComboWithBrowse.getEditor().setItem(sdkInitialPath);
     if (!sdkInitialPath.isEmpty()) {
       ensureComboModelContainsCurrentItem(mySdkPathComboWithBrowse);
@@ -452,7 +451,7 @@ public final class DartConfigurable implements SearchableConfigurable, NoScroll,
     myErrorLabel.setVisible(true);
   }
 
-  private @Nullable @NlsContexts.Label String getErrorMessage() {
+  private @Nullable String getErrorMessage() {
     if (!myEnableDartSupportCheckBox.isSelected()) {
       return null;
     }

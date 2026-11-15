@@ -2,20 +2,20 @@
 package com.jetbrains.lang.dart.ide.findUsages;
 
 import com.google.dart.server.utilities.general.ObjectUtilities;
-import com.intellij.navigation.NavigationItemFileStatus;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.DataSink;
-import com.intellij.openapi.actionSystem.UiDataProvider;
-import com.intellij.openapi.util.Iconable;
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vcs.FileStatus;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.SmartPointerManager;
-import com.intellij.psi.SmartPsiElementPointer;
-import com.intellij.usageView.UsageInfo;
-import com.intellij.usages.UsageGroup;
-import com.intellij.usages.UsageView;
+import consulo.language.editor.util.NavigationItemFileStatus;
+import consulo.language.editor.CommonDataKeys;
+import consulo.dataContext.DataSink;
+import consulo.dataContext.UiDataProvider;
+import consulo.component.util.Iconable;
+
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.status.FileStatus;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.SmartPointerManager;
+import consulo.language.psi.SmartPsiElementPointer;
+import consulo.usage.UsageInfo;
+import consulo.usage.UsageGroup;
+import consulo.usage.UsageView;
 import com.jetbrains.lang.dart.psi.DartComponent;
 import com.jetbrains.lang.dart.psi.DartComponentName;
 import org.jetbrains.annotations.NotNull;
@@ -25,7 +25,7 @@ import javax.swing.*;
 class DartComponentUsageGroup implements UsageGroup, UiDataProvider {
   private final VirtualFile myFile;
   private final SmartPsiElementPointer<DartComponent> myElementPointer;
-  private final @NlsSafe String myText;
+  private final String myText;
   private final Icon myIcon;
 
   DartComponentUsageGroup(@NotNull DartComponent element) {

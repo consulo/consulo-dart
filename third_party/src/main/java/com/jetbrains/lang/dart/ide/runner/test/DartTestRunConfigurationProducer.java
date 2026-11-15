@@ -1,18 +1,18 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.test;
 
-import com.intellij.execution.actions.ConfigurationContext;
+import consulo.execution.action.ConfigurationContext;
 import com.intellij.execution.actions.LazyRunConfigurationProducer;
-import com.intellij.execution.configurations.ConfigurationFactory;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.vfs.VfsUtilCore;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiDirectory;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
+import consulo.execution.configuration.ConfigurationFactory;
+import consulo.project.Project;
+import consulo.util.lang.Comparing;
+import consulo.util.lang.ref.Ref;
+import consulo.util.io.FileUtil;
+import consulo.virtualFileSystem.util.VirtualFileUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiDirectory;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
 import com.jetbrains.lang.dart.ide.runner.server.DartCommandLineRuntimeConfigurationProducer;
 import com.jetbrains.lang.dart.ide.runner.util.TestUtil;
 import com.jetbrains.lang.dart.psi.DartCallExpression;

@@ -1,12 +1,12 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.highlight;
 
-import com.intellij.openapi.editor.DefaultLanguageHighlighterColors;
-import com.intellij.openapi.editor.HighlighterColors;
-import com.intellij.openapi.editor.colors.CodeInsightColors;
-import com.intellij.openapi.editor.colors.TextAttributesKey;
+import consulo.codeEditor.DefaultLanguageHighlighterColors;
+import consulo.codeEditor.HighlighterColors;
+import consulo.codeEditor.CodeInsightColors;
+import consulo.colorScheme.TextAttributesKey;
 
-import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
+import static consulo.colorScheme.TextAttributesKey.createTextAttributesKey;
 
 public final class DartSyntaxHighlighterColors {
   public static final String DART_ERROR = "DART_ERROR";

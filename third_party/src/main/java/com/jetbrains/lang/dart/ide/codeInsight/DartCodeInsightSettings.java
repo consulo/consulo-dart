@@ -1,16 +1,15 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.codeInsight;
 
-
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.components.PersistentStateComponent;
-import com.intellij.openapi.components.State;
-import com.intellij.openapi.components.Storage;
-import com.intellij.util.xmlb.XmlSerializerUtil;
+import consulo.application.ApplicationManager;
+import consulo.component.persist.PersistentStateComponent;
+import consulo.component.persist.State;
+import consulo.component.persist.Storage;
+import consulo.util.xml.serializer.XmlSerializerUtil;
 import org.intellij.lang.annotations.MagicConstant;
 import org.jetbrains.annotations.NotNull;
 
-import static com.intellij.codeInsight.CodeInsightSettings.*;
+
 
 @State(name = "DartCodeInsightSettings", storages = @Storage("other.xml"))
 public class DartCodeInsightSettings implements PersistentStateComponent<DartCodeInsightSettings> {

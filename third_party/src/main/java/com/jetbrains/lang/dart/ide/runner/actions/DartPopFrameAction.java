@@ -2,12 +2,16 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.actions;
 
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.xdebugger.XDebugSession;
-import com.intellij.xdebugger.frame.XStackFrame;
-import com.intellij.xdebugger.impl.ui.DebuggerUIUtil;
+import consulo.application.AllIcons;
+import consulo.ui.ex.action.ActionPlaces;
+import consulo.ui.ex.action.ActionUpdateThread;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.Presentation;
+import consulo.application.dumb.DumbAware;
+import consulo.execution.debug.XDebugSession;
+import consulo.execution.debug.frame.XStackFrame;
+import consulo.execution.debug.ui.DebuggerUIUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.frame.DartVmServiceStackFrame;
 import org.jetbrains.annotations.NotNull;

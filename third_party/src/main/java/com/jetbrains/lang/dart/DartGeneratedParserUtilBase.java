@@ -1,13 +1,13 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart;
 
-import com.intellij.lang.PsiBuilder;
-import com.intellij.lang.PsiBuilderUtil;
-import com.intellij.lang.parser.GeneratedParserUtilBase;
-import com.intellij.openapi.util.Key;
-import com.intellij.psi.TokenType;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.TokenSet;
+import consulo.language.parser.PsiBuilder;
+import consulo.language.parser.PsiBuilderUtil;
+import consulo.language.impl.parser.GeneratedParserUtilBase;
+import consulo.util.dataholder.Key;
+import consulo.language.ast.TokenType;
+import consulo.language.ast.IElementType;
+import consulo.language.ast.TokenSet;
 
 import static com.jetbrains.lang.dart.DartTokenTypes.*;
 import static com.jetbrains.lang.dart.DartTokenTypesSets.LAZY_PARSEABLE_BLOCK;

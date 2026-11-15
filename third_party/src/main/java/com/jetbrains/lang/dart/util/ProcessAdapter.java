@@ -5,7 +5,7 @@
  */
 package com.jetbrains.lang.dart.util;
 
-import com.intellij.execution.process.ProcessListener;
+import consulo.process.event.ProcessListener;
 
 // Replaces deprecated `com.intellij.execution.process.ProcessAdapter`
 public abstract class ProcessAdapter implements ProcessListener {

@@ -1,9 +1,13 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.util;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.openapi.util.Condition;
-import com.intellij.psi.*;
+import consulo.language.ast.ASTNode;
+import consulo.util.lang.function.Condition;
+import consulo.language.psi.PsiComment;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiWhiteSpace;
+import consulo.language.ast.TokenType;
 import com.intellij.util.Function;
 import com.jetbrains.lang.dart.DartTokenTypes;
 import org.jetbrains.annotations.Nullable;

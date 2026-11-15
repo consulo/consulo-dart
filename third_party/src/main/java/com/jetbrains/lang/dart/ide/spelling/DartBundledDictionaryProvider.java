@@ -1,7 +1,7 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.spelling;
 
-import com.intellij.spellchecker.BundledDictionaryProvider;
+import consulo.language.spellchecker.editor.dictionary.BundledDictionaryProvider;
 
 public final class DartBundledDictionaryProvider implements BundledDictionaryProvider {
   @Override

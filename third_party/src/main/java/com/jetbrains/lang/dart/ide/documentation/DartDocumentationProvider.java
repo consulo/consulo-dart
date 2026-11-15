@@ -1,16 +1,16 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.documentation;
 
-import com.intellij.codeInsight.lookup.Lookup;
-import com.intellij.codeInsight.lookup.LookupElement;
-import com.intellij.codeInsight.lookup.LookupManager;
-import com.intellij.lang.documentation.DocumentationProvider;
-import com.intellij.navigation.NavigationItem;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiManager;
-import com.intellij.psi.util.PsiTreeUtil;
+import consulo.language.editor.completion.lookup.Lookup;
+import consulo.language.editor.completion.lookup.LookupElement;
+import consulo.language.editor.completion.lookup.LookupManager;
+import consulo.language.editor.documentation.DocumentationProvider;
+import consulo.navigation.NavigationItem;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiManager;
+import consulo.language.psi.util.PsiTreeUtil;
 import com.jetbrains.lang.dart.ide.completion.DartLookupObject;
 import com.jetbrains.lang.dart.psi.DartClass;
 import com.jetbrains.lang.dart.psi.DartComponent;
@@ -18,7 +18,7 @@ import com.jetbrains.lang.dart.psi.DartFactoryConstructorDeclaration;
 import com.jetbrains.lang.dart.psi.DartNamedConstructorDeclaration;
 import com.jetbrains.lang.dart.util.DartResolveUtil;
 import com.jetbrains.lang.dart.util.DartUrlResolver;
-import org.jetbrains.annotations.Nls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -29,7 +29,7 @@ public final class DartDocumentationProvider implements DocumentationProvider {
   private static final String BASE_DART_DOC_URL = "https://api.dart.dev/stable/";
 
   @Override
-  public @Nls String generateDoc(final @NotNull PsiElement element, final @Nullable PsiElement originalElement) {
+  public String generateDoc(final @NotNull PsiElement element, final @Nullable PsiElement originalElement) {
     final Lookup activeLookup = LookupManager.getInstance(element.getProject()).getActiveLookup();
     final LookupElement item = activeLookup != null ? activeLookup.getCurrentItem() : null;
     final boolean isFromCompletion = item != null && item.getObject() instanceof DartLookupObject;
@@ -45,7 +45,7 @@ public final class DartDocumentationProvider implements DocumentationProvider {
   }
 
   @Override
-  public @Nls String getQuickNavigateInfo(final PsiElement element, final PsiElement originalElement) {
+  public String getQuickNavigateInfo(final PsiElement element, final PsiElement originalElement) {
     return null;
   }
 

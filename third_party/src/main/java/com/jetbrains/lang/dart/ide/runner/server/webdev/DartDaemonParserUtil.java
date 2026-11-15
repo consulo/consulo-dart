@@ -2,7 +2,7 @@
 package com.jetbrains.lang.dart.ide.runner.server.webdev;
 
 import com.google.gson.*;
-import com.intellij.openapi.util.text.Strings;
+import consulo.language.spellchecker.editor.impl.Strings;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

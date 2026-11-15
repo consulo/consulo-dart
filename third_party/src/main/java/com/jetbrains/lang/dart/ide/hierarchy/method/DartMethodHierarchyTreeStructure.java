@@ -1,14 +1,14 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.hierarchy.method;
 
-import com.intellij.ide.hierarchy.HierarchyBrowserManager;
-import com.intellij.ide.hierarchy.HierarchyNodeDescriptor;
-import com.intellij.ide.hierarchy.HierarchyTreeStructure;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.SmartPointerManager;
-import com.intellij.psi.SmartPsiElementPointer;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.ArrayUtilRt;
+import consulo.language.editor.impl.internal.hierarchy.HierarchyBrowserManager;
+import consulo.language.editor.hierarchy.HierarchyNodeDescriptor;
+import consulo.language.editor.hierarchy.HierarchyTreeStructure;
+import consulo.project.Project;
+import consulo.language.psi.SmartPointerManager;
+import consulo.language.psi.SmartPsiElementPointer;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.util.collection.ArrayUtil;
 import com.jetbrains.lang.dart.psi.DartClass;
 import com.jetbrains.lang.dart.psi.DartComponent;
 import org.dartlang.analysis.server.protocol.TypeHierarchyItem;

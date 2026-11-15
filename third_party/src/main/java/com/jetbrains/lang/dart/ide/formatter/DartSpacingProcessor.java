@@ -1,18 +1,18 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.formatter;
 
-import com.intellij.formatting.Block;
-import com.intellij.formatting.Spacing;
-import com.intellij.lang.ASTNode;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiErrorElement;
-import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
-import com.intellij.psi.formatter.FormatterUtil;
-import com.intellij.psi.formatter.common.AbstractBlock;
-import com.intellij.psi.impl.source.tree.CompositeElement;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.tree.TokenSet;
-import com.intellij.util.containers.SortedList;
+import consulo.language.codeStyle.Block;
+import consulo.language.codeStyle.Spacing;
+import consulo.language.ast.ASTNode;
+import consulo.document.util.TextRange;
+import consulo.language.psi.PsiErrorElement;
+import consulo.language.codeStyle.CommonCodeStyleSettings;
+import consulo.language.codeStyle.FormatterUtil;
+import consulo.language.codeStyle.AbstractBlock;
+import consulo.language.impl.ast.CompositeElement;
+import consulo.language.ast.IElementType;
+import consulo.language.ast.TokenSet;
+import consulo.util.collection.impl.list.SortedList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.intellij.lang.parser.GeneratedParserUtilBase.DUMMY_BLOCK;
+import static consulo.language.impl.parser.GeneratedParserUtilBase.DUMMY_BLOCK;
 import static com.jetbrains.lang.dart.DartParserDefinition.DART_FILE;
 import static com.jetbrains.lang.dart.DartTokenTypes.*;
 import static com.jetbrains.lang.dart.DartTokenTypesSets.*;

@@ -1,16 +1,23 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.psi.impl;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.injection.InjectedLanguageManager;
-import com.intellij.openapi.diagnostic.Logger;
+import consulo.language.ast.ASTNode;
+import consulo.language.inject.InjectedLanguageManager;
+import consulo.logging.Logger;
 import com.jetbrains.lang.dart.logging.PluginLogger;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.*;
-import com.intellij.psi.impl.source.resolve.reference.ReferenceProvidersRegistry;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.util.SmartList;
+import consulo.document.util.TextRange;
+import consulo.util.lang.StringUtil;
+import consulo.language.psi.AbstractElementManipulator;
+import consulo.language.psi.ElementManipulators;
+import consulo.language.psi.LiteralTextEscaper;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiFileFactory;
+import consulo.language.psi.PsiLanguageInjectionHost;
+import consulo.language.psi.PsiReference;
+import consulo.language.psi.ReferenceProvidersRegistry;
+import consulo.language.ast.IElementType;
+import consulo.util.collection.SmartList;
 import com.jetbrains.lang.dart.DartLanguage;
 import com.jetbrains.lang.dart.DartTokenTypes;
 import com.jetbrains.lang.dart.psi.DartStringLiteralExpression;

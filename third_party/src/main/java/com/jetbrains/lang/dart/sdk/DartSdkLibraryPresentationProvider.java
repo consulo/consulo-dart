@@ -1,10 +1,10 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.sdk;
 
-import com.intellij.openapi.roots.libraries.DummyLibraryProperties;
-import com.intellij.openapi.roots.libraries.LibraryKind;
-import com.intellij.openapi.roots.libraries.LibraryPresentationProvider;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.content.library.DummyLibraryProperties;
+import consulo.content.library.LibraryKind;
+import consulo.content.library.LibraryPresentationProvider;
+import consulo.virtualFileSystem.VirtualFile;
 import icons.DartIcons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

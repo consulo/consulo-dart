@@ -1,16 +1,16 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.server;
 
-import com.intellij.ide.browsers.BrowserFamily;
-import com.intellij.ide.browsers.BrowserLauncher;
-import com.intellij.ide.browsers.WebBrowser;
-import com.intellij.ide.browsers.WebBrowserManager;
-import com.intellij.openapi.actionSystem.ActionUpdateThread;
-import com.intellij.openapi.actionSystem.AnActionEvent;
-import com.intellij.openapi.project.DumbAwareAction;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Computable;
-import com.intellij.openapi.util.text.StringUtil;
+import consulo.webBrowser.BrowserFamily;
+import consulo.webBrowser.BrowserLauncher;
+import consulo.webBrowser.WebBrowser;
+import consulo.webBrowser.WebBrowserManager;
+import consulo.ui.ex.action.ActionUpdateThread;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.ui.ex.action.DumbAwareAction;
+import consulo.project.Project;
+import consulo.application.util.function.Computable;
+import consulo.util.lang.StringUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ide.devtools.DartDevToolsService;
 import icons.DartIcons;

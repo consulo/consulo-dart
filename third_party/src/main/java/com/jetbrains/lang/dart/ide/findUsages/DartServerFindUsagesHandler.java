@@ -1,21 +1,21 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.findUsages;
 
-import com.intellij.find.findUsages.FindUsagesHandler;
-import com.intellij.find.findUsages.FindUsagesOptions;
-import com.intellij.openapi.application.ReadAction;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiComment;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiNameIdentifierOwner;
-import com.intellij.psi.search.LocalSearchScope;
-import com.intellij.psi.search.PsiSearchScopeUtil;
-import com.intellij.psi.search.SearchScope;
-import com.intellij.usageView.UsageInfo;
-import com.intellij.util.Processor;
+import consulo.find.FindUsagesHandler;
+import consulo.find.FindUsagesOptions;
+import consulo.application.ReadAction;
+import consulo.project.Project;
+import consulo.document.util.TextRange;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiComment;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiNameIdentifierOwner;
+import consulo.language.psi.scope.LocalSearchScope;
+import consulo.language.psi.scope.PsiSearchScopeUtil;
+import consulo.content.scope.SearchScope;
+import consulo.usage.UsageInfo;
+import consulo.application.util.function.Processor;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.analyzer.DartFileInfo;
 import com.jetbrains.lang.dart.analyzer.DartFileInfoKt;

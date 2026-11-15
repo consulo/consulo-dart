@@ -1,17 +1,17 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.errorTreeView;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ProjectFileIndex;
-import com.intellij.openapi.roots.ProjectRootManager;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.registry.Registry;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.project.Project;
+import consulo.module.content.ProjectFileIndex;
+import consulo.module.content.ProjectRootManager;
+import consulo.util.lang.Comparing;
+import consulo.application.util.registry.Registry;
+import consulo.virtualFileSystem.VirtualFile;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.util.DartBuildFileUtil;
 import com.jetbrains.lang.dart.util.PubspecYamlUtil;
 import org.dartlang.analysis.server.protocol.AnalysisErrorSeverity;
-import org.jetbrains.annotations.Nls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -190,7 +190,7 @@ public class DartProblemsPresentationHelper {
     myContentRootUpToDate = true;
   }
 
-  public @NotNull @Nls String getFilterTypeText() {
+  public @NotNull String getFilterTypeText() {
     final String filtering = switch (getFileFilterMode()) {
       case ContentRoot -> DartBundle.message("dart.problems.view.filter.current.content.root");
       case DartPackage -> DartBundle.message("dart.problems.view.filter.current.dart.package");

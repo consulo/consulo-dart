@@ -2,12 +2,12 @@
 package com.jetbrains.lang.dart.projectWizard;
 
 import com.intellij.ide.util.projectWizard.WebProjectTemplate;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.project.Project;
+import consulo.application.ApplicationManager;
+import consulo.module.Module;
+import consulo.project.Project;
 import com.intellij.openapi.roots.ModifiableModelsProvider;
-import com.intellij.openapi.roots.ModifiableRootModel;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.module.content.layer.ModifiableRootModel;
+import consulo.virtualFileSystem.VirtualFile;
 import com.intellij.platform.ProjectGeneratorPeer;
 import com.jetbrains.lang.dart.DartBundle;
 import icons.DartIcons;

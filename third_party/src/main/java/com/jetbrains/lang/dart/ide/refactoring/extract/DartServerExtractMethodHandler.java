@@ -1,19 +1,19 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.refactoring.extract;
 
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.SelectionModel;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.refactoring.RefactoringActionHandler;
-import com.intellij.refactoring.util.CommonRefactoringUtil;
-import com.intellij.ui.DocumentAdapter;
-import com.intellij.util.ArrayUtil;
-import com.intellij.util.ui.JBUI;
+import consulo.dataContext.DataContext;
+import consulo.codeEditor.Editor;
+import consulo.codeEditor.SelectionModel;
+import consulo.project.Project;
+import consulo.document.util.TextRange;
+import consulo.util.lang.StringUtil;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.editor.refactoring.action.RefactoringActionHandler;
+import consulo.language.editor.refactoring.util.CommonRefactoringUtil;
+import consulo.ui.ex.awt.event.DocumentAdapter;
+import consulo.util.collection.ArrayUtil;
+import consulo.ui.ex.awt.JBUI;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ide.refactoring.DartLspRefactoringHelper;
 import com.jetbrains.lang.dart.ide.refactoring.ServerExtractMethodRefactoring;

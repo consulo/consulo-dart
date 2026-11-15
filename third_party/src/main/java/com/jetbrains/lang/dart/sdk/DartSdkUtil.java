@@ -1,24 +1,23 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.sdk;
 
-import com.intellij.openapi.Disposable;
+import consulo.disposer.Disposable;
 import com.intellij.ide.util.PropertiesComponent;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.application.ReadAction;
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Disposer;
-import com.intellij.openapi.util.NlsContexts;
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.text.Strings;
-import com.intellij.ui.DocumentAdapter;
-import com.intellij.ui.components.JBLabel;
-import com.intellij.util.ArrayUtilRt;
-import com.intellij.util.SmartList;
-import com.intellij.util.concurrency.AppExecutorUtil;
+import consulo.ui.ModalityState;
+import consulo.application.ReadAction;
+import consulo.fileChooser.FileChooserDescriptorFactory;
+import consulo.project.Project;
+import consulo.disposer.Disposer;
+
+import consulo.util.lang.Pair;
+import consulo.application.util.SystemInfo;
+import consulo.util.io.FileUtil;
+import consulo.language.spellchecker.editor.impl.Strings;
+import consulo.ui.ex.awt.event.DocumentAdapter;
+import consulo.ui.ex.awt.JBLabel;
+import consulo.util.collection.ArrayUtil;
+import consulo.util.collection.SmartList;
+import consulo.application.util.concurrent.AppExecutorUtil;
 import com.intellij.util.system.CpuArch;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ui.BasicComboBoxWithBrowseButton;
@@ -41,7 +40,7 @@ public final class DartSdkUtil {
   private static final Map<Pair<File, Long>, String> ourVersions = new ConcurrentHashMap<>();
   private static final String DART_SDK_KNOWN_PATHS = "DART_SDK_KNOWN_PATHS";
 
-  public static @Nullable @NlsSafe String getSdkVersion(final @NotNull String sdkHomePath) {
+  public static @Nullable String getSdkVersion(final @NotNull String sdkHomePath) {
     final File versionFile = new File(sdkHomePath + "/version");
     if (!versionFile.isFile()) {
       return null;
@@ -92,7 +91,7 @@ public final class DartSdkUtil {
     if (getItemFromCombo(dartSdkCombo).isEmpty()) {
       // Suggest default path according to https://dart.dev/get-dart.
       // No need to check folder presence here; even if it doesn't exist - that's the best we can suggest
-      @NlsSafe String path = SystemInfo.isMac ? CpuArch.isArm64() ? "/opt/homebrew/opt/dart/libexec"
+      String path = SystemInfo.isMac ? CpuArch.isArm64() ? "/opt/homebrew/opt/dart/libexec"
                                                                   : "/usr/local/opt/dart/libexec"
                                               : SystemInfo.isWindows ? "C:\\tools\\dart-sdk"
                                                                      : SystemInfo.isLinux ? "/usr/lib/dart"
@@ -180,7 +179,7 @@ public final class DartSdkUtil {
     PropertiesComponent.getInstance().setList(DART_SDK_KNOWN_PATHS, knownPaths);
   }
 
-  public static @Nullable @NlsContexts.Label String getErrorMessageIfWrongSdkRootPath(final @NotNull String sdkRootPath) {
+  public static @Nullable String getErrorMessageIfWrongSdkRootPath(final @NotNull String sdkRootPath) {
     if (sdkRootPath.isEmpty()) return DartBundle.message("error.path.to.sdk.not.specified");
 
     final File sdkRoot = new File(sdkRootPath);

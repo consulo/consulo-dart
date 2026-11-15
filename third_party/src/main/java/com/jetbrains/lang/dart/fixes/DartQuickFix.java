@@ -1,26 +1,26 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.fixes;
 
-import com.intellij.CommonBundle;
-import com.intellij.codeInsight.FileModificationService;
-import com.intellij.codeInsight.intention.FileModifier;
-import com.intellij.codeInsight.intention.IntentionAction;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ProjectFileIndex;
-import com.intellij.openapi.roots.ProjectRootManager;
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VfsUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiFile;
-import com.intellij.refactoring.util.CommonRefactoringUtil;
-import com.intellij.util.IncorrectOperationException;
-import com.intellij.util.PathUtil;
+import consulo.application.CommonBundle;
+import consulo.language.editor.FileModificationService;
+import consulo.language.editor.inspection.FileModifier;
+import consulo.language.editor.intention.IntentionAction;
+import consulo.application.ApplicationManager;
+import consulo.document.Document;
+import consulo.codeEditor.Editor;
+import consulo.document.FileDocumentManager;
+import consulo.project.Project;
+import consulo.module.content.ProjectFileIndex;
+import consulo.module.content.ProjectRootManager;
+
+import consulo.util.io.FileUtil;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.util.VirtualFileUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiFile;
+import consulo.language.editor.refactoring.util.CommonRefactoringUtil;
+import consulo.language.util.IncorrectOperationException;
+import consulo.util.io.PathUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.analyzer.DartFileInfo;
@@ -60,7 +60,7 @@ public final class DartQuickFix implements IntentionAction, Comparable<Intention
 
     if (mySourceChange == null) return "";
 
-    @NlsSafe String message = mySourceChange.getMessage();
+    String message = mySourceChange.getMessage();
     return message;
   }
 

@@ -1,16 +1,16 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.psi.impl;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.navigation.ItemPresentation;
-import com.intellij.navigation.NavigationItem;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.IncorrectOperationException;
+import consulo.language.ast.ASTNode;
+import consulo.navigation.ItemPresentation;
+import consulo.navigation.NavigationItem;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.language.util.IncorrectOperationException;
 import com.jetbrains.lang.dart.psi.DartId;
 import com.jetbrains.lang.dart.psi.DartNamedElement;
 import com.jetbrains.lang.dart.util.DartElementGenerator;
-import org.jetbrains.annotations.NonNls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,7 +22,7 @@ public abstract class DartNamedElementImpl extends DartPsiCompositeElementImpl i
   }
 
   @Override
-  public PsiElement setName(@NonNls @NotNull String newElementName) throws IncorrectOperationException {
+  public PsiElement setName(@NotNull String newElementName) throws IncorrectOperationException {
     final DartId identifier = getId();
     final DartId identifierNew = DartElementGenerator.createIdentifierFromText(getProject(), newElementName);
 

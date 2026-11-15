@@ -1,17 +1,17 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.documentation;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.psi.PsiComment;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiWhiteSpace;
-import com.intellij.psi.tree.IElementType;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.ArrayUtil;
-import com.intellij.util.SmartList;
+import consulo.project.Project;
+
+import consulo.util.lang.StringUtil;
+import consulo.language.psi.PsiComment;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiWhiteSpace;
+import consulo.language.ast.IElementType;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.util.collection.ArrayUtil;
+import consulo.util.collection.SmartList;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartTokenTypesSets;
 import com.jetbrains.lang.dart.psi.*;
@@ -20,7 +20,7 @@ import com.jetbrains.lang.dart.util.DartGenericSpecialization;
 import com.jetbrains.lang.dart.util.DartPresentableUtil;
 import com.jetbrains.lang.dart.util.DartResolveUtil;
 import com.jetbrains.lang.dart.util.UsefulPsiTreeUtil;
-import org.jetbrains.annotations.Nls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -38,7 +38,7 @@ public final class DartDocUtil {
   private static final String GT = "&gt;";
   private static final String LT = "&lt;";
 
-  public static @Nullable @Nls String generateDoc(final PsiElement element) {
+  public static @Nullable String generateDoc(final PsiElement element) {
     if (!(element instanceof DartComponent) && !(element.getParent() instanceof DartComponent)) {
       return null;
     }
@@ -76,7 +76,7 @@ public final class DartDocUtil {
     return generateDoc(element.getProject(), signatureHtml, true, docText, containingLibraryName, containingClassDescription, null, false);
   }
 
-  private static @NotNull String formatSignature(@NotNull @NlsSafe String signature) {
+  private static @NotNull String formatSignature(@NotNull String signature) {
     // Match the first open paren, "(", but ignore a starting "(new)" or "(const)" patterns.
     final int offsetToOpenParen = signature.indexOf('(', 1);
 
@@ -136,13 +136,13 @@ public final class DartDocUtil {
     return ArrayUtil.toStringArray(result);
   }
 
-  public static @NotNull @NlsSafe String generateDoc(@NotNull Project project,
-                                                     @Nullable @NlsSafe String signature,
+  public static @NotNull String generateDoc(@NotNull Project project,
+                                                     @Nullable String signature,
                                                      boolean signatureIsHtml,
-                                                     @Nullable @NlsSafe String docText,
-                                                     @Nullable @NlsSafe String containingLibraryName,
-                                                     @Nullable @NlsSafe String containingClassDescription,
-                                                     @Nullable @NlsSafe String staticType,
+                                                     @Nullable String docText,
+                                                     @Nullable String containingLibraryName,
+                                                     @Nullable String containingClassDescription,
+                                                     @Nullable String staticType,
                                                      boolean compactPresentation) {
     final boolean hasContainingLibraryName = StringUtil.isNotEmpty(containingLibraryName);
     final boolean hasContainingClassDescription = StringUtil.isNotEmpty(containingClassDescription);
@@ -243,7 +243,7 @@ public final class DartDocUtil {
     return builder.toString();
   }
 
-  public static @Nullable @NlsSafe String getSignature(@NotNull PsiElement element) {
+  public static @Nullable String getSignature(@NotNull PsiElement element) {
     if (!(element instanceof DartComponent)) {
       element = element.getParent();
     }

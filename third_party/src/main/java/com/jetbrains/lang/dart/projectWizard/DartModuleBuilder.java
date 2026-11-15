@@ -4,27 +4,27 @@ package com.jetbrains.lang.dart.projectWizard;
 import com.intellij.ide.util.projectWizard.ModuleBuilder;
 import com.intellij.ide.util.projectWizard.ModuleWizardStep;
 import com.intellij.ide.util.projectWizard.WizardContext;
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.actionSystem.ActionManager;
-import com.intellij.openapi.actionSystem.AnAction;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.application.WriteAction;
-import com.intellij.openapi.fileEditor.FileEditorManager;
-import com.intellij.openapi.module.Module;
+import consulo.disposer.Disposable;
+import consulo.ui.ex.action.ActionManager;
+import consulo.ui.ex.action.AnAction;
+import consulo.application.ApplicationManager;
+import consulo.ui.ModalityState;
+import consulo.application.WriteAction;
+import consulo.fileEditor.FileEditorManager;
+import consulo.module.Module;
 import com.intellij.openapi.module.ModuleType;
 import com.intellij.openapi.module.WebModuleBuilder;
 import com.intellij.openapi.module.WebModuleTypeBase;
-import com.intellij.openapi.project.DumbService;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ContentEntry;
+import consulo.project.DumbService;
+import consulo.project.Project;
+import consulo.module.content.layer.ContentEntry;
 import com.intellij.openapi.roots.ModifiableModelsProvider;
-import com.intellij.openapi.roots.ModifiableRootModel;
-import com.intellij.openapi.roots.libraries.LibraryTable;
-import com.intellij.openapi.roots.libraries.LibraryTablesRegistrar;
-import com.intellij.openapi.util.Disposer;
-import com.intellij.openapi.util.Key;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.module.content.layer.ModifiableRootModel;
+import consulo.content.library.LibraryTable;
+import consulo.content.library.LibraryTablesRegistrar;
+import consulo.disposer.Disposer;
+import consulo.util.dataholder.Key;
+import consulo.virtualFileSystem.VirtualFile;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ide.actions.DartPubGetAction;
 import com.jetbrains.lang.dart.sdk.DartSdk;
@@ -32,7 +32,7 @@ import com.jetbrains.lang.dart.sdk.DartSdkLibUtil;
 import com.jetbrains.lang.dart.sdk.DartSdkUtil;
 import com.jetbrains.lang.dart.util.PubspecYamlUtil;
 import icons.DartIcons;
-import org.jetbrains.annotations.NonNls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -46,7 +46,7 @@ public final class DartModuleBuilder extends ModuleBuilder {
   private DartProjectWizardData myWizardData;
 
   @Override
-  public @Nullable @NonNls String getBuilderId() {
+  public @Nullable String getBuilderId() {
     return "DartModuleBuilder";
   }
 

@@ -1,21 +1,21 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.test.ui;
 
-import com.intellij.execution.configuration.EnvironmentVariablesComponent;
-import com.intellij.openapi.fileChooser.FileChooserDescriptorFactory;
-import com.intellij.openapi.options.SettingsEditor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.TextFieldWithBrowseButton;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.registry.Registry;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.ui.DocumentAdapter;
-import com.intellij.ui.JBColor;
-import com.intellij.ui.RawCommandLineEditor;
-import com.intellij.ui.SimpleListCellRenderer;
-import com.intellij.util.ui.UIUtil;
+import consulo.execution.ui.awt.EnvironmentVariablesComponent;
+import consulo.fileChooser.FileChooserDescriptorFactory;
+import consulo.execution.configuration.ui.SettingsEditor;
+import consulo.project.Project;
+import consulo.ui.ex.awt.TextFieldWithBrowseButton;
+import consulo.util.io.FileUtil;
+import consulo.application.util.registry.Registry;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.LocalFileSystem;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.ui.ex.awt.event.DocumentAdapter;
+import consulo.ui.ex.JBColor;
+import consulo.execution.ui.awt.RawCommandLineEditor;
+import consulo.ui.ex.awt.SimpleListCellRenderer;
+import consulo.ui.ex.awt.UIUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ide.runner.server.ui.DartCommandLineConfigurationEditorForm;
 import com.jetbrains.lang.dart.ide.runner.test.DartTestRunConfiguration;

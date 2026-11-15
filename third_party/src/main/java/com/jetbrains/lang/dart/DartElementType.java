@@ -1,6 +1,6 @@
 package com.jetbrains.lang.dart;
 
-import com.intellij.psi.tree.IElementType;
+import consulo.language.ast.IElementType;
 
 public class DartElementType extends IElementType {
   public DartElementType(String debug_description) {

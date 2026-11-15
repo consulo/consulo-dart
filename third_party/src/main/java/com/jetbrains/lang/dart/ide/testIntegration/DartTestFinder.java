@@ -1,17 +1,17 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.testIntegration;
 
-import com.intellij.openapi.fileTypes.FileTypeRegistry;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.registry.Registry;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.search.FilenameIndex;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.search.GlobalSearchScopesCore;
-import com.intellij.testIntegration.TestFinder;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.virtualFileSystem.fileType.FileTypeRegistry;
+import consulo.project.Project;
+import consulo.application.util.registry.Registry;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.search.FilenameIndex;
+import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.language.psi.scope.GlobalSearchScopesCore;
+import consulo.language.editor.testIntegration.TestFinder;
+import consulo.util.collection.ContainerUtil;
 import com.jetbrains.lang.dart.DartFileType;
 import com.jetbrains.lang.dart.util.DartBuildFileUtil;
 import com.jetbrains.lang.dart.util.PubspecYamlUtil;

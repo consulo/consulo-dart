@@ -1,19 +1,23 @@
 // Copyright 2000-2025 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.psi;
 
-import com.intellij.lang.html.HTMLLanguage;
-import com.intellij.lang.injection.InjectedLanguageManager;
-import com.intellij.openapi.diagnostic.Logger;
+import consulo.html.language.HTMLLanguage;
+import consulo.language.inject.InjectedLanguageManager;
+import consulo.logging.Logger;
 import com.jetbrains.lang.dart.logging.PluginLogger;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.*;
-import com.intellij.psi.xml.XmlAttributeValue;
-import com.intellij.psi.xml.XmlTokenType;
-import com.intellij.util.ProcessingContext;
-import com.intellij.util.Processor;
-import com.intellij.util.SmartList;
+import consulo.project.Project;
+import consulo.document.util.TextRange;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiReference;
+import consulo.language.psi.PsiReferenceContributor;
+import consulo.language.psi.PsiReferenceProvider;
+import consulo.language.psi.PsiReferenceRegistrar;
+import consulo.xml.language.psi.XmlAttributeValue;
+import consulo.xml.language.psi.XmlTokenType;
+import consulo.language.util.ProcessingContext;
+import consulo.application.util.function.Processor;
+import consulo.util.collection.SmartList;
 import com.jetbrains.lang.dart.DartTokenTypesSets;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.analyzer.DartServerData;
@@ -24,9 +28,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-import static com.intellij.patterns.PlatformPatterns.psiElement;
-import static com.intellij.patterns.PlatformPatterns.psiFile;
-import static com.intellij.patterns.StandardPatterns.or;
+import static consulo.language.pattern.PlatformPatterns.psiElement;
+import static consulo.language.pattern.PlatformPatterns.psiFile;
+import static consulo.language.pattern.StandardPatterns.or;
 
 final class DartReferenceContributor extends PsiReferenceContributor {
   private static final Logger LOG = PluginLogger.INSTANCE.createLogger(DartReferenceContributor.class);

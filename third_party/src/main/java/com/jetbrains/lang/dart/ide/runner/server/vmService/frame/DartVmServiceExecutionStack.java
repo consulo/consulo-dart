@@ -1,15 +1,15 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.runner.server.vmService.frame;
 
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.xdebugger.frame.XExecutionStack;
-import com.intellij.xdebugger.frame.XStackFrame;
+import consulo.application.AllIcons;
+
+import consulo.execution.debug.frame.XExecutionStack;
+import consulo.execution.debug.frame.XStackFrame;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.DartVmServiceDebugProcess;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.vmServiceDrivers.service.element.Frame;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.vmServiceDrivers.service.element.InstanceRef;
-import org.jetbrains.annotations.Nls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,7 +39,7 @@ public class DartVmServiceExecutionStack extends XExecutionStack {
     myTopFrame = topFrame == null ? null : new DartVmServiceStackFrame(debugProcess, isolateId, topFrame, null, exception);
   }
 
-  private static @NotNull @Nls String beautify(@NotNull @NlsSafe String isolateName) {
+  private static @NotNull String beautify(@NotNull String isolateName) {
     // in tests it is "foo_test.dart%22%20as%20test;%0A%0A%20%20%20%20%20%20%20%20void%20main(_,%20SendPort%20message)..."
     final int index = isolateName.indexOf(".dart%22%20as%20test;");
     return index > 0 ? isolateName.substring(0, index + ".dart".length()) : isolateName;

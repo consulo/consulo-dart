@@ -2,9 +2,9 @@
 package com.jetbrains.lang.dart.test;
 
 import com.intellij.openapi.project.BaseProjectDirectories;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.TestSourcesFilter;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.project.Project;
+import consulo.project.content.TestSourcesFilter;
+import consulo.virtualFileSystem.VirtualFile;
 import com.jetbrains.lang.dart.projectView.DartIconProvider;
 import org.jetbrains.annotations.NotNull;
 

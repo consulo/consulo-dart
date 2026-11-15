@@ -1,20 +1,20 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.server.webdev;
 
-import com.intellij.execution.ExecutionException;
-import com.intellij.execution.configurations.CommandLineState;
-import com.intellij.execution.configurations.GeneralCommandLine;
-import com.intellij.execution.configurations.RuntimeConfigurationError;
-import com.intellij.execution.filters.TextConsoleBuilder;
-import com.intellij.execution.filters.TextConsoleBuilderImpl;
+import consulo.process.ExecutionException;
+import consulo.execution.configuration.CommandLineState;
+import consulo.process.cmd.GeneralCommandLine;
+import consulo.execution.configuration.RuntimeConfigurationError;
+import consulo.execution.ui.console.TextConsoleBuilder;
+import consulo.ide.impl.idea.execution.filters.TextConsoleBuilderImpl;
 import com.intellij.execution.process.ColoredProcessHandler;
-import com.intellij.execution.process.OSProcessHandler;
-import com.intellij.execution.process.ProcessHandler;
-import com.intellij.execution.process.ProcessTerminatedListener;
-import com.intellij.execution.runners.ExecutionEnvironment;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.process.internal.OSProcessHandler;
+import consulo.process.ProcessHandler;
+import consulo.execution.process.ProcessTerminatedListener;
+import consulo.execution.runner.ExecutionEnvironment;
+import consulo.project.Project;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.VirtualFile;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ide.actions.DartPubActionBase;
 import com.jetbrains.lang.dart.ide.runner.DartRelativePathsConsoleFilter;

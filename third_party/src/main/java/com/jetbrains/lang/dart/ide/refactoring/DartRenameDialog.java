@@ -1,26 +1,31 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.refactoring;
 
-import com.intellij.find.findUsages.PsiElement2UsageTargetAdapter;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.editor.Editor;
+import consulo.ide.impl.find.PsiElement2UsageTargetAdapter;
+import consulo.application.ApplicationManager;
+import consulo.codeEditor.Editor;
 import com.intellij.openapi.fileTypes.FileTypes;
-import com.intellij.openapi.options.ConfigurationException;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
-import com.intellij.refactoring.RefactoringBundle;
-import com.intellij.refactoring.ui.NameSuggestionsField;
-import com.intellij.usageView.UsageInfo;
-import com.intellij.usages.*;
-import com.intellij.util.SmartList;
-import com.intellij.util.ui.JBUI;
-import com.intellij.xml.util.XmlStringUtil;
+import consulo.configurable.ConfigurationException;
+import consulo.project.Project;
+import consulo.util.lang.Comparing;
+import consulo.document.util.TextRange;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiManager;
+import consulo.language.editor.refactoring.RefactoringBundle;
+import consulo.language.editor.refactoring.ui.NameSuggestionsField;
+import consulo.usage.UsageInfo;
+import consulo.usage.Usage;
+import consulo.usage.UsageInfo2UsageAdapter;
+import consulo.usage.UsageTarget;
+import consulo.usage.UsageView;
+import consulo.usage.UsageViewManager;
+import consulo.usage.UsageViewPresentation;
+import consulo.util.collection.SmartList;
+import consulo.ui.ex.awt.JBUI;
+import consulo.util.lang.xml.XmlStringUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartComponentType;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
@@ -29,7 +34,7 @@ import com.jetbrains.lang.dart.ide.findUsages.DartServerFindUsagesHandler;
 import org.dartlang.analysis.server.protocol.SourceChange;
 import org.dartlang.analysis.server.protocol.SourceEdit;
 import org.dartlang.analysis.server.protocol.SourceFileEdit;
-import org.jetbrains.annotations.Nls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -108,7 +113,7 @@ final class DartRenameDialog extends ServerRefactoringDialog<ServerRenameRefacto
     myNameSuggestionsField.addDataChangedListener(this::processNewNameChanged);
   }
 
-  private @NotNull @Nls String getLabelText() {
+  private @NotNull String getLabelText() {
     final String kindName = StringUtil.toLowerCase(myRefactoring.getElementKindName());
     final String name = myRefactoring.getOldName().isEmpty() ? kindName : kindName + " " + myRefactoring.getOldName();
     return RefactoringBundle.message("rename.0.and.its.usages.to", name);

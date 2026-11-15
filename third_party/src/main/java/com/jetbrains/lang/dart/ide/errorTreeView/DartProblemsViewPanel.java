@@ -2,34 +2,47 @@
 package com.jetbrains.lang.dart.ide.errorTreeView;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.intellij.icons.AllIcons;
-import com.intellij.ide.BrowserUtil;
-import com.intellij.ide.CopyProvider;
-import com.intellij.ide.util.PsiNavigationSupport;
-import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.application.WriteAction;
-import com.intellij.openapi.editor.ScrollType;
-import com.intellij.openapi.fileEditor.OpenFileDescriptor;
-import com.intellij.openapi.ide.CopyPasteManager;
-import com.intellij.openapi.project.DumbAwareAction;
-import com.intellij.openapi.project.DumbAwareToggleAction;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.SimpleToolWindowPanel;
-import com.intellij.openapi.ui.popup.JBPopupFactory;
-import com.intellij.openapi.util.NlsContexts;
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.pom.Navigatable;
-import com.intellij.ui.*;
-import com.intellij.ui.awt.RelativePoint;
-import com.intellij.ui.scale.JBUIScale;
-import com.intellij.ui.table.TableView;
-import com.intellij.util.EditSourceOnDoubleClickHandler;
-import com.intellij.util.EditSourceOnEnterKeyHandler;
-import com.intellij.util.OpenSourceUtil;
-import com.intellij.util.SmartList;
+import consulo.application.AllIcons;
+import consulo.webBrowser.BrowserUtil;
+import consulo.ui.ex.CopyProvider;
+import consulo.language.psi.PsiNavigationSupport;
+import consulo.ui.ex.action.ActionManager;
+import consulo.ui.ex.action.ActionPlaces;
+import consulo.ui.ex.action.ActionPopupMenu;
+import consulo.ui.ex.action.ActionToolbar;
+import consulo.ui.ex.action.ActionUpdateThread;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.language.editor.CommonDataKeys;
+import consulo.ui.ex.action.DefaultActionGroup;
+import consulo.ui.ex.action.IdeActions;
+import consulo.language.editor.PlatformDataKeys;
+import consulo.ui.ex.action.Toggleable;
+import consulo.application.WriteAction;
+import consulo.codeEditor.ScrollType;
+import consulo.navigation.OpenFileDescriptor;
+import consulo.ui.ex.awt.CopyPasteManager;
+import consulo.ui.ex.action.DumbAwareAction;
+import consulo.ui.ex.action.DumbAwareToggleAction;
+import consulo.project.Project;
+import consulo.ui.ex.awt.SimpleToolWindowPanel;
+import consulo.ui.ex.popup.JBPopupFactory;
+
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.LocalFileSystem;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.navigation.Navigatable;
+import consulo.ui.ex.awt.AutoScrollToSourceHandler;
+import consulo.ui.ex.awt.PopupHandler;
+import consulo.ui.ex.awt.ScrollPaneFactory;
+import consulo.ui.ex.awt.speedSearch.TableSpeedSearch;
+import consulo.ui.ex.RelativePoint;
+import consulo.ui.ex.awt.JBUIScale;
+import consulo.ui.ex.awt.table.TableView;
+import consulo.ui.ex.awt.EditSourceOnDoubleClickHandler;
+import consulo.ui.ex.awt.tree.EditSourceOnEnterKeyHandler;
+import consulo.ui.ex.OpenSourceUtil;
+import consulo.util.collection.SmartList;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.analyzer.DartFileInfo;
@@ -164,7 +177,7 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
 
     for (SourceChange sourceChangeFix : selectedProblemSourceChangeFixes) {
       if (sourceChangeFix == null) continue;
-      @NlsSafe String fixMessage = sourceChangeFix.getMessage();
+      String fixMessage = sourceChangeFix.getMessage();
       group.add(new AnAction(fixMessage, null, AllIcons.Actions.QuickfixBulb) {
         @Override
         public @NotNull ActionUpdateThread getActionUpdateThread() {
@@ -193,7 +206,7 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
     Icon jumpToSourceIcon = ActionManager.getInstance().getAction(IdeActions.ACTION_EDIT_SOURCE).getTemplatePresentation().getIcon();
     for (DiagnosticMessage diagnosticMessage : diagnosticMessages) {
       // Reference the message, trim, non-nullize, and remove a trailing period, if one exists
-      @NlsSafe String message = StringUtil.notNullize(diagnosticMessage.getMessage());
+      String message = StringUtil.notNullize(diagnosticMessage.getMessage());
       message = StringUtil.trimEnd(StringUtil.trim(message), ".");
 
       // Reference the Location, compute the VirtualFile
@@ -350,7 +363,7 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
     createAndShowPopup(DartBundle.message("dart.problems.view.popup.title.analysis.server.settings"), serverSettingsForm.getMainPanel());
   }
 
-  private void createAndShowPopup(@NotNull @NlsContexts.PopupTitle String title, @NotNull JPanel jPanel) {
+  private void createAndShowPopup(@NotNull String title, @NotNull JPanel jPanel) {
     Rectangle visibleRect = myTable.getVisibleRect();
     Point tableTopLeft = new Point(myTable.getLocationOnScreen().x + visibleRect.x, myTable.getLocationOnScreen().y + visibleRect.y);
 

@@ -1,7 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner;
 
-import com.intellij.xdebugger.breakpoints.XBreakpointProperties;
+import consulo.execution.debug.breakpoint.XBreakpointProperties;
 import org.jetbrains.annotations.NotNull;
 
 public class DartExceptionBreakpointProperties extends XBreakpointProperties<DartExceptionBreakpointProperties> {

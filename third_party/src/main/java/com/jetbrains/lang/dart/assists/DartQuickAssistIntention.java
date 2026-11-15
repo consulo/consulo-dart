@@ -1,16 +1,16 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.assists;
 
-import com.intellij.CommonBundle;
-import com.intellij.codeInsight.intention.FileModifier;
-import com.intellij.codeInsight.intention.IntentionAction;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.psi.PsiFile;
-import com.intellij.refactoring.util.CommonRefactoringUtil;
-import com.intellij.util.IncorrectOperationException;
+import consulo.application.CommonBundle;
+import consulo.language.editor.inspection.FileModifier;
+import consulo.language.editor.intention.IntentionAction;
+import consulo.application.ApplicationManager;
+import consulo.codeEditor.Editor;
+import consulo.project.Project;
+
+import consulo.language.psi.PsiFile;
+import consulo.language.editor.refactoring.util.CommonRefactoringUtil;
+import consulo.language.util.IncorrectOperationException;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.fixes.DartQuickFix;
@@ -47,7 +47,7 @@ public class DartQuickAssistIntention implements IntentionAction, Comparable<Int
   public @NotNull String getText() {
     if (sourceChange == null) return "";
 
-    @NlsSafe String message = sourceChange.getMessage();
+    String message = sourceChange.getMessage();
     return message;
   }
 

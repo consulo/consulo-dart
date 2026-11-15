@@ -1,12 +1,16 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.psi.impl;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.openapi.util.Condition;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.util.*;
-import com.intellij.util.SmartList;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.language.ast.ASTNode;
+import consulo.util.lang.function.Condition;
+import consulo.language.psi.PsiElement;
+import consulo.application.util.CachedValue;
+import consulo.application.util.CachedValueProvider;
+import consulo.application.util.CachedValuesManager;
+import consulo.language.psi.PsiModificationTracker;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.util.collection.SmartList;
+import consulo.util.collection.ContainerUtil;
 import com.jetbrains.lang.dart.DartComponentType;
 import com.jetbrains.lang.dart.psi.*;
 import com.jetbrains.lang.dart.util.DartClassResolveResult;

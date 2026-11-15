@@ -1,9 +1,9 @@
 // Copyright 2000-2019 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide;
 
-import com.intellij.codeInsight.hint.ImplementationTextSelectioner;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
+import consulo.language.editor.ImplementationTextSelectioner;
+import consulo.document.util.TextRange;
+import consulo.language.psi.PsiElement;
 import com.jetbrains.lang.dart.psi.DartComponentName;
 import com.jetbrains.lang.dart.psi.DartVarAccessDeclaration;
 import com.jetbrains.lang.dart.psi.DartVarInit;

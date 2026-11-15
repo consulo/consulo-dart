@@ -1,11 +1,11 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.test;
 
-import com.intellij.execution.configurations.RuntimeConfigurationError;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Computable;
-import com.intellij.openapi.util.NlsContexts;
-import com.intellij.openapi.util.text.StringUtil;
+import consulo.execution.configuration.RuntimeConfigurationError;
+import consulo.project.Project;
+import consulo.application.util.function.Computable;
+
+import consulo.util.lang.StringUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ide.runner.server.DartCommandLineRunnerParameters;
 import org.jetbrains.annotations.NotNull;
@@ -92,9 +92,9 @@ public class DartTestRunnerParameters extends DartCommandLineRunnerParameters im
     GROUP_OR_TEST_BY_NAME(DartBundle.messagePointer("test.mode.test.group.or.test.by.name")),
     MULTIPLE_NAMES(new Computable.PredefinedValueComputable<>("")); // Used by test re-runner action; not visible in UI
 
-    private final Supplier<@NlsContexts.Label String> myPresentableNameSupplier;
+    private final Supplier<String> myPresentableNameSupplier;
 
-    Scope(Supplier<@NlsContexts.Label String> nameSupplier) {
+    Scope(Supplier<String> nameSupplier) {
       myPresentableNameSupplier = nameSupplier;
     }
 

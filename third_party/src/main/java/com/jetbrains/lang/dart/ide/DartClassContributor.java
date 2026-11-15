@@ -1,18 +1,18 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide;
 
-import com.intellij.navigation.ChooseByNameContributorEx;
-import com.intellij.navigation.NavigationItem;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiManager;
-import com.intellij.psi.search.GlobalSearchScope;
+import consulo.ide.navigation.ChooseByNameContributorEx;
+import consulo.navigation.NavigationItem;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiManager;
+import consulo.language.psi.scope.GlobalSearchScope;
 import com.intellij.util.Function;
-import com.intellij.util.Processor;
-import com.intellij.util.containers.JBIterable;
-import com.intellij.util.indexing.FileBasedIndex;
-import com.intellij.util.indexing.FindSymbolParameters;
-import com.intellij.util.indexing.ID;
-import com.intellij.util.indexing.IdFilter;
+import consulo.application.util.function.Processor;
+import consulo.util.collection.JBIterable;
+import consulo.language.psi.stub.FileBasedIndex;
+import consulo.language.psi.search.FindSymbolParameters;
+import consulo.index.io.ID;
+import consulo.language.psi.stub.IdFilter;
 import com.jetbrains.lang.dart.ide.index.DartClassIndex;
 import com.jetbrains.lang.dart.psi.DartComponent;
 import com.jetbrains.lang.dart.psi.DartFile;

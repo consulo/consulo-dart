@@ -1,7 +1,7 @@
 package com.jetbrains.lang.dart.util;
 
-import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.util.io.OSAgnosticPathUtil;
+import consulo.application.util.SystemInfo;
+import consulo.util.io.OSAgnosticPathUtil;
 import org.jetbrains.annotations.NotNull;
 
 public class PathUtil {

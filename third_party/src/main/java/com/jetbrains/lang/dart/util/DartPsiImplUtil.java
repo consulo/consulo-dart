@@ -1,15 +1,23 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.util;
 
-import com.intellij.openapi.util.Key;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.*;
-import com.intellij.psi.impl.source.tree.LeafPsiElement;
-import com.intellij.psi.util.*;
-import com.intellij.util.PathUtil;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.util.dataholder.Key;
+import consulo.util.lang.Pair;
+import consulo.document.util.TextRange;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiComment;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.PsiWhiteSpace;
+import consulo.language.psi.resolve.ResolveState;
+import consulo.language.impl.psi.LeafPsiElement;
+import consulo.application.util.CachedValue;
+import consulo.application.util.CachedValueProvider;
+import consulo.application.util.CachedValuesManager;
+import consulo.language.psi.PsiModificationTracker;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.util.io.PathUtil;
+import consulo.util.collection.ContainerUtil;
 import com.jetbrains.lang.dart.DartTokenTypes;
 import com.jetbrains.lang.dart.psi.*;
 import com.jetbrains.lang.dart.resolve.DartResolveProcessor;

@@ -1,8 +1,8 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.server.vmService.frame;
 
-import com.intellij.xdebugger.frame.XExecutionStack;
-import com.intellij.xdebugger.frame.XSuspendContext;
+import consulo.execution.debug.frame.XExecutionStack;
+import consulo.execution.debug.frame.XSuspendContext;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.DartVmServiceDebugProcess;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.IsolatesInfo;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.vmServiceDrivers.service.element.Frame;

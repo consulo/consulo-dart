@@ -3,22 +3,22 @@ package com.jetbrains.lang.dart.analyzer;
 
 import com.jetbrains.lang.dart.logging.PluginLogger;
 
-import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.editor.event.DocumentEvent;
-import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.openapi.util.text.Strings;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.impl.source.resolve.ResolveCache;
-import com.intellij.psi.search.SearchScope;
-import com.intellij.testFramework.LightVirtualFile;
-import com.intellij.util.EventDispatcher;
-import com.intellij.util.PathUtil;
-import com.intellij.util.SmartList;
+import consulo.language.editor.DaemonCodeAnalyzer;
+import consulo.application.ApplicationManager;
+import consulo.ui.ModalityState;
+import consulo.logging.Logger;
+import consulo.document.event.DocumentEvent;
+import consulo.document.FileDocumentManager;
+import consulo.project.Project;
+
+import consulo.language.spellchecker.editor.impl.Strings;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.resolve.ResolveCache;
+import consulo.content.scope.SearchScope;
+import consulo.language.file.light.LightVirtualFile;
+import consulo.proxy.EventDispatcher;
+import consulo.util.io.PathUtil;
+import consulo.util.collection.SmartList;
 import org.dartlang.analysis.server.protocol.*;
 import org.jetbrains.annotations.*;
 
@@ -628,12 +628,12 @@ public final class DartServerData {
   }
 
   public static final class DartError extends DartRegion {
-    private final @NotNull @NonNls String mySeverity;
-    private final @Nullable @NonNls String myCode;
-    private final @NotNull @NlsSafe String myMessage;
-    private final @Nullable @NlsSafe String myCorrection;
+    private final @NotNull String mySeverity;
+    private final @Nullable String myCode;
+    private final @NotNull String myMessage;
+    private final @Nullable String myCorrection;
     private final @Nullable List<DiagnosticMessage> myContextMessages;
-    private final @Nullable @NonNls String myUrl;
+    private final @Nullable String myUrl;
 
     @Contract(pure = true)
     public @NotNull DartError asEofError(int fileLength) {
@@ -654,12 +654,12 @@ public final class DartServerData {
 
     private DartError(int offset,
                       int length,
-                      @NotNull @NonNls String severity,
-                      @Nullable @NonNls String code,
-                      @NotNull @Nls String message,
+                      @NotNull String severity,
+                      @Nullable String code,
+                      @NotNull String message,
                       @Nullable List<DiagnosticMessage> contextMessages,
-                      @Nullable @Nls String correction,
-                      @Nullable @NonNls String url) {
+                      @Nullable String correction,
+                      @Nullable String url) {
       super(offset, length);
       mySeverity = severity;
       myCode = code;
@@ -669,7 +669,7 @@ public final class DartServerData {
       myUrl = url;
     }
 
-    public @NotNull @NonNls String getSeverity() {
+    public @NotNull String getSeverity() {
       return mySeverity;
     }
 
@@ -677,15 +677,15 @@ public final class DartServerData {
       return mySeverity.equals(AnalysisErrorSeverity.ERROR);
     }
 
-    public @Nullable @NonNls String getCode() {
+    public @Nullable String getCode() {
       return myCode;
     }
 
-    public @NotNull @NlsSafe String getMessage() {
+    public @NotNull String getMessage() {
       return myMessage;
     }
 
-    public @Nullable @NlsSafe String getCorrection() {
+    public @Nullable String getCorrection() {
       return myCorrection;
     }
 
@@ -693,7 +693,7 @@ public final class DartServerData {
       return myContextMessages;
     }
 
-    public @Nullable @NonNls String getUrl() {
+    public @Nullable String getUrl() {
       return myUrl;
     }
   }

@@ -199,7 +199,7 @@ libraryStatement ::= metadata* ('library' libraryNameElement? | 'augment' 'libra
 
 libraryNameElement ::= <<nonStrictID>> ('.' <<nonStrictID>>)* {
   mixin="com.jetbrains.lang.dart.psi.impl.DartLibraryNameElementBase"
-  implements=["com.jetbrains.lang.dart.psi.DartPsiCompositeElement" "com.intellij.psi.PsiNameIdentifierOwner"]
+  implements=["com.jetbrains.lang.dart.psi.DartPsiCompositeElement" "consulo.language.psi.PsiNameIdentifierOwner"]
   methods=[getName]
 }
 
@@ -738,7 +738,7 @@ namedRecordField ::= <<nonStrictID>> ':' expression {pin = 2 elementType = "reco
 symbolLiteralExpression ::= '#' ('void' | userDefinableOperator | simpleQualifiedReferenceExpression) {pin=1}
 
 stringLiteralExpression ::= (RAW_SINGLE_QUOTED_STRING | RAW_TRIPLE_QUOTED_STRING | stringTemplate)+
-{mixin="com.jetbrains.lang.dart.psi.impl.DartStringLiteralExpressionBase" implements="com.jetbrains.lang.dart.psi.DartReference, com.intellij.psi.PsiLanguageInjectionHost"}
+{mixin="com.jetbrains.lang.dart.psi.impl.DartStringLiteralExpressionBase" implements="com.jetbrains.lang.dart.psi.DartReference, consulo.language.psi.PsiLanguageInjectionHost"}
 
 private stringTemplate ::= OPEN_QUOTE (REGULAR_STRING_PART | shortTemplateEntry | longTemplateEntry)* CLOSING_QUOTE {pin=1}
 shortTemplateEntry ::= SHORT_TEMPLATE_ENTRY_START (thisExpression | referenceExpression) {pin=1}

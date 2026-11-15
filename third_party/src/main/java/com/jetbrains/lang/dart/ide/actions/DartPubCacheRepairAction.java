@@ -1,18 +1,18 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.actions;
 
-import com.intellij.CommonBundle;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.Messages;
-import com.intellij.openapi.util.NlsContexts;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.application.CommonBundle;
+import consulo.project.Project;
+import consulo.ui.ex.awt.Messages;
+
+import consulo.virtualFileSystem.VirtualFile;
 import com.jetbrains.lang.dart.DartBundle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class DartPubCacheRepairAction extends DartPubActionBase {
   @Override
-  protected @NotNull @NlsContexts.DialogTitle String getTitle(final @NotNull VirtualFile pubspecYamlFile) {
+  protected @NotNull String getTitle(final @NotNull VirtualFile pubspecYamlFile) {
     return DartBundle.message("dart.pub.cache.repair.title");
   }
 

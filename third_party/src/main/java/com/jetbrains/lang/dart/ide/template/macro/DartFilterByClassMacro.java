@@ -1,11 +1,11 @@
 package com.jetbrains.lang.dart.ide.template.macro;
 
-import com.intellij.codeInsight.template.Expression;
-import com.intellij.codeInsight.template.ExpressionContext;
-import com.intellij.codeInsight.template.PsiElementResult;
-import com.intellij.codeInsight.template.Result;
-import com.intellij.psi.PsiElement;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.language.editor.template.Expression;
+import consulo.language.editor.template.ExpressionContext;
+import consulo.language.editor.template.PsiElementResult;
+import consulo.language.editor.template.Result;
+import consulo.language.psi.PsiElement;
+import consulo.util.collection.ContainerUtil;
 import com.jetbrains.lang.dart.psi.DartClass;
 import com.jetbrains.lang.dart.psi.DartComponentName;
 import com.jetbrains.lang.dart.util.DartClassResolveResult;

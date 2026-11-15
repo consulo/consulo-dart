@@ -2,39 +2,46 @@
 package com.jetbrains.lang.dart.ide.errorTreeView;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.intellij.execution.runners.ExecutionUtil;
-import com.intellij.ide.projectView.ProjectView;
-import com.intellij.ide.projectView.impl.ProjectViewPane;
+import consulo.execution.ExecutionUtil;
+import consulo.project.ui.view.ProjectView;
+import consulo.project.ui.view.ProjectViewPane;
 import com.intellij.notification.*;
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.application.ReadAction;
-import com.intellij.openapi.components.*;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ProjectFileIndex;
-import com.intellij.openapi.util.NlsContexts;
-import com.intellij.openapi.util.NlsContexts.TabTitle;
+import consulo.project.ui.notification.Notification;
+import consulo.project.ui.notification.NotificationAction;
+import consulo.project.ui.notification.NotificationDisplayType;
+import consulo.project.ui.notification.NotificationType;
+import consulo.project.ui.internal.NotificationsConfiguration;
+import consulo.disposer.Disposable;
+import consulo.application.ApplicationManager;
+import consulo.ui.ModalityState;
+import consulo.application.ReadAction;
+import consulo.component.persist.PersistentStateComponent;
+import com.thaiopensource.util.Service;
+import consulo.component.persist.State;
+import consulo.component.persist.Storage;
+import consulo.component.persist.StoragePathMacros;
+import consulo.project.Project;
+import consulo.module.content.ProjectFileIndex;
 
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.openapi.wm.ToolWindow;
-import com.intellij.openapi.wm.ToolWindowManager;
-import com.intellij.psi.search.SearchScope;
-import com.intellij.ui.content.Content;
-import com.intellij.util.Alarm;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.LocalFileSystem;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.VirtualFileManager;
+import consulo.ui.ex.toolWindow.ToolWindow;
+import consulo.project.ui.wm.ToolWindowManager;
+import consulo.content.scope.SearchScope;
+import consulo.ui.ex.content.Content;
+import consulo.ui.ex.awt.util.Alarm;
 import com.intellij.util.ModalityUiUtil;
-import com.intellij.util.PathUtil;
-import com.intellij.util.concurrency.AppExecutorUtil;
+import consulo.util.io.PathUtil;
+import consulo.application.util.concurrent.AppExecutorUtil;
 import com.intellij.util.concurrency.ThreadingAssertions;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.util.collection.ContainerUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerMessages;
 import icons.DartIcons;
 import org.dartlang.analysis.server.protocol.AnalysisError;
-import org.jetbrains.annotations.NonNls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -53,7 +60,7 @@ import java.util.Set;
   storages = @Storage(StoragePathMacros.WORKSPACE_FILE)
 )
 public final class DartProblemsView implements PersistentStateComponent<DartProblemsViewSettings>, Disposable {
-  public static final @NonNls String TOOLWINDOW_ID = "Dart Analysis"; // the same as in plugin.xml, this is not a user-visible string
+  public static final String TOOLWINDOW_ID = "Dart Analysis"; // the same as in plugin.xml, this is not a user-visible string
 
   private static final int TABLE_REFRESH_PERIOD = 300;
 
@@ -224,12 +231,12 @@ public final class DartProblemsView implements PersistentStateComponent<DartProb
     return myPresentationHelper.getCurrentFile();
   }
 
-  public void showErrorNotificationTerse(@NotNull @NlsContexts.NotificationTitle String title) {
+  public void showErrorNotificationTerse(@NotNull String title) {
     showNotification(NotificationType.ERROR, title, null, null, true, false);
   }
 
-  public void showErrorNotification(@NotNull @NlsContexts.NotificationTitle String title,
-                                    @Nullable @NlsContexts.NotificationContent String content,
+  public void showErrorNotification(@NotNull String title,
+                                    @Nullable String content,
                                     @Nullable Icon icon,
                                     boolean addOpenAnalysisAction) {
     showNotification(NotificationType.ERROR, title, content, icon, false, addOpenAnalysisAction);
@@ -243,8 +250,8 @@ public final class DartProblemsView implements PersistentStateComponent<DartProb
   }
 
   private void showNotification(@NotNull NotificationType notificationType,
-                                @NotNull @NlsContexts.NotificationTitle String title,
-                                @Nullable @NlsContexts.NotificationContent String content,
+                                @NotNull String title,
+                                @Nullable String content,
                                 @Nullable Icon icon,
                                 boolean terse,
                                 boolean addOpenAnalysisAction) {

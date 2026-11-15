@@ -1,12 +1,17 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.index;
 
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.util.indexing.*;
-import com.intellij.util.io.DataExternalizer;
-import com.intellij.util.io.EnumeratorStringDescriptor;
-import com.intellij.util.io.KeyDescriptor;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.index.io.DataIndexer;
+import consulo.language.psi.stub.DefaultFileTypeSpecificInputFilter;
+import consulo.language.psi.stub.FileBasedIndex;
+import consulo.language.psi.stub.FileBasedIndexExtension;
+import consulo.language.psi.stub.FileContent;
+import consulo.index.io.ID;
+import consulo.index.io.data.DataExternalizer;
+import consulo.index.io.EnumeratorStringDescriptor;
+import consulo.index.io.KeyDescriptor;
 import com.jetbrains.lang.dart.DartFileType;
 import org.jetbrains.annotations.NotNull;
 

@@ -1,16 +1,16 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.spelling;
 
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.TextRange;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiNameIdentifierOwner;
-import com.intellij.psi.impl.source.tree.LeafPsiElement;
+import consulo.application.dumb.DumbAware;
+import consulo.util.lang.Pair;
+import consulo.document.util.TextRange;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiNameIdentifierOwner;
+import consulo.language.impl.psi.LeafPsiElement;
 import com.intellij.spellchecker.inspections.PlainTextSplitter;
-import com.intellij.spellchecker.tokenizer.SpellcheckingStrategy;
-import com.intellij.spellchecker.tokenizer.TokenConsumer;
-import com.intellij.spellchecker.tokenizer.Tokenizer;
+import consulo.language.spellcheker.SpellcheckingStrategy;
+import consulo.language.spellcheker.tokenizer.TokenConsumer;
+import consulo.language.spellcheker.tokenizer.Tokenizer;
 import com.jetbrains.lang.dart.DartTokenTypes;
 import com.jetbrains.lang.dart.ide.annotator.DartAnnotator;
 import com.jetbrains.lang.dart.psi.DartComponentName;

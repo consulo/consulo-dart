@@ -1,8 +1,8 @@
 package com.jetbrains.lang.dart.ide.runner;
 
-import com.intellij.execution.filters.ConsoleFilterProvider;
-import com.intellij.execution.filters.Filter;
-import com.intellij.openapi.project.Project;
+import consulo.execution.ui.console.ConsoleFilterProvider;
+import consulo.execution.ui.console.Filter;
+import consulo.project.Project;
 import org.jetbrains.annotations.NotNull;
 
 public final class DartConsoleFilterProvider implements ConsoleFilterProvider {

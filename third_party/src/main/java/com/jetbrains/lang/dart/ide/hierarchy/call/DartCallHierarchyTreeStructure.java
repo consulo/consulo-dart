@@ -1,17 +1,17 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.hierarchy.call;
 
-import com.intellij.find.findUsages.FindUsagesHandler;
+import consulo.find.FindUsagesHandler;
 import com.intellij.ide.hierarchy.HierarchyBrowserBaseEx;
-import com.intellij.ide.hierarchy.HierarchyNodeDescriptor;
-import com.intellij.ide.hierarchy.HierarchyTreeStructure;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Condition;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.ArrayUtil;
-import com.intellij.util.ArrayUtilRt;
+import consulo.language.editor.hierarchy.HierarchyNodeDescriptor;
+import consulo.language.editor.hierarchy.HierarchyTreeStructure;
+import consulo.project.Project;
+import consulo.util.lang.function.Condition;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.util.collection.ArrayUtil;
+import consulo.util.collection.ArrayUtil;
 import com.jetbrains.lang.dart.ide.findUsages.DartServerFindUsagesHandler;
 import com.jetbrains.lang.dart.ide.hierarchy.DartHierarchyUtil;
 import com.jetbrains.lang.dart.psi.*;

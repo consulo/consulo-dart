@@ -1,20 +1,20 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner;
 
-import com.intellij.execution.filters.Filter;
-import com.intellij.execution.filters.HyperlinkInfo;
-import com.intellij.execution.filters.OpenFileHyperlinkInfo;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Computable;
-import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.search.FilenameIndex;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.util.io.URLUtil;
+import consulo.execution.ui.console.Filter;
+import consulo.execution.ui.console.HyperlinkInfo;
+import consulo.execution.ui.console.OpenFileHyperlinkInfo;
+import consulo.application.ApplicationManager;
+import consulo.application.progress.ProgressManager;
+import consulo.project.Project;
+import consulo.application.util.function.Computable;
+import consulo.application.util.SystemInfo;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.LocalFileSystem;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.search.FilenameIndex;
+import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.util.io.URLUtil;
 import com.jetbrains.lang.dart.ide.runner.server.OpenDartObservatoryUrlAction;
 import com.jetbrains.lang.dart.sdk.DartSdk;
 import com.jetbrains.lang.dart.util.DartUrlResolver;

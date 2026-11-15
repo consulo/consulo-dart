@@ -2,7 +2,7 @@
 package com.jetbrains.lang.dart.sdk;
 
 import com.intellij.ide.util.PropertiesComponent;
-import com.intellij.openapi.util.NlsContexts;
+
 import com.jetbrains.lang.dart.DartBundle;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,13 +18,13 @@ public enum DartSdkUpdateOption {
   private static final String DART_CHECK_SDK_UPDATE_KEY = "DART_CHECK_SDK_UPDATE_KEY";
   private static final DartSdkUpdateOption DART_CHECK_SDK_UPDATE_DEFAULT = Stable;
 
-  private final @NotNull Supplier<@NlsContexts.Label String> myPresentableNameSupplier;
+  private final @NotNull Supplier<String> myPresentableNameSupplier;
 
-  DartSdkUpdateOption(@NotNull Supplier<@NlsContexts.Label String> presentableNameSupplier) {
+  DartSdkUpdateOption(@NotNull Supplier<String> presentableNameSupplier) {
     myPresentableNameSupplier = presentableNameSupplier;
   }
 
-  public @NotNull @NlsContexts.Label String getPresentableName() {
+  public @NotNull String getPresentableName() {
     return myPresentableNameSupplier.get();
   }
 

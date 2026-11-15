@@ -1,14 +1,14 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.projectView;
 
-import com.intellij.ide.projectView.PresentationData;
-import com.intellij.ide.projectView.ProjectViewNode;
-import com.intellij.ide.projectView.ProjectViewNodeDecorator;
-import com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode;
-import com.intellij.ide.projectView.impl.nodes.PsiFileNode;
-import com.intellij.openapi.editor.colors.CodeInsightColors;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.vfs.VirtualFile;
+import consulo.ui.ex.tree.PresentationData;
+import consulo.project.ui.view.tree.ProjectViewNode;
+import consulo.project.ui.view.tree.ProjectViewNodeDecorator;
+import consulo.project.ui.view.tree.PsiDirectoryNode;
+import consulo.project.ui.view.tree.PsiFileNode;
+import consulo.codeEditor.CodeInsightColors;
+import consulo.project.Project;
+import consulo.virtualFileSystem.VirtualFile;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import org.jetbrains.annotations.NotNull;
 

@@ -41,51 +41,51 @@ import com.google.dart.server.utilities.logging.Logging;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.intellij.codeInsight.CodeInsightSettings;
-import com.intellij.codeInsight.daemon.DaemonCodeAnalyzer;
-import com.intellij.openapi.Disposable;
-import com.intellij.openapi.application.ApplicationInfo;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ApplicationNamesInfo;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.editor.EditorFactory;
-import com.intellij.openapi.editor.event.DocumentEvent;
-import com.intellij.openapi.editor.event.DocumentListener;
-import com.intellij.openapi.fileEditor.FileDocumentManager;
-import com.intellij.openapi.fileEditor.FileEditorManager;
-import com.intellij.openapi.fileEditor.FileEditorManagerEvent;
-import com.intellij.openapi.fileEditor.FileEditorManagerListener;
+import consulo.language.editor.CodeInsightSettings;
+import consulo.language.editor.DaemonCodeAnalyzer;
+import consulo.disposer.Disposable;
+import consulo.application.internal.ApplicationInfo;
+import consulo.application.ApplicationManager;
+import consulo.application.Application;
+import consulo.ui.ModalityState;
+import consulo.logging.Logger;
+import consulo.document.Document;
+import consulo.codeEditor.Editor;
+import consulo.codeEditor.EditorFactory;
+import consulo.document.event.DocumentEvent;
+import consulo.document.event.DocumentListener;
+import consulo.document.FileDocumentManager;
+import consulo.fileEditor.FileEditorManager;
+import consulo.fileEditor.event.FileEditorManagerEvent;
+import consulo.fileEditor.event.FileEditorManagerListener;
 import com.intellij.openapi.fileEditor.impl.FileOffsetsManager;
-import com.intellij.openapi.fileTypes.FileTypeRegistry;
-import com.intellij.openapi.progress.ProcessCanceledException;
-import com.intellij.openapi.progress.ProgressIndicator;
-import com.intellij.openapi.progress.ProgressManager;
-import com.intellij.openapi.progress.Task;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.util.Pair;
-import com.intellij.openapi.util.Ref;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.registry.Registry;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.util.text.Strings;
-import com.intellij.openapi.vfs.VfsUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.VirtualFileManager;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.search.SearchScope;
-import com.intellij.util.Alarm;
+import consulo.virtualFileSystem.fileType.FileTypeRegistry;
+import consulo.component.ProcessCanceledException;
+import consulo.application.progress.ProgressIndicator;
+import consulo.application.progress.ProgressManager;
+import consulo.application.progress.Task;
+import consulo.project.Project;
+import consulo.util.lang.Comparing;
+import consulo.util.lang.function.Condition;
+import consulo.util.lang.Pair;
+import consulo.util.lang.ref.Ref;
+import consulo.util.io.FileUtil;
+import consulo.application.util.registry.Registry;
+import consulo.util.lang.StringUtil;
+import consulo.language.spellchecker.editor.impl.Strings;
+import consulo.virtualFileSystem.util.VirtualFileUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.VirtualFileManager;
+import consulo.language.psi.PsiFile;
+import consulo.content.scope.SearchScope;
+import consulo.ui.ex.awt.util.Alarm;
 import com.intellij.util.Consumer;
 import com.intellij.util.ModalityUiUtil;
-import com.intellij.util.PathUtil;
-import com.intellij.util.SmartList;
-import com.intellij.util.TimeoutUtil;
-import com.intellij.util.containers.ContainerUtil;
-import com.intellij.util.io.URLUtil;
+import consulo.util.io.PathUtil;
+import consulo.util.collection.SmartList;
+import consulo.util.lang.TimeoutUtil;
+import consulo.util.collection.ContainerUtil;
+import consulo.util.io.URLUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartFileType;
 import com.jetbrains.lang.dart.assists.DartQuickAssistIntention;
@@ -149,7 +149,7 @@ import org.eclipse.lsp4j.Position;
 import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.SemanticTokensLegend;
 import org.jetbrains.annotations.Contract;
-import org.jetbrains.annotations.NonNls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.annotations.TestOnly;
@@ -413,7 +413,7 @@ public final class DartAnalysisServerService implements Disposable {
     }
 
     @Override
-    public void serverError(boolean isFatal, @Nullable String message, @NonNls @Nullable String stackTrace) {
+    public void serverError(boolean isFatal, @Nullable String message, @Nullable String stackTrace) {
       if (message == null) {
         message = DartBundle.message("issue.occurred.with.analysis.server");
       }
@@ -1284,7 +1284,7 @@ public final class DartAnalysisServerService implements Disposable {
   public static boolean isFileNameRespectedByAnalysisServer(@NotNull String _fileName) {
     // see https://github.com/dart-lang/sdk/blob/master/pkg/analyzer/lib/src/generated/engine.dart (class AnalysisEngine)
     // and AbstractAnalysisServer.analyzableFilePatterns
-    @NonNls String fileName = _fileName.toLowerCase(Locale.US);
+    String fileName = _fileName.toLowerCase(Locale.US);
     return fileName.endsWith(".dart") ||
            fileName.endsWith(".htm") ||
            fileName.endsWith(".html") ||
@@ -2799,7 +2799,7 @@ public final class DartAnalysisServerService implements Disposable {
     return DartProblemsView.getInstance(myProject).isFileWithErrors(file);
   }
 
-  private void logError(final @NonNls @NotNull String methodName, final @Nullable String filePath, final @NotNull RequestError error) {
+  private void logError(final @NotNull String methodName, final @Nullable String filePath, final @NotNull RequestError error) {
     if (RequestErrorCode.FILE_NOT_ANALYZED.equals(error.getCode())) {
       LOG.info(getShortErrorMessage(methodName, filePath, error));
       return;
@@ -2811,7 +2811,7 @@ public final class DartAnalysisServerService implements Disposable {
     LOG.error(message);
   }
 
-  private @NonNls @NotNull String getShortErrorMessage(@NonNls @NotNull String methodName,
+  private @NotNull String getShortErrorMessage(@NotNull String methodName,
                                                        @Nullable String filePath,
                                                        @NotNull RequestError error) {
     return "Error from " + methodName +
@@ -2821,8 +2821,8 @@ public final class DartAnalysisServerService implements Disposable {
            ", error code = " + error.getCode() + ": " + error.getMessage();
   }
 
-  private void logTookTooLongMessage(final @NonNls @NotNull String methodName, final long timeout, @Nullable String filePath) {
-    @NonNls StringBuilder builder = new StringBuilder();
+  private void logTookTooLongMessage(final @NotNull String methodName, final long timeout, @Nullable String filePath) {
+    StringBuilder builder = new StringBuilder();
     builder.append(methodName).append("() took longer than ").append(timeout).append("ms");
     if (filePath != null) {
       builder.append(", for file ").append(filePath);

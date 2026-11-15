@@ -2,14 +2,14 @@
 package com.jetbrains.lang.dart.ide.hierarchy.call;
 
 import com.intellij.ide.hierarchy.CallHierarchyBrowserBase;
-import com.intellij.ide.hierarchy.HierarchyBrowser;
-import com.intellij.ide.hierarchy.HierarchyProvider;
-import com.intellij.openapi.actionSystem.CommonDataKeys;
-import com.intellij.openapi.actionSystem.DataContext;
-import com.intellij.openapi.project.Project;
+import consulo.language.editor.internal.hierarchy.HierarchyBrowser;
+import consulo.language.editor.hierarchy.HierarchyProvider;
+import consulo.language.editor.CommonDataKeys;
+import consulo.dataContext.DataContext;
+import consulo.project.Project;
 import com.intellij.platform.dartlsp.impl.features.hierarchy.call.LspCallHierarchyBrowser;
 import com.intellij.platform.dartlsp.impl.features.hierarchy.call.LspCallHierarchyProvider;
-import com.intellij.psi.PsiElement;
+import consulo.language.psi.PsiElement;
 import com.jetbrains.lang.dart.ide.hierarchy.DartHierarchyUtil;
 import com.jetbrains.lang.dart.sdk.DartConfigurable;
 import org.jetbrains.annotations.NotNull;

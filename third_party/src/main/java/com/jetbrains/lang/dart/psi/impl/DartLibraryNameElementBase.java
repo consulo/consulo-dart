@@ -1,17 +1,17 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.psi.impl;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.navigation.ItemPresentation;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiNameIdentifierOwner;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.IncorrectOperationException;
+import consulo.language.ast.ASTNode;
+import consulo.navigation.ItemPresentation;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiNameIdentifierOwner;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.language.util.IncorrectOperationException;
 import com.jetbrains.lang.dart.psi.DartId;
 import com.jetbrains.lang.dart.psi.DartLibraryNameElement;
 import com.jetbrains.lang.dart.util.DartElementGenerator;
 import icons.DartIcons;
-import org.jetbrains.annotations.NonNls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,7 +23,7 @@ public abstract class DartLibraryNameElementBase extends DartPsiCompositeElement
   }
 
   @Override
-  public PsiElement setName(@NonNls @NotNull String newLibraryName) throws IncorrectOperationException {
+  public PsiElement setName(@NotNull String newLibraryName) throws IncorrectOperationException {
     final DartLibraryNameElement libraryNameElementNew =
       DartElementGenerator.createLibraryNameElementFromText(getProject(), newLibraryName);
 

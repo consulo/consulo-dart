@@ -1,14 +1,14 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.errorTreeView;
 
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.util.text.StringUtil;
+import consulo.application.AllIcons;
+import consulo.util.lang.StringUtil;
 import com.intellij.util.concurrency.ThreadingAssertions;
-import com.intellij.util.ui.ColumnInfo;
-import com.intellij.util.ui.ListTableModel;
+import consulo.ui.ex.awt.ColumnInfo;
+import consulo.ui.ex.awt.table.ListTableModel;
 import com.jetbrains.lang.dart.DartBundle;
 import org.dartlang.analysis.server.protocol.AnalysisErrorSeverity;
-import org.jetbrains.annotations.Nls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -330,8 +330,7 @@ class DartProblemsTableModel extends ListTableModel<DartProblem> {
     return myWarningCount > 0;
   }
 
-  @NotNull @Nls
-  String getTabTitleText() {
+  @NotNull String getTabTitleText() {
     List<String> statusParts = new ArrayList<>();
 
     if (myPresentationHelper.isShowErrors() && myErrorCountAfterFilter > 0) {
@@ -348,7 +347,7 @@ class DartProblemsTableModel extends ListTableModel<DartProblem> {
       return myPresentationHelper.areFiltersApplied() ? myPresentationHelper.getFilterTypeText() : "";
     }
 
-    @Nls String statusText;
+    String statusText;
     if (statusParts.size() == 1) {
       statusText = statusParts.getFirst();
     }

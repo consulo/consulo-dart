@@ -1,17 +1,17 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ui;
 
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.application.ReadAction;
-import com.intellij.openapi.fileChooser.FileChooser;
-import com.intellij.openapi.fileChooser.FileChooserDescriptor;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.ui.ComboBox;
-import com.intellij.openapi.util.NlsContexts;
-import com.intellij.openapi.util.io.FileUtil;
+import consulo.application.AllIcons;
+import consulo.ui.ModalityState;
+import consulo.application.ReadAction;
+import consulo.fileChooser.FileChooser;
+import consulo.fileChooser.FileChooserDescriptor;
+import consulo.project.Project;
+import consulo.ui.ex.awt.ComboBox;
+
+import consulo.util.io.FileUtil;
 import com.intellij.ui.components.fields.ExtendableTextField;
-import com.intellij.util.concurrency.AppExecutorUtil;
+import consulo.application.util.concurrent.AppExecutorUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -33,7 +33,7 @@ public class BasicComboBoxWithBrowseButton<T> extends ComboBox<T> {
     });
   }
 
-  public <R> void addBrowseFolderListener(@Nullable @NlsContexts.DialogTitle String title,
+  public <R> void addBrowseFolderListener(@Nullable String title,
                                           @Nullable Project project,
                                           @NotNull FileChooserDescriptor descriptor,
                                           @NotNull Function<String, R> backgroundResolver,

@@ -1,15 +1,15 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.info;
 
-import com.intellij.codeInsight.CodeInsightBundle;
-import com.intellij.lang.parameterInfo.CreateParameterInfoContext;
-import com.intellij.lang.parameterInfo.ParameterInfoHandler;
-import com.intellij.lang.parameterInfo.ParameterInfoUIContext;
-import com.intellij.lang.parameterInfo.UpdateParameterInfoContext;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.util.text.Strings;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.util.PsiTreeUtil;
+import consulo.language.editor.CodeInsightBundle;
+import consulo.language.editor.parameterInfo.CreateParameterInfoContext;
+import consulo.language.editor.parameterInfo.ParameterInfoHandler;
+import consulo.language.editor.parameterInfo.ParameterInfoUIContext;
+import consulo.language.editor.parameterInfo.UpdateParameterInfoContext;
+import consulo.application.ApplicationManager;
+import consulo.language.spellchecker.editor.impl.Strings;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.util.PsiTreeUtil;
 import com.jetbrains.lang.dart.psi.*;
 import com.jetbrains.lang.dart.sdk.DartConfigurable;
 import com.jetbrains.lang.dart.util.DartClassResolveResult;

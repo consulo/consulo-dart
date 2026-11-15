@@ -1,14 +1,14 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.runner;
 
-import com.intellij.icons.AllIcons;
-import com.intellij.openapi.project.Project;
-import com.intellij.ui.IdeBorderFactory;
-import com.intellij.ui.components.JBRadioButton;
-import com.intellij.xdebugger.breakpoints.XBreakpoint;
-import com.intellij.xdebugger.breakpoints.XBreakpointListener;
-import com.intellij.xdebugger.breakpoints.XBreakpointType;
-import com.intellij.xdebugger.breakpoints.ui.XBreakpointCustomPropertiesPanel;
+import consulo.application.AllIcons;
+import consulo.project.Project;
+import consulo.ui.ex.awt.IdeBorderFactory;
+import consulo.ui.ex.awt.JBRadioButton;
+import consulo.execution.debug.breakpoint.XBreakpoint;
+import consulo.execution.debug.event.XBreakpointListener;
+import consulo.execution.debug.breakpoint.XBreakpointType;
+import consulo.execution.debug.breakpoint.ui.XBreakpointCustomPropertiesPanel;
 import com.jetbrains.lang.dart.DartBundle;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

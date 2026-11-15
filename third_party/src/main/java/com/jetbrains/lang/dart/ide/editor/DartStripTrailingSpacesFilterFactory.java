@@ -1,13 +1,13 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.editor;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.Language;
-import com.intellij.openapi.editor.Document;
-import com.intellij.openapi.editor.impl.PsiBasedStripTrailingSpacesFilter;
-import com.intellij.psi.PsiElementVisitor;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.tree.IElementType;
+import consulo.language.ast.ASTNode;
+import consulo.language.Language;
+import consulo.document.Document;
+import consulo.language.editor.PsiBasedStripTrailingSpacesFilter;
+import consulo.language.psi.PsiElementVisitor;
+import consulo.language.psi.PsiFile;
+import consulo.language.ast.IElementType;
 import com.jetbrains.lang.dart.DartLanguage;
 import com.jetbrains.lang.dart.psi.DartRecursiveVisitor;
 import com.jetbrains.lang.dart.psi.DartStringLiteralExpression;

@@ -6,9 +6,9 @@
 package com.jetbrains.lang.dart.ide.findUsages;
 
 import com.intellij.codeInsight.TargetElementEvaluatorEx2;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiReference;
+import consulo.project.Project;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiReference;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

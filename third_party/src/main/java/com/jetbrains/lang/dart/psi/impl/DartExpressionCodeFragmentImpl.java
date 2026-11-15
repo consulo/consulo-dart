@@ -1,30 +1,34 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.psi.impl;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.Language;
-import com.intellij.lang.PsiBuilder;
-import com.intellij.lang.PsiBuilderFactory;
-import com.intellij.openapi.fileTypes.FileTypeManager;
-import com.intellij.openapi.project.Project;
+import consulo.language.ast.ASTNode;
+import consulo.language.Language;
+import consulo.language.parser.PsiBuilder;
+import consulo.language.parser.PsiBuilderFactory;
+import consulo.language.file.FileTypeManager;
+import consulo.project.Project;
 import com.intellij.psi.*;
-import com.intellij.psi.impl.PsiManagerEx;
-import com.intellij.psi.impl.file.impl.FileManager;
-import com.intellij.psi.impl.source.tree.FileElement;
-import com.intellij.psi.impl.source.tree.TreeElement;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.tree.IFileElementType;
-import com.intellij.testFramework.LightVirtualFile;
+import consulo.language.file.FileViewProvider;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiManager;
+import consulo.language.impl.file.SingleRootFileViewProvider;
+import consulo.language.impl.internal.psi.PsiManagerEx;
+import consulo.language.impl.internal.file.FileManager;
+import consulo.language.impl.ast.FileElement;
+import consulo.language.impl.ast.TreeElement;
+import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.language.ast.IFileElementType;
+import consulo.language.file.light.LightVirtualFile;
 import com.jetbrains.lang.dart.DartLanguage;
 import com.jetbrains.lang.dart.DartParser;
 import com.jetbrains.lang.dart.DartTokenTypes;
 import com.jetbrains.lang.dart.psi.DartExpressionCodeFragment;
 import com.jetbrains.lang.dart.psi.DartFile;
-import org.jetbrains.annotations.NonNls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
+
 
 public class DartExpressionCodeFragmentImpl extends DartFile implements DartExpressionCodeFragment {
   private PsiElement myContext;
@@ -33,7 +37,7 @@ public class DartExpressionCodeFragmentImpl extends DartFile implements DartExpr
   private GlobalSearchScope myScope = null;
 
   public DartExpressionCodeFragmentImpl(Project project,
-                                        @NonNls String name,
+                                        String name,
                                         CharSequence text,
                                         boolean isPhysical) {
     super(new SingleRootFileViewProvider(PsiManager.getInstance(project),

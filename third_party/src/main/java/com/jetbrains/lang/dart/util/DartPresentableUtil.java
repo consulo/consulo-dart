@@ -1,13 +1,12 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.util;
 
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.util.PsiTreeUtil;
-import com.intellij.util.ui.UIUtil;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.util.PsiTreeUtil;
+import consulo.ui.ex.awt.UIUtil;
 import com.jetbrains.lang.dart.DartTokenTypes;
 import com.jetbrains.lang.dart.psi.*;
-import org.jetbrains.annotations.NonNls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,8 +14,8 @@ import java.util.List;
 
 public final class DartPresentableUtil {
 
-  public static final @NonNls String RIGHT_ARROW = UIUtil.rightArrow();
-  private static final @NonNls String SPACE = " ";
+  public static final String RIGHT_ARROW = UIUtil.rightArrow();
+  private static final String SPACE = " ";
 
   public static String setterGetterName(String name) {
     return name.startsWith("_") ? name.substring(1) : name;
@@ -30,7 +29,7 @@ public final class DartPresentableUtil {
     return getPresentableParameterList(element, specialization, false, false, false);
   }
 
-  public static @NotNull @NlsSafe String getPresentableParameterList(DartComponent element,
+  public static @NotNull String getPresentableParameterList(DartComponent element,
                                                                      DartGenericSpecialization specialization,
                                                                      boolean functionalStyleSignatures,
                                                                      boolean displayDefaultValues,
@@ -168,13 +167,13 @@ public final class DartPresentableUtil {
     return result.toString();
   }
 
-  public static @NotNull @NlsSafe String buildTypeText(@Nullable DartComponent element,
+  public static @NotNull String buildTypeText(@Nullable DartComponent element,
                                                        @NotNull DartReturnType returnType,
                                                        @Nullable DartGenericSpecialization specializations) {
     return returnType.getType() == null ? "void" : buildTypeText(element, returnType.getType(), specializations);
   }
 
-  public static @NotNull @NlsSafe String buildTypeText(@Nullable DartComponent element,
+  public static @NotNull String buildTypeText(@Nullable DartComponent element,
                                                        @Nullable DartType type,
                                                        @Nullable DartGenericSpecialization specializations) {
     if (type == null) {

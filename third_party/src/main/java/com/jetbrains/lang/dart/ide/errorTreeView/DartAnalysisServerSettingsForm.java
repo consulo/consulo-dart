@@ -1,9 +1,9 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.errorTreeView;
 
-import com.intellij.openapi.project.Project;
-import com.intellij.ui.HoverHyperlinkLabel;
-import com.intellij.ui.HyperlinkAdapter;
+import consulo.project.Project;
+import consulo.ide.impl.idea.ui.HoverHyperlinkLabel;
+import consulo.ui.ex.awt.HyperlinkAdapter;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.sdk.DartConfigurable;
 import org.jetbrains.annotations.NotNull;

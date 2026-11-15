@@ -1,8 +1,8 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.psi.impl;
 
-import com.intellij.psi.impl.source.tree.LazyParseablePsiElement;
-import com.intellij.psi.tree.IElementType;
+import consulo.language.impl.psi.LazyParseablePsiElement;
+import consulo.language.ast.IElementType;
 import com.jetbrains.lang.dart.psi.DartLazyParseableBlock;
 import com.jetbrains.lang.dart.psi.DartStatements;
 import org.jetbrains.annotations.NotNull;

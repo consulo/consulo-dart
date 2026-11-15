@@ -1,10 +1,10 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.analyzer;
 
-import com.intellij.codeInsight.hints.declarative.DeclarativeInlayHintsSettings;
-import com.intellij.codeInsight.hints.declarative.impl.DeclarativeInlayHintsPassFactory;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.editor.EditorFactory;
+import consulo.language.editor.inlay.DeclarativeInlayHintsSettings;
+import consulo.ide.impl.idea.codeInsight.hints.DeclarativeInlayHintsPassFactory;
+import consulo.application.ApplicationManager;
+import consulo.codeEditor.EditorFactory;
 import com.jetbrains.lang.dart.hints.DartClosingLabelsInlayHintsProvider;
 
 import java.util.Arrays;

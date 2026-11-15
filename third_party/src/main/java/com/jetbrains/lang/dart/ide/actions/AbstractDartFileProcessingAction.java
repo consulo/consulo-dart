@@ -1,34 +1,38 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.actions;
 
-import com.intellij.codeInsight.hint.HintManager;
-import com.intellij.codeInsight.hint.HintManagerImpl;
-import com.intellij.codeInsight.hint.HintUtil;
-import com.intellij.openapi.actionSystem.*;
-import com.intellij.openapi.application.ApplicationManager;
-import com.intellij.openapi.application.ModalityState;
-import com.intellij.openapi.editor.Editor;
-import com.intellij.openapi.fileTypes.FileTypeRegistry;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.module.ModuleUtilCore;
-import com.intellij.openapi.project.DumbAware;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ProjectFileIndex;
-import com.intellij.openapi.roots.ProjectRootManager;
-import com.intellij.openapi.util.NlsContexts;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiDocumentManager;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.search.FileTypeIndex;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.search.GlobalSearchScopesCore;
-import com.intellij.ui.LightweightHint;
-import com.intellij.util.SmartList;
+import consulo.language.editor.hint.HintManager;
+import consulo.ide.impl.idea.codeInsight.hint.HintManagerImpl;
+import consulo.language.editor.ui.awt.HintUtil;
+import consulo.ui.ex.action.ActionUpdateThread;
+import consulo.ui.ex.action.AnAction;
+import consulo.ui.ex.action.AnActionEvent;
+import consulo.language.editor.CommonDataKeys;
+import consulo.ui.ex.action.Presentation;
+import consulo.application.ApplicationManager;
+import consulo.ui.ModalityState;
+import consulo.codeEditor.Editor;
+import consulo.virtualFileSystem.fileType.FileTypeRegistry;
+import consulo.module.Module;
+import consulo.language.util.ModuleUtilCore;
+import consulo.application.dumb.DumbAware;
+import consulo.project.Project;
+import consulo.module.content.ProjectFileIndex;
+import consulo.module.content.ProjectRootManager;
+
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.PsiDocumentManager;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.search.FileTypeIndex;
+import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.language.psi.scope.GlobalSearchScopesCore;
+import consulo.ui.ex.awt.hint.LightweightHint;
+import consulo.util.collection.SmartList;
 import com.jetbrains.lang.dart.DartFileType;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.sdk.DartSdk;
 import com.jetbrains.lang.dart.sdk.DartSdkLibUtil;
-import org.jetbrains.annotations.Nls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -72,9 +76,9 @@ public abstract class AbstractDartFileProcessingAction extends AnAction implemen
     }
   }
 
-  protected abstract @NotNull @Nls String getActionTextForEditor();
+  protected abstract @NotNull String getActionTextForEditor();
 
-  protected abstract @NotNull @Nls String getActionTextForFiles();
+  protected abstract @NotNull String getActionTextForFiles();
 
   protected abstract void runOverEditor(final @NotNull Project project,
                                         final @NotNull Editor editor,
@@ -117,7 +121,7 @@ public abstract class AbstractDartFileProcessingAction extends AnAction implemen
     presentation.setText(getActionTextForFiles());
   }
 
-  public static void showHintLater(final @NotNull Editor editor, final @NotNull @NlsContexts.HintText String text, final boolean error) {
+  public static void showHintLater(final @NotNull Editor editor, final @NotNull String text, final boolean error) {
     ApplicationManager.getApplication().invokeLater(() -> {
       final JComponent component = error ? HintUtil.createErrorLabel(text) : HintUtil.createInformationLabel(text);
       final LightweightHint hint = new LightweightHint(component);

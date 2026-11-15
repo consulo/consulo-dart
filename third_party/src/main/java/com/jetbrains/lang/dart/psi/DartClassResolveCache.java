@@ -1,12 +1,12 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.psi;
 
-import com.intellij.openapi.components.Service;
-import com.intellij.openapi.progress.ProgressIndicatorProvider;
-import com.intellij.openapi.project.Project;
-import com.intellij.psi.impl.AnyPsiChangeListener;
-import com.intellij.psi.impl.PsiManagerImpl;
-import com.intellij.util.containers.CollectionFactory;
+import com.thaiopensource.util.Service;
+import consulo.application.progress.ProgressIndicatorProvider;
+import consulo.project.Project;
+import consulo.language.psi.AnyPsiChangeListener;
+import consulo.language.impl.internal.psi.PsiManagerImpl;
+import consulo.util.collection.Maps;
 import com.jetbrains.lang.dart.util.DartClassResolveResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

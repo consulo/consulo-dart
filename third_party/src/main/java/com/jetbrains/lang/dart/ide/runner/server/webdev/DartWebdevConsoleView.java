@@ -1,15 +1,15 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.server.webdev;
 
-import com.intellij.execution.configurations.CommandLineState;
-import com.intellij.execution.filters.TextConsoleBuilder;
-import com.intellij.execution.filters.TextConsoleBuilderImpl;
-import com.intellij.execution.impl.ConsoleViewImpl;
-import com.intellij.execution.ui.ConsoleView;
-import com.intellij.execution.ui.ConsoleViewContentType;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.text.Strings;
-import com.intellij.psi.search.GlobalSearchScope;
+import consulo.execution.configuration.CommandLineState;
+import consulo.execution.ui.console.TextConsoleBuilder;
+import consulo.ide.impl.idea.execution.filters.TextConsoleBuilderImpl;
+import consulo.ide.impl.idea.execution.impl.ConsoleViewImpl;
+import consulo.execution.ui.console.ConsoleView;
+import consulo.execution.ui.console.ConsoleViewContentType;
+import consulo.project.Project;
+import consulo.language.spellchecker.editor.impl.Strings;
+import consulo.language.psi.scope.GlobalSearchScope;
 import org.jetbrains.annotations.NotNull;
 
 /**

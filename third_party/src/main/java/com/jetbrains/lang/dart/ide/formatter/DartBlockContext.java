@@ -1,8 +1,8 @@
 package com.jetbrains.lang.dart.ide.formatter;
 
-import com.intellij.formatting.FormattingMode;
-import com.intellij.psi.codeStyle.CodeStyleSettings;
-import com.intellij.psi.codeStyle.CommonCodeStyleSettings;
+import consulo.language.codeStyle.FormattingMode;
+import consulo.language.codeStyle.CodeStyleSettings;
+import consulo.language.codeStyle.CommonCodeStyleSettings;
 import com.jetbrains.lang.dart.DartLanguage;
 
 class DartBlockContext {

@@ -1,7 +1,7 @@
 package com.jetbrains.lang.dart.psi;
 
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiRecursiveVisitor;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiRecursiveVisitor;
 import org.jetbrains.annotations.NotNull;
 
 public class DartRecursiveVisitor extends DartVisitor implements PsiRecursiveVisitor {

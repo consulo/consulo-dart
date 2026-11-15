@@ -2,18 +2,18 @@
 package com.jetbrains.lang.dart.ide.runner;
 
 import com.google.common.annotations.VisibleForTesting;
-import com.intellij.openapi.fileTypes.FileTypeRegistry;
-import com.intellij.openapi.module.Module;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ProjectFileIndex;
-import com.intellij.openapi.roots.ProjectRootManager;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.search.GlobalSearchScope;
-import com.intellij.psi.search.GlobalSearchScopesCore;
+import consulo.virtualFileSystem.fileType.FileTypeRegistry;
+import consulo.module.Module;
+import consulo.project.Project;
+import consulo.module.content.ProjectFileIndex;
+import consulo.module.content.ProjectRootManager;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.language.psi.scope.GlobalSearchScope;
+import consulo.language.psi.scope.GlobalSearchScopesCore;
 import com.jetbrains.lang.dart.DartFileType;
 import com.jetbrains.lang.dart.ide.errorTreeView.DartProblemsView;
 import com.jetbrains.lang.dart.util.PubspecYamlUtil;
-import org.jetbrains.annotations.Nls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -24,7 +24,7 @@ public final class DartExecutionHelper {
 
   public static void displayIssues(final @NotNull Project project,
                                    @NotNull VirtualFile launchFile,
-                                   @NotNull @Nls String message,
+                                   @NotNull String message,
                                    @Nullable Icon icon) {
     clearIssueNotifications(project);
 

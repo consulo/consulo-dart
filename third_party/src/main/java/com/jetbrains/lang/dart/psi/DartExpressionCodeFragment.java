@@ -1,6 +1,6 @@
 package com.jetbrains.lang.dart.psi;
 
-import com.intellij.psi.PsiCodeFragment;
+import consulo.language.psi.PsiCodeFragment;
 
 public interface DartExpressionCodeFragment extends PsiCodeFragment {
 }

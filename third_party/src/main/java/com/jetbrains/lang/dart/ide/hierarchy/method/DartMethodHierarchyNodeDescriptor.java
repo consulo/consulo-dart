@@ -1,19 +1,19 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.hierarchy.method;
 
-import com.intellij.icons.AllIcons;
-import com.intellij.ide.IdeBundle;
-import com.intellij.ide.hierarchy.HierarchyNodeDescriptor;
-import com.intellij.ide.util.treeView.NodeDescriptor;
-import com.intellij.navigation.ItemPresentation;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.roots.ui.util.CompositeAppearance;
-import com.intellij.openapi.util.Comparing;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
+import consulo.application.AllIcons;
+import consulo.ide.IdeBundle;
+import consulo.language.editor.hierarchy.HierarchyNodeDescriptor;
+import consulo.ui.ex.tree.NodeDescriptor;
+import consulo.navigation.ItemPresentation;
+import consulo.project.Project;
+import consulo.ui.ex.util.CompositeAppearance;
+import consulo.util.lang.Comparing;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
 import com.intellij.ui.IconManager;
 import com.jetbrains.lang.dart.psi.DartClass;
-import org.jetbrains.annotations.Nls;
+
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -108,7 +108,7 @@ public class DartMethodHierarchyNodeDescriptor extends HierarchyNodeDescriptor {
     return null;
   }
 
-  private static @Nls String getInvalidPrefix() {
+  private static String getInvalidPrefix() {
     return IdeBundle.message("node.hierarchy.invalid");
   }
 }

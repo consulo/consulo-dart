@@ -1,9 +1,9 @@
 package com.jetbrains.lang.dart.lexer;
 
-import com.intellij.lexer.FlexAdapter;
-import com.intellij.lexer.MergeFunction;
-import com.intellij.lexer.MergingLexerAdapterBase;
-import com.intellij.psi.tree.IElementType;
+import consulo.language.lexer.FlexAdapter;
+import consulo.language.lexer.MergeFunction;
+import consulo.language.lexer.MergingLexerAdapterBase;
+import consulo.language.ast.IElementType;
 
 import static com.jetbrains.lang.dart.DartTokenTypes.REGULAR_STRING_PART;
 import static com.jetbrains.lang.dart.DartTokenTypesSets.*;

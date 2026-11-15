@@ -1,13 +1,13 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.server;
 
-import com.intellij.execution.ConsoleFolding;
-import com.intellij.execution.configurations.CommandLineTokenizer;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.util.PathUtil;
+import consulo.execution.ConsoleFolding;
+import consulo.execution.util.CommandLineTokenizer;
+import consulo.project.Project;
+import consulo.application.util.SystemInfo;
+import consulo.util.io.FileUtil;
+import consulo.util.lang.StringUtil;
+import consulo.util.io.PathUtil;
 import com.jetbrains.lang.dart.ide.runner.DartConsoleFilter;
 import com.jetbrains.lang.dart.sdk.DartSdkUtil;
 import org.jetbrains.annotations.NotNull;

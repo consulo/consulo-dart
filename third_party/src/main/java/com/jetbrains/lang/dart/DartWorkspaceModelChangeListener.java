@@ -1,6 +1,6 @@
 package com.jetbrains.lang.dart;
 
-import com.intellij.openapi.project.Project;
+import consulo.project.Project;
 import com.intellij.platform.backend.workspace.WorkspaceModelChangeListener;
 import com.intellij.platform.workspace.jps.entities.ContentRootEntity;
 import com.intellij.platform.workspace.jps.entities.ModuleEntity;

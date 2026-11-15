@@ -1,19 +1,24 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.psi;
 
-import com.intellij.openapi.util.Condition;
-import com.intellij.openapi.util.SystemInfo;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.io.OSAgnosticPathUtil;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.openapi.vfs.newvfs.ManagingFS;
-import com.intellij.patterns.PlatformPatterns;
-import com.intellij.psi.*;
-import com.intellij.psi.impl.source.resolve.reference.impl.providers.FileReferenceSet;
-import com.intellij.util.ProcessingContext;
-import com.intellij.util.SmartList;
-import com.intellij.util.containers.ContainerUtil;
+import consulo.util.lang.function.Condition;
+import consulo.application.util.SystemInfo;
+import consulo.util.io.FileUtil;
+import consulo.util.io.OSAgnosticPathUtil;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.virtualFileSystem.ManagingFS;
+import consulo.language.pattern.PlatformPatterns;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFileSystemItem;
+import consulo.language.psi.PsiReference;
+import consulo.language.psi.PsiReferenceContributor;
+import consulo.language.psi.PsiReferenceProvider;
+import consulo.language.psi.PsiReferenceRegistrar;
+import consulo.language.psi.path.FileReferenceSet;
+import consulo.language.util.ProcessingContext;
+import consulo.util.collection.SmartList;
+import consulo.util.collection.ContainerUtil;
 import com.jetbrains.lang.dart.util.PubspecYamlUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.yaml.psi.YAMLDocument;

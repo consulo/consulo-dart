@@ -1,15 +1,15 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.server;
 
-import com.intellij.execution.configurations.RuntimeConfigurationError;
-import com.intellij.openapi.fileTypes.FileTypeRegistry;
-import com.intellij.openapi.project.Project;
-import com.intellij.openapi.util.NlsSafe;
-import com.intellij.openapi.util.io.FileUtil;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.LocalFileSystem;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.xmlb.annotations.OptionTag;
+import consulo.execution.configuration.RuntimeConfigurationError;
+import consulo.virtualFileSystem.fileType.FileTypeRegistry;
+import consulo.project.Project;
+
+import consulo.util.io.FileUtil;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.LocalFileSystem;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.util.xml.serializer.annotation.OptionTag;
 import com.intellij.util.xmlb.annotations.XMap;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartFileType;
@@ -23,11 +23,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class DartCommandLineRunnerParameters implements Cloneable {
-  private @Nullable @NlsSafe String myFilePath = null;
-  private @Nullable @NlsSafe String myVMOptions = null;
+  private @Nullable String myFilePath = null;
+  private @Nullable String myVMOptions = null;
   private boolean myAssertsEnabled = true;
-  private @Nullable @NlsSafe String myArguments = null;
-  private @Nullable @NlsSafe String myWorkingDirectory = null;
+  private @Nullable String myArguments = null;
+  private @Nullable String myWorkingDirectory = null;
   private @NotNull Map<String, String> myEnvs = new LinkedHashMap<>();
   private boolean myIncludeParentEnvs = true;
 
@@ -35,7 +35,7 @@ public class DartCommandLineRunnerParameters implements Cloneable {
    * Get the Dart project directory for the given file (or folder) by looking for the first parent that contains a pubspec.
    * In case none can be found, the file's parent (or the folder itself) is used instead.
    */
-  public static @NlsSafe String suggestDartWorkingDir(final @NotNull Project project, final @NotNull VirtualFile dartFileOrFolder) {
+  public static String suggestDartWorkingDir(final @NotNull Project project, final @NotNull VirtualFile dartFileOrFolder) {
     final VirtualFile pubspec = PubspecYamlUtil.findPubspecYamlFile(project, dartFileOrFolder);
     if (pubspec != null) {
       final VirtualFile parent = pubspec.getParent();
@@ -51,19 +51,19 @@ public class DartCommandLineRunnerParameters implements Cloneable {
     }
   }
 
-  public @Nullable @NlsSafe String getFilePath() {
+  public @Nullable String getFilePath() {
     return myFilePath;
   }
 
-  public void setFilePath(final @Nullable @NlsSafe String filePath) {
+  public void setFilePath(final @Nullable String filePath) {
     myFilePath = filePath;
   }
 
-  public @Nullable @NlsSafe String getVMOptions() {
+  public @Nullable String getVMOptions() {
     return myVMOptions;
   }
 
-  public void setVMOptions(final @Nullable @NlsSafe String vmOptions) {
+  public void setVMOptions(final @Nullable String vmOptions) {
     myVMOptions = vmOptions;
   }
 
@@ -79,7 +79,7 @@ public class DartCommandLineRunnerParameters implements Cloneable {
     myAssertsEnabled = assertsEnabled;
   }
 
-  public @Nullable @NlsSafe String getArguments() {
+  public @Nullable String getArguments() {
     return myArguments;
   }
 
@@ -87,11 +87,11 @@ public class DartCommandLineRunnerParameters implements Cloneable {
     myArguments = arguments;
   }
 
-  public @Nullable @NlsSafe String getWorkingDirectory() {
+  public @Nullable String getWorkingDirectory() {
     return myWorkingDirectory;
   }
 
-  public void setWorkingDirectory(final @Nullable @NlsSafe String workingDirectory) {
+  public void setWorkingDirectory(final @Nullable String workingDirectory) {
     myWorkingDirectory = workingDirectory;
   }
 
@@ -115,7 +115,7 @@ public class DartCommandLineRunnerParameters implements Cloneable {
     myIncludeParentEnvs = includeParentEnvs;
   }
 
-  public @NotNull @NlsSafe String computeProcessWorkingDirectory(final @NotNull Project project) {
+  public @NotNull String computeProcessWorkingDirectory(final @NotNull Project project) {
     if (!StringUtil.isEmptyOrSpaces(myWorkingDirectory)) return myWorkingDirectory;
 
     try {

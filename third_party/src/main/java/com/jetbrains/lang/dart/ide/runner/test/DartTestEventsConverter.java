@@ -2,14 +2,14 @@
 package com.jetbrains.lang.dart.ide.runner.test;
 
 import com.google.gson.*;
-import com.intellij.execution.testframework.TestConsoleProperties;
-import com.intellij.execution.testframework.sm.ServiceMessageBuilder;
-import com.intellij.execution.testframework.sm.runner.OutputToGeneralTestEventsConverter;
-import com.intellij.openapi.diagnostic.Logger;
-import com.intellij.openapi.util.Key;
-import com.intellij.openapi.util.text.StringUtil;
-import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.util.PathUtil;
+import consulo.execution.test.TestConsoleProperties;
+import consulo.execution.test.sm.ServiceMessageBuilder;
+import consulo.execution.test.sm.runner.OutputToGeneralTestEventsConverter;
+import consulo.logging.Logger;
+import consulo.util.dataholder.Key;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.VirtualFile;
+import consulo.util.io.PathUtil;
 import com.jetbrains.lang.dart.ide.runner.util.DartTestLocationProvider;
 import com.jetbrains.lang.dart.util.DartUrlResolver;
 import it.unimi.dsi.fastutil.ints.Int2LongOpenHashMap;

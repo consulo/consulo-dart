@@ -1,24 +1,24 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.template;
 
-import com.intellij.codeInsight.template.TemplateActionContext;
-import com.intellij.codeInsight.template.TemplateContextType;
-import com.intellij.openapi.fileTypes.SyntaxHighlighter;
-import com.intellij.openapi.util.NlsContexts;
-import com.intellij.psi.PsiComment;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.util.PsiTreeUtil;
+import consulo.language.editor.template.context.TemplateActionContext;
+import consulo.language.editor.template.context.TemplateContextType;
+import consulo.language.editor.highlight.SyntaxHighlighter;
+
+import consulo.language.psi.PsiComment;
+import consulo.language.psi.PsiElement;
+import consulo.language.psi.PsiFile;
+import consulo.language.psi.util.PsiTreeUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartLanguage;
 import com.jetbrains.lang.dart.highlight.DartSyntaxHighlighter;
 import com.jetbrains.lang.dart.psi.IDartBlock;
-import org.jetbrains.annotations.NonNls;
+
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class DartTemplateContextType extends TemplateContextType {
-  protected DartTemplateContextType(@NotNull @NlsContexts.Label String presentableName) {
+  protected DartTemplateContextType(@NotNull String presentableName) {
     super(presentableName);
   }
 
@@ -26,8 +26,8 @@ public abstract class DartTemplateContextType extends TemplateContextType {
    * @deprecated Set contextId and baseContextId in plugin.xml instead
    */
   @Deprecated
-  protected DartTemplateContextType(@NotNull @NonNls String id,
-                                    @NotNull @NlsContexts.Label String presentableName,
+  protected DartTemplateContextType(@NotNull String id,
+                                    @NotNull String presentableName,
                                     @Nullable Class<? extends TemplateContextType> baseContextType) {
     super(id, presentableName, baseContextType);
   }
