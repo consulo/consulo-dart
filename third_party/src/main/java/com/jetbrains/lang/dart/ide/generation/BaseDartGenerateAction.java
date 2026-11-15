@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.generation;
 
+import consulo.ui.ex.action.AnActionWithSyncUpdate;
 import consulo.ui.ex.action.AnAction;
 import consulo.ui.ex.action.AnActionEvent;
 import consulo.language.editor.CommonDataKeys;
@@ -20,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static consulo.language.psi.util.PsiTreeUtil.getChildrenOfType;
 
-public abstract class BaseDartGenerateAction extends AnAction {
+public abstract class BaseDartGenerateAction extends AnAction implements AnActionWithSyncUpdate {
 
 
   @Override

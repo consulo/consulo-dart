@@ -33,8 +33,8 @@ Each usage should move to an API module when one appears. Current usages
 (`grep -rhoE "^import (static )?consulo\.ide\.impl\.[\w.]+" third_party/src/main/java`):
 
 - `consulo.ide.impl.idea.execution.filters.TextConsoleBuilderImpl` (3)
-- `consulo.ide.impl.idea.util.PlatformIcons` (2)
 - `consulo.ide.impl.idea.ui.HoverHyperlinkLabel` (2)
+- `consulo.ide.impl.idea.util.PlatformIcons` (1)
 - `consulo.ide.impl.idea.util.net.NetUtils` (1)
 - `consulo.ide.impl.idea.util.IconUtil` (1)
 - `consulo.ide.impl.idea.util.FunctionUtil` (1)
@@ -51,3 +51,15 @@ Each usage should move to an API module when one appears. Current usages
 - `consulo.ide.impl.idea.codeInsight.editorActions.CopyPastePostProcessor` (1)
 - `consulo.ide.impl.idea.codeInsight.completion.CompletionProgressIndicator` (1)
 - `consulo.ide.impl.find.PsiElement2UsageTargetAdapter` (1)
+
+## Missing Consulo APIs
+
+Places where upstream needs a platform API Consulo does not provide publicly; worked around in the plugin for now:
+
+- `PostfixTemplateProvider.getTemplates()` is final and computed once; upstream `DartPostfixTemplateProvider` fills templates from the analysis server later.
+- `ExtendableTextField` is in desktop-awt-ui-impl only; `BasicComboBoxWithBrowseButton` places a browse button inside the editor field instead.
+- `StopProcessAction` (ide-impl) has no `setProcessHandler`; upstream reuses one action for reruns.
+- `ResolveCache.clearCache(boolean)`; `PsiManager.dropResolveCaches()` is used.
+- `TemplateBuilderImpl.replaceRange(range, var, expression, alwaysStopAt)` is internal; `TemplateBuilder.replaceElement(file, range, ...)` is used.
+- `FileOffsetsManager`, `ModalityUiUtil`, `ConstantNode.withLookupItems`, `PsiBuilderUtil.parseBlockLazy`, `FileBasedIndex.getSingleEntryIndexData`
+  and a few utilities are ported to `consulo.dart.compat`.

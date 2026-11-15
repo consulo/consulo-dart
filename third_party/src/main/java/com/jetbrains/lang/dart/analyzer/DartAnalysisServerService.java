@@ -1,6 +1,8 @@
 // Copyright 2000-2025 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.analyzer;
 
+import consulo.dart.compat.ModalityUiUtil;
+import consulo.util.collection.Lists;
 import java.util.function.BooleanSupplier;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -50,7 +52,6 @@ import com.google.gson.JsonObject;
 import consulo.language.editor.CodeInsightSettings;
 import consulo.language.editor.DaemonCodeAnalyzer;
 import consulo.disposer.Disposable;
-import consulo.application.internal.ApplicationInfo;
 import consulo.application.ApplicationManager;
 import consulo.application.Application;
 import consulo.ui.ModalityState;
@@ -64,7 +65,7 @@ import consulo.document.FileDocumentManager;
 import consulo.fileEditor.FileEditorManager;
 import consulo.fileEditor.event.FileEditorManagerEvent;
 import consulo.fileEditor.event.FileEditorManagerListener;
-import com.intellij.openapi.fileEditor.impl.FileOffsetsManager;
+import consulo.dart.compat.FileOffsetsManager;
 import consulo.virtualFileSystem.fileType.FileTypeRegistry;
 import consulo.component.ProcessCanceledException;
 import consulo.application.progress.ProgressIndicator;
@@ -86,7 +87,6 @@ import consulo.language.psi.PsiFile;
 import consulo.content.scope.SearchScope;
 import consulo.ui.ex.awt.util.Alarm;
 import java.util.function.Consumer;
-import com.intellij.util.ModalityUiUtil;
 import consulo.util.io.PathUtil;
 import consulo.util.collection.SmartList;
 import consulo.util.lang.TimeoutUtil;
@@ -103,10 +103,6 @@ import com.jetbrains.lang.dart.ide.completion.DartCompletionTimerExtension;
 import com.jetbrains.lang.dart.ide.errorTreeView.DartProblemsView;
 import com.jetbrains.lang.dart.ide.template.postfix.DartPostfixTemplateProvider;
 import com.jetbrains.lang.dart.logging.PluginLogger;
-import com.jetbrains.lang.dart.lsp.DartBridgeLspServerManager;
-import com.jetbrains.lang.dart.lsp.DartLspClosingLabel;
-import com.jetbrains.lang.dart.lsp.DartLspClosingLabelsService;
-import com.jetbrains.lang.dart.lsp.DartLspConfigurationSync;
 import com.jetbrains.lang.dart.sdk.DartConfigurable;
 import com.jetbrains.lang.dart.sdk.DartSdk;
 import com.jetbrains.lang.dart.sdk.DartSdkUpdateChecker;
@@ -114,7 +110,6 @@ import com.jetbrains.lang.dart.sdk.DartSdkUtil;
 import com.jetbrains.lang.dart.util.PubspecYamlUtil;
 import it.unimi.dsi.fastutil.objects.Object2IntMap;
 import it.unimi.dsi.fastutil.objects.Object2IntOpenHashMap;
-import kotlinx.coroutines.CoroutineScope;
 import org.dartlang.analysis.server.protocol.AddContentOverlay;
 import org.dartlang.analysis.server.protocol.AnalysisError;
 import org.dartlang.analysis.server.protocol.AnalysisErrorFixes;
@@ -151,9 +146,7 @@ import org.dartlang.analysis.server.protocol.SourceChange;
 import org.dartlang.analysis.server.protocol.SourceEdit;
 import org.dartlang.analysis.server.protocol.SourceFileEdit;
 import org.dartlang.analysis.server.protocol.TypeHierarchyItem;
-import org.eclipse.lsp4j.Position;
-import org.eclipse.lsp4j.Range;
-import org.eclipse.lsp4j.SemanticTokensLegend;
+import consulo.dart.compat.SemanticTokensLegend;
 import org.jetbrains.annotations.Contract;
 
 import org.jetbrains.annotations.NotNull;
@@ -248,7 +241,6 @@ public final class DartAnalysisServerService implements Disposable {
   private static final int MAX_DEBUG_LOG_LINE_LENGTH = 200; // Saw one line while testing that was > 50k
 
   private final @NotNull Project myProject;
-  private final @NotNull CoroutineScope myServiceScope;
   private boolean myInitializationOnServerStartupDone;
   private boolean mySubscribeToServerLog;
 
@@ -297,18 +289,18 @@ public final class DartAnalysisServerService implements Disposable {
   private final @NotNull BooleanSupplier myDisposedCondition = () -> myDisposed;
 
   public static String getClientId() {
-    return ApplicationNamesInfo.getInstance().getFullProductName().replace(' ', '-');
+    return Application.get().getName().get().replace(' ', '-');
   }
 
   private static String getClientVersion() {
     return ApplicationInfo.getInstance().getApiVersion();
   }
 
-  private final @NotNull List<AnalysisServerListener> myAdditionalServerListeners = ContainerUtil.createLockFreeCopyOnWriteList();
-  private final @NotNull List<RequestListener> myRequestListeners = ContainerUtil.createLockFreeCopyOnWriteList();
-  private final @NotNull List<ResponseListener> myResponseListeners = ContainerUtil.createLockFreeCopyOnWriteList();
-  private final @NotNull List<DartQuickAssistIntentionListener> myQuickAssistIntentionListeners = ContainerUtil.createLockFreeCopyOnWriteList();
-  private final @NotNull List<DartQuickFixListener> myQuickFixListeners = ContainerUtil.createLockFreeCopyOnWriteList();
+  private final @NotNull List<AnalysisServerListener> myAdditionalServerListeners = Lists.newLockFreeCopyOnWriteList();
+  private final @NotNull List<RequestListener> myRequestListeners = Lists.newLockFreeCopyOnWriteList();
+  private final @NotNull List<ResponseListener> myResponseListeners = Lists.newLockFreeCopyOnWriteList();
+  private final @NotNull List<DartQuickAssistIntentionListener> myQuickAssistIntentionListeners = Lists.newLockFreeCopyOnWriteList();
+  private final @NotNull List<DartQuickFixListener> myQuickFixListeners = Lists.newLockFreeCopyOnWriteList();
 
   private final AnalysisServerListener myAnalysisServerListener = new AnalysisServerListenerAdapter() {
     @Override
@@ -480,34 +472,7 @@ public final class DartAnalysisServerService implements Disposable {
     DartFileInfo fileInfo = DartFileInfoKt.getDartFileInfo(myProject, filePathOrUri);
     myServerData.computedClosingLabels(fileInfo, labels);
 
-    // Backward-compatibility adapter for SDKs < 3.14.0-219.0.dev that emit legacy
-    // analysis.closingLabels instead of dart/textDocument/publishClosingLabels.
-    // Note: this method is invoked on the Analysis Server reader thread, which must never call
-    // runReadAction synchronously (otherwise it deadlocks if the EDT holds the write lock while
-    // awaiting an Analysis Server response, e.g. during MoveFileRefactoring).
-    boolean lspClosingLabelsEnabled = !mySdkVersion.isEmpty() &&
-                                      isDartSdkVersionSufficientForLspClosingLabels(mySdkVersion);
-    if (!lspClosingLabelsEnabled) {
-      VirtualFile file = fileInfo.findFile();
-      if (file == null && fileInfo instanceof DartLocalFileInfo localFileInfo) {
-        String path = FileUtil.toSystemIndependentName(localFileInfo.getFilePath());
-        file = VirtualFileManager.getInstance().findFileByUrl("temp://" + path);
-      }
-      if (file != null && file.isValid()) {
-        Document document = FileDocumentManager.getInstance().getCachedDocument(file);
-        if (document != null) {
-          List<DartServerData.DartClosingLabel> convertedLabels = myServerData.getClosingLabels(file);
-          CharSequence text = document.getImmutableCharSequence();
-          List<DartLspClosingLabel> lspLabels = convertedLabels.stream().map(label -> {
-            int endOffset = Math.min(label.getOffset() + label.getLength(), text.length());
-            int endLine = StringUtil.offsetToLineNumber(text, endOffset);
-            Position pos = new Position(endLine, 0);
-            return new DartLspClosingLabel(label.getLabel(), new Range(pos, pos));
-          }).toList();
-          DartLspClosingLabelsService.getInstance(myProject).updateClosingLabels(file, lspLabels);
-        }
-      }
-    }
+    // Consulo: no LSP, the legacy analysis.closingLabels adapter for DartLspClosingLabelsService is not needed
   }
 
   private static int ensureNotZero(int i) {
@@ -950,18 +915,13 @@ public final class DartAnalysisServerService implements Disposable {
   }
 
   @Inject
-  public DartAnalysisServerService(@NotNull Project project, @NotNull CoroutineScope serviceScope) {
+  public DartAnalysisServerService(@NotNull Project project) {
     myProject = project;
-    myServiceScope = serviceScope;
     myRootsHandler = new DartServerRootsHandler(project);
     myServerData = new DartServerData(this);
     myUpdateFilesAlarm = new Alarm(Alarm.ThreadToUse.POOLED_THREAD, this);
     myShowServerProgressAlarm = new Alarm(this);
     myServerErrorHandler = new DartAnalysisServerErrorHandler(project);
-  }
-
-  public @NotNull CoroutineScope getServiceScope() {
-    return myServiceScope;
   }
 
   @SuppressWarnings("unused") // for Flutter plugin
@@ -1091,7 +1051,7 @@ public final class DartAnalysisServerService implements Disposable {
   }
 
   private void registerFileEditorManagerListener() {
-    myProject.getMessageBus().connect().subscribe(FileEditorManagerListener.FILE_EDITOR_MANAGER, new FileEditorManagerListener() {
+    myProject.getMessageBus().connect().subscribe(FileEditorManagerListener.class, new FileEditorManagerListener() {
       @Override
       public void fileOpened(final @NotNull FileEditorManager source, final @NotNull VirtualFile file) {
         if (PubspecYamlUtil.PUBSPEC_YAML.equals(file.getName()) ||
@@ -1987,7 +1947,7 @@ public final class DartAnalysisServerService implements Disposable {
     final int offset = getOriginalOffset(file, _offset);
 
     final String completionCaseMatchingMode;
-    final int caseSensitiveSetting = CodeInsightSettings.getInstance().getCompletionCaseSensitive();
+    final int caseSensitiveSetting = CodeInsightSettings.getInstance().COMPLETION_CASE_SENSITIVE;
     if (caseSensitiveSetting == CodeInsightSettings.FIRST_LETTER) {
       completionCaseMatchingMode = CompletionCaseMatchingMode.FIRST_CHAR;
     }
@@ -2635,12 +2595,7 @@ public final class DartAnalysisServerService implements Disposable {
         // This must be done after myServer is set, and should be done each time the server starts.
         registerPostfixCompletionTemplates();
 
-        // Start the LSP Bridge Server unless in unit test mode.
-        // Once initialized, DartLspServerDescriptor.lspServerListener connects the server to DTD
-        // via dart/connectToDtd if DartToolingDaemonService is already running.
-        if (!ApplicationManager.getApplication().isUnitTestMode()) {
-          myProject.getService(DartBridgeLspServerManager.class).startBridgeServer();
-        }
+        // Consulo: no LSP Bridge Server
       }
       catch (Exception e) {
         stopServer();
@@ -2692,11 +2647,6 @@ public final class DartAnalysisServerService implements Disposable {
 
   void stopServer() {
     synchronized (myLock) {
-      // Stop the LSP Bridge Server
-      DartBridgeLspServerManager bridgeManager = myProject.getServiceIfCreated(DartBridgeLspServerManager.class);
-      if (bridgeManager != null) {
-        bridgeManager.stopBridgeServer();
-      }
       if (myServer != null) {
         LOG.debug("stopping server");
         myServer.removeAnalysisServerListener(myAnalysisServerListener);
@@ -2733,11 +2683,6 @@ public final class DartAnalysisServerService implements Disposable {
       mySemanticTokensLegend = null;
       mySemanticTokensLegendFuture.set(new CompletableFuture<>());
       setSemanticTokensAdvertised(false);
-      // The next server starts out knowing nothing about the settings of this client.
-      DartLspConfigurationSync configurationSync = myProject.getServiceIfCreated(DartLspConfigurationSync.class);
-      if (configurationSync != null) {
-        configurationSync.serverStopped();
-      }
       myFilePathWithOverlaidContentToTimestamp.clear();
       myVisibleFileUris.clear();
       myChangedDocuments.clear();
@@ -2979,8 +2924,8 @@ public final class DartAnalysisServerService implements Disposable {
   }
 
   public void updateClientCapabilities() {
-    DartBridgeLspServerManager bridgeManager = myProject.getServiceIfCreated(DartBridgeLspServerManager.class);
-    updateClientCapabilities(bridgeManager != null && bridgeManager.isClientConnected());
+    // Consulo: no LSP Bridge Server, LSP configuration is never supported
+    updateClientCapabilities(false);
   }
 
   public void updateClientCapabilities(boolean supportsLspConfiguration) {

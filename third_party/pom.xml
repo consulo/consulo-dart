@@ -243,6 +243,8 @@
                         <include>com/jetbrains/lang/dart/lexer/DartLexer.java</include>
                         <include>com/jetbrains/lang/dart/lexer/_*.java</include>
                         <include>com/jetbrains/lang/dart/logging/PluginLogger.java</include>
+                        <include>com/jetbrains/lang/dart/DartStartupActivity.java</include>
+                        <include>com/jetbrains/lang/dart/DartStartupActivityKt.java</include>
                         <include>com/jetbrains/lang/dart/ide/devtools/DartDevToolsService.java</include>
                         <include>com/jetbrains/lang/dart/psi/**/*.java</include>
                         <include>com/jetbrains/lang/dart/psi/DartClass.java</include>
@@ -738,6 +740,12 @@
         <dependency>
             <groupId>consulo</groupId>
             <artifactId>consulo-util-collection</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>consulo</groupId>
+            <artifactId>consulo-util-collection-primitive</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>

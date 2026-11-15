@@ -38,7 +38,7 @@ import consulo.project.ui.wm.ToolWindowManager;
 import consulo.content.scope.SearchScope;
 import consulo.ui.ex.content.Content;
 import consulo.ui.ex.awt.util.Alarm;
-import com.intellij.util.ModalityUiUtil;
+import consulo.dart.compat.ModalityUiUtil;
 import consulo.util.io.PathUtil;
 import consulo.application.util.concurrent.AppExecutorUtil;
 import com.intellij.util.concurrency.ThreadingAssertions;

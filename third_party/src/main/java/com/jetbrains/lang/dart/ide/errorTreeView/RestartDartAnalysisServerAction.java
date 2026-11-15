@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.errorTreeView;
 
+import consulo.ui.ex.action.AnActionWithSyncUpdate;
 import consulo.ui.ex.action.AnActionEvent;
 import consulo.ui.ex.action.DumbAwareAction;
 import consulo.project.Project;
@@ -9,7 +10,7 @@ import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class RestartDartAnalysisServerAction extends DumbAwareAction {
+public class RestartDartAnalysisServerAction extends DumbAwareAction implements AnActionWithSyncUpdate {
 
 
   @Override

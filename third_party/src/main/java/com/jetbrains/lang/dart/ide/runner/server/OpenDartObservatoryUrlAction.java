@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.server;
 
+import consulo.ui.ex.action.AnActionWithSyncUpdate;
 import consulo.webBrowser.BrowserFamily;
 import consulo.webBrowser.BrowserLauncher;
 import consulo.webBrowser.WebBrowser;
@@ -18,7 +19,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class OpenDartObservatoryUrlAction extends DumbAwareAction {
+public class OpenDartObservatoryUrlAction extends DumbAwareAction implements AnActionWithSyncUpdate {
   private @Nullable String myUrl;
   private final Computable<Boolean> myIsApplicable;
 

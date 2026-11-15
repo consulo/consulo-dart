@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.errorTreeView;
 
+import consulo.ui.ex.action.AnActionWithSyncUpdate;
 import com.google.dart.server.GetServerPortConsumer;
 import consulo.webBrowser.BrowserUtil;
 import consulo.project.ui.notification.Notification;
@@ -22,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.concurrent.CompletionException;
 
-public class AnalysisServerDiagnosticsAction extends DumbAwareAction {
+public class AnalysisServerDiagnosticsAction extends DumbAwareAction implements AnActionWithSyncUpdate {
   private static final String MIN_LSP_DIAGNOSTIC_SERVER_SDK_VERSION = "3.13.0-106.0.dev";
 
   public AnalysisServerDiagnosticsAction() {

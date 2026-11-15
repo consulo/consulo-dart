@@ -51,6 +51,7 @@ module com.jetbrains.lang.dart {
   requires consulo.undo.redo.api;
   requires consulo.usage.api;
   requires consulo.util.collection;
+  requires consulo.util.collection.primitive;
   requires consulo.util.dataholder;
   requires consulo.util.io;
   requires consulo.util.lang;

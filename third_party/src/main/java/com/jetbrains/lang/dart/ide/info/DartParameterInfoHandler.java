@@ -1,6 +1,8 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.info;
 
+import com.jetbrains.lang.dart.DartLanguage;
+import consulo.language.Language;
 import consulo.language.editor.parameterInfo.ParameterInfoContext;
 import consulo.language.editor.completion.lookup.LookupElement;
 import consulo.annotation.component.ExtensionImpl;
@@ -23,6 +25,11 @@ import org.jetbrains.annotations.TestOnly;
 
 @ExtensionImpl
 public final class DartParameterInfoHandler implements ParameterInfoHandler<PsiElement, DartFunctionDescription> {
+  @Override
+  public @NotNull Language getLanguage() {
+    return DartLanguage.INSTANCE;
+  }
+
   private String myParametersListPresentableText = "";
 
   @Override

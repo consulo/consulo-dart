@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.actions;
 
+import consulo.ui.ex.action.AnActionWithSyncUpdate;
 import consulo.language.editor.hint.HintManager;
 import consulo.ide.impl.idea.codeInsight.hint.HintManagerImpl;
 import consulo.language.editor.ui.awt.HintUtil;
@@ -42,7 +43,7 @@ import java.util.List;
  * An abstract {@link AnAction} for processing a single Dart file open in the editor,
  * or a group of selected Dart files.
  */
-public abstract class AbstractDartFileProcessingAction extends AnAction implements DumbAware {
+public abstract class AbstractDartFileProcessingAction extends AnAction implements DumbAware, AnActionWithSyncUpdate {
 
 
   @Override

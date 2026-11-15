@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.actions;
 
+import consulo.ui.ex.action.AnActionWithSyncUpdate;
 import consulo.ui.ex.action.AnActionEvent;
 import consulo.project.Project;
 import consulo.ui.ex.awt.DialogWrapper;
@@ -13,7 +14,7 @@ import com.jetbrains.lang.dart.util.PubspecYamlUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DartPubBuildAction extends DartPubActionBase {
+public class DartPubBuildAction extends DartPubActionBase implements AnActionWithSyncUpdate {
   @Override
   public void update(@NotNull AnActionEvent e) {
     super.update(e);

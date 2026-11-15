@@ -1,6 +1,7 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.errorTreeView;
 
+import consulo.ui.ex.action.AnActionWithSyncUpdate;
 import com.google.common.annotations.VisibleForTesting;
 import consulo.application.AllIcons;
 import consulo.webBrowser.BrowserUtil;
@@ -429,7 +430,7 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
     return myTable.getRowCount();
   }
 
-  private class FilterProblemsAction extends DumbAwareAction implements Toggleable {
+  private class FilterProblemsAction extends DumbAwareAction implements Toggleable, AnActionWithSyncUpdate {
     FilterProblemsAction() {
       super(DartBundle.messagePointer("dart.problems.view.action.name.filter.problems"),
             DartBundle.messagePointer("dart.problems.view.action.description.filter.problems"),
@@ -449,7 +450,7 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
     }
   }
 
-  private class AnalysisServerSettingsAction extends DumbAwareAction implements Toggleable {
+  private class AnalysisServerSettingsAction extends DumbAwareAction implements Toggleable, AnActionWithSyncUpdate {
     AnalysisServerSettingsAction() {
       //noinspection DialogTitleCapitalization
       super(DartBundle.messagePointer("dart.problems.view.action.name.analysis.server.settings"),

@@ -2,6 +2,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.actions;
 
+import consulo.ui.ex.action.AnActionWithSyncUpdate;
 import consulo.application.AllIcons;
 import consulo.ui.ex.action.ActionPlaces;
 import consulo.ui.ex.action.AnAction;
@@ -16,7 +17,7 @@ import com.jetbrains.lang.dart.ide.runner.server.vmService.frame.DartVmServiceSt
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DartPopFrameAction extends AnAction implements DumbAware {
+public class DartPopFrameAction extends AnAction implements DumbAware, AnActionWithSyncUpdate {
   public DartPopFrameAction() {
     Presentation presentation = getTemplatePresentation();
     presentation.setText(DartBundle.messagePointer("dart.pop.frame.action.text"));
