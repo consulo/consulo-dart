@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.hierarchy.method;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.internal.hierarchy.HierarchyBrowser;
 import consulo.language.editor.hierarchy.HierarchyProvider;
 import com.intellij.ide.hierarchy.MethodHierarchyBrowserBase;
@@ -15,6 +16,7 @@ import com.jetbrains.lang.dart.psi.DartSetterDeclaration;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@ExtensionImpl
 public final class DartMethodHierarchyProvider implements HierarchyProvider {
   @Override
   public @Nullable PsiElement getTarget(@NotNull DataContext dataContext) {

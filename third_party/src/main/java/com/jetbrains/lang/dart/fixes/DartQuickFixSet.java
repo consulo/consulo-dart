@@ -5,7 +5,7 @@ import consulo.util.lang.StringUtil;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.virtualFileSystem.VirtualFileManager;
 import consulo.language.psi.PsiManager;
-import com.intellij.util.Consumer;
+import java.util.function.Consumer;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.ide.annotator.DartProblemGroup;
 import com.jetbrains.lang.dart.sdk.DartSdk;

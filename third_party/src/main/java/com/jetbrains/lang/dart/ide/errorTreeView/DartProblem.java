@@ -122,7 +122,7 @@ public class DartProblem {
         }
         else {
           packageRoot = contentRoot;
-          final String relativePath = VfsUtilCore.getRelativePath(file, contentRoot, File.separatorChar);
+          final String relativePath = VirtualFileUtil.getRelativePath(file, contentRoot, File.separatorChar);
           presentableFilePath = relativePath != null ? relativePath : filePathOrUri;
         }
       }
@@ -132,7 +132,7 @@ public class DartProblem {
                                    : PubspecYamlUtil.getDartProjectName(pubspec);
         dartPackageName = projectName != null ? projectName : "%unnamed%";
         packageRoot = pubspec.getParent();
-        final String relativePath = VfsUtilCore.getRelativePath(file, pubspec.getParent(), File.separatorChar);
+        final String relativePath = VirtualFileUtil.getRelativePath(file, pubspec.getParent(), File.separatorChar);
         presentableFilePath = relativePath != null ? relativePath : filePathOrUri;
       }
     }

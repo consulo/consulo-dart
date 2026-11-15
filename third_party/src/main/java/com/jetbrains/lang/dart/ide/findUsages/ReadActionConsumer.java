@@ -17,7 +17,7 @@
 package com.jetbrains.lang.dart.ide.findUsages;
 
 import consulo.application.ApplicationManager;
-import com.intellij.util.Consumer;
+import java.util.function.Consumer;
 
 public abstract class ReadActionConsumer<T> implements Consumer<T> {
   @Override

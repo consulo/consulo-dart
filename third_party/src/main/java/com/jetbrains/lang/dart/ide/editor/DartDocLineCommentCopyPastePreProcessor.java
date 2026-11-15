@@ -5,6 +5,7 @@
  */
 package com.jetbrains.lang.dart.ide.editor;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.codeStyle.CodeStyle;
 import consulo.language.editor.action.CopyPastePreProcessor;
 import consulo.document.Document;
@@ -27,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
  * every newline of the pasted text into {@code "\n// "}, even if the caret is inside a {@code ///} comment. This processor is registered
  * to run after the platform one and rewrites that replacement to use {@code ///}.
  */
+@ExtensionImpl
 public final class DartDocLineCommentCopyPastePreProcessor implements CopyPastePreProcessor {
     private static final String LINE_COMMENT_PREFIX = "//";
 

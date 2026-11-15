@@ -1,6 +1,11 @@
 // Copyright 2000-2025 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.analyzer;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
+import consulo.annotation.component.ComponentScope;
+import consulo.annotation.component.ServiceImpl;
+import consulo.annotation.component.ServiceAPI;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.EvictingQueue;
 import com.google.common.util.concurrent.Uninterruptibles;
@@ -79,7 +84,7 @@ import consulo.virtualFileSystem.VirtualFileManager;
 import consulo.language.psi.PsiFile;
 import consulo.content.scope.SearchScope;
 import consulo.ui.ex.awt.util.Alarm;
-import com.intellij.util.Consumer;
+import java.util.function.Consumer;
 import com.intellij.util.ModalityUiUtil;
 import consulo.util.io.PathUtil;
 import consulo.util.collection.SmartList;
@@ -173,6 +178,9 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
+@ServiceAPI(ComponentScope.PROJECT)
+@ServiceImpl
+@Singleton
 public final class DartAnalysisServerService implements Disposable {
   public static final String MIN_SDK_VERSION = "2.12";
 
@@ -940,6 +948,7 @@ public final class DartAnalysisServerService implements Disposable {
     }
   }
 
+  @Inject
   public DartAnalysisServerService(@NotNull Project project, @NotNull CoroutineScope serviceScope) {
     myProject = project;
     myServiceScope = serviceScope;
@@ -1155,7 +1164,7 @@ public final class DartAnalysisServerService implements Disposable {
   }
 
   public static @NotNull DartAnalysisServerService getInstance(final @NotNull Project project) {
-    return project.getService(DartAnalysisServerService.class);
+    return project.getInstance(DartAnalysisServerService.class);
   }
 
   public @NotNull String getSdkVersion() {
@@ -1707,13 +1716,13 @@ public final class DartAnalysisServerService implements Disposable {
                                                       final int _offset,
                                                       final @NotNull Consumer<? super List<AnalysisErrorFixes>> consumer) {
     if (!file.isInLocalFileSystem()) {
-      consumer.consume(Collections.emptyList());
+      consumer.accept(Collections.emptyList());
       return;
     }
 
     final AnalysisServer server = myServer;
     if (server == null) {
-      consumer.consume(Collections.emptyList());
+      consumer.accept(Collections.emptyList());
       return;
     }
 
@@ -1723,7 +1732,7 @@ public final class DartAnalysisServerService implements Disposable {
     server.edit_getFixes(fileUri, offset, new GetFixesConsumer() {
       @Override
       public void computedFixes(final List<AnalysisErrorFixes> fixes) {
-        consumer.consume(fixes);
+        consumer.accept(fixes);
         latch.countDown();
       }
 
@@ -1790,7 +1799,7 @@ public final class DartAnalysisServerService implements Disposable {
         while ((resultSet = mySearchResultSets.poll()) != null) {
           if (!resultSet.id.equals(searchId)) continue;
           for (final SearchResult searchResult : resultSet.results) {
-            consumer.consume(searchResult);
+            consumer.accept(searchResult);
           }
           if (resultSet.isLast) return;
         }
@@ -3147,7 +3156,7 @@ public final class DartAnalysisServerService implements Disposable {
 
     String escapedPath = URLUtil.encodePath(FileUtil.toSystemIndependentName(localFilePath));
     String url = VirtualFileManager.constructUrl(URLUtil.FILE_PROTOCOL, escapedPath);
-    URI uri = VfsUtil.toUri(url);
+    URI uri = VirtualFileUtil.toUri(url);
     return uri != null ? uri.toString() : url;
   }
 }

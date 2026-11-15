@@ -144,7 +144,7 @@ public class DartResolver implements ResolveCache.AbstractResolver<DartReference
   }
 
   private static int findOffsetIndex(@NotNull List<? extends DartNavigationRegion> regions, int offset) {
-    return ObjectUtils.binarySearch(0, regions.size(), mid -> Integer.compare(regions.get(mid).getOffset(), offset));
+    return ObjectUtil.binarySearch(0, regions.size(), mid -> Integer.compare(regions.get(mid).getOffset(), offset));
   }
 
   public static void processRegionsInRange(final @NotNull List<? extends DartNavigationRegion> regions,
@@ -154,7 +154,7 @@ public class DartResolver implements ResolveCache.AbstractResolver<DartReference
 
     // first find the first region that has minimal allowed offset
 
-    int i = ObjectUtils.binarySearch(0, regions.size(), mid -> regions.get(mid).getOffset() < range.getStartOffset() ? -1 : 1);
+    int i = ObjectUtil.binarySearch(0, regions.size(), mid -> regions.get(mid).getOffset() < range.getStartOffset() ? -1 : 1);
     i = Math.max(0, -i - 2);
     DartNavigationRegion region = regions.get(i);
     if (region.getOffset() < range.getStartOffset()) {

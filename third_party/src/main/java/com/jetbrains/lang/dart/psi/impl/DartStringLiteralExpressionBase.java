@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.psi.impl;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.ast.ASTNode;
 import consulo.language.inject.InjectedLanguageManager;
 import consulo.logging.Logger;
@@ -98,7 +99,13 @@ public abstract class DartStringLiteralExpressionBase extends DartClassReference
     return LiteralTextEscaper.createSimple(this);
   }
 
+  @ExtensionImpl
   public static final class DartStringManipulator extends AbstractElementManipulator<DartStringLiteralExpression> {
+    @Override
+    public @NotNull Class<DartStringLiteralExpression> getElementClass() {
+      return DartStringLiteralExpression.class;
+    }
+
     @Override
     public DartStringLiteralExpression handleContentChange(final @NotNull DartStringLiteralExpression oldElement,
                                                            final @NotNull TextRange range,
@@ -106,9 +113,9 @@ public abstract class DartStringLiteralExpressionBase extends DartClassReference
       // this check helps to avoid loosing text in case of concatenated strings + typing escape sequences; need proper fix
       final int expectedNewLength = oldElement.getTextLength() - range.getLength() + newContent.length();
 
-      final String newText = StringUtil.replaceSubstring(oldElement.getText(), range, newContent);
+      final String newText = StringUtil.replaceSubstring(oldElement.getText(), range.getStartOffset(), range.getEndOffset(), newContent);
       final PsiFile fileFromText = PsiFileFactory.getInstance(oldElement.getProject())
-        .createFileFromText(DartLanguage.INSTANCE, "var a = " + newText + ";");
+        .createFileFromText("foo.bar", DartLanguage.INSTANCE, "var a = " + newText + ";");
       final PsiElement elementAt = fileFromText.findElementAt("var a = ".length());
       if (elementAt != null &&
           elementAt.getParent() instanceof DartStringLiteralExpression &&

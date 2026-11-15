@@ -1,11 +1,13 @@
 package com.jetbrains.lang.dart.ide.editor;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.codeEditor.DefaultLineWrapPositionStrategy;
 import consulo.document.Document;
 import consulo.project.Project;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@ExtensionImpl
 public final class DartLineWrapPositionStrategy extends DefaultLineWrapPositionStrategy {
 
   public DartLineWrapPositionStrategy() {

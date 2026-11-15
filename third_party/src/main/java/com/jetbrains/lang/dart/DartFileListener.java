@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.application.ApplicationManager;
 import consulo.ui.ModalityState;
 import consulo.application.ReadAction;
@@ -62,6 +63,7 @@ import static com.jetbrains.lang.dart.util.PubspecYamlUtil.PUBSPEC_YAML;
  * @see DartStartupActivity
  * @see DartWorkspaceModelChangeListener
  */
+@ExtensionImpl
 public final class DartFileListener implements AsyncFileListener {
   private static final Logger LOG = PluginLogger.INSTANCE.createLogger(DartFileListener.class);
   private static final Object DART_PACKAGE_ROOTS_UPDATE_COALESCE = new Object();
@@ -312,7 +314,7 @@ public final class DartFileListener implements AsyncFileListener {
     private final Map<String, List<String>> myPackagesMap = new TreeMap<>();
 
     private void addPackage(final @NotNull String packageName, final @NotNull String packagePath) {
-      myLibRootUrls.add(VfsUtilCore.pathToUrl(packagePath));
+      myLibRootUrls.add(VirtualFileUtil.pathToUrl(packagePath));
 
       List<String> paths = myPackagesMap.get((packageName));
       if (paths == null) {

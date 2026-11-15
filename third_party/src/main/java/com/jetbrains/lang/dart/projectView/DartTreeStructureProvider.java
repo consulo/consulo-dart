@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.projectView;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.ui.ex.tree.PresentationData;
 import consulo.project.ui.view.tree.TreeStructureProvider;
 import consulo.project.ui.view.tree.ViewSettings;
@@ -29,6 +30,7 @@ import java.util.Collections;
 import static com.jetbrains.lang.dart.util.DartUrlResolver.PACKAGES_FOLDER_NAME;
 import static com.jetbrains.lang.dart.util.PubspecYamlUtil.PUBSPEC_YAML;
 
+@ExtensionImpl
 final class DartTreeStructureProvider implements TreeStructureProvider, DumbAware {
   @Override
   public @NotNull Collection<AbstractTreeNode<?>> modify(final @NotNull AbstractTreeNode<?> parentNode,

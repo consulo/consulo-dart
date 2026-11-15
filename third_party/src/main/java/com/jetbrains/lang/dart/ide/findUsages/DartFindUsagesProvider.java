@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.findUsages;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.findUsage.FindUsagesProvider;
 import consulo.util.lang.StringUtil;
 import consulo.language.psi.PsiElement;
@@ -11,6 +12,7 @@ import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.psi.DartLibraryNameElement;
 import org.jetbrains.annotations.NotNull;
 
+@ExtensionImpl
 public final class DartFindUsagesProvider implements FindUsagesProvider {
 
   @Override

@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.sdk;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.project.Project;
 import consulo.content.library.LibraryType;
 import consulo.content.library.NewLibraryConfiguration;
@@ -14,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 
+@ExtensionImpl
 public final class DartPackagesLibraryType extends LibraryType<DartPackagesLibraryProperties> {
 
   public static final String DART_PACKAGES_LIBRARY_NAME = "Dart Packages";

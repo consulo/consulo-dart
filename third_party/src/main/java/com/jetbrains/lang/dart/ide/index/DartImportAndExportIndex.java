@@ -1,7 +1,10 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.index;
 
+import consulo.util.collection.Lists;
+import consulo.annotation.component.ExtensionImpl;
 import consulo.project.Project;
+import consulo.dart.compat.FileBasedIndexCompat;
 import consulo.util.lang.StringUtil;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.util.collection.ContainerUtil;
@@ -23,6 +26,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.util.*;
 
+@ExtensionImpl
 public final class DartImportAndExportIndex extends SingleEntryFileBasedIndexExtension<List<DartImportOrExportInfo>> {
   private static final ID<Integer, List<DartImportOrExportInfo>> DART_IMPORT_EXPORT_INDEX = ID.create("DartImportIndex");
 
@@ -99,6 +103,6 @@ public final class DartImportAndExportIndex extends SingleEntryFileBasedIndexExt
 
   public static @NotNull List<DartImportOrExportInfo> getImportAndExportInfos(final @NotNull Project project,
                                                                               final @NotNull VirtualFile virtualFile) {
-    return ContainerUtil.notNullize(FileBasedIndex.getInstance().getSingleEntryIndexData(DART_IMPORT_EXPORT_INDEX, virtualFile, project));
+    return Lists.notNullize(FileBasedIndexCompat.getSingleEntryIndexData(DART_IMPORT_EXPORT_INDEX, virtualFile, project));
   }
 }

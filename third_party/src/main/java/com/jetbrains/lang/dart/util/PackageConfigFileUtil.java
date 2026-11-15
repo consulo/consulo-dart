@@ -132,7 +132,7 @@ public final class PackageConfigFileUtil {
   private static @Nullable Map<String, String> loadPackagesMapFromJson(@NotNull VirtualFile packageConfigJsonFile) {
     final String fileContentsStr;
     try {
-      fileContentsStr = StringUtil.convertLineSeparators(VfsUtilCore.loadText(packageConfigJsonFile));
+      fileContentsStr = StringUtil.convertLineSeparators(VirtualFileUtil.loadText(packageConfigJsonFile));
     }
     catch (Exception e) {
       return null;

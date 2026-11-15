@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.annotator;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.inspection.ProblemHighlightType;
 import consulo.language.editor.annotation.AnnotationBuilder;
 import consulo.language.editor.annotation.AnnotationHolder;
@@ -16,7 +17,7 @@ import consulo.document.util.TextRange;
 import consulo.util.lang.StringUtil;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.language.psi.PsiElement;
-import com.intellij.util.Consumer;
+import java.util.function.Consumer;
 import consulo.util.lang.ObjectUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartTokenTypes;
@@ -38,6 +39,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
+@ExtensionImpl
 public final class DartAnnotator implements Annotator {
   private static final Key<List<DartServerData.DartError>> DART_ERRORS = Key.create("DART_ERRORS");
   private static final Key<List<DartServerData.DartHighlightRegion>> DART_HIGHLIGHTING = Key.create("DART_HIGHLIGHTING");
@@ -250,7 +252,7 @@ public final class DartAnnotator implements Annotator {
                                                                                       @NotNull Consumer<? super T> processor) {
     if (regions.isEmpty()) return;
 
-    int i = ObjectUtils.binarySearch(0, regions.size(),
+    int i = ObjectUtil.binarySearch(0, regions.size(),
                                      mid -> regions.get(mid).getOffset() < psiElementRange.getStartOffset() ? -1 : 1);
     i = Math.max(0, -i - 1);
 
@@ -259,7 +261,7 @@ public final class DartAnnotator implements Annotator {
     while (region != null && region.getOffset() < psiElementRange.getEndOffset()) {
       if (psiElementRange.containsRange(region.getOffset(), region.getOffset() + region.getLength())) {
         regions.remove(i);
-        processor.consume(region);
+        processor.accept(region);
       }
       else {
         i++; // regions.remove(i) not called => need to increment i

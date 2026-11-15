@@ -156,7 +156,7 @@ public final class DartSdkUtil {
       }
     }
 
-    combo.setModel(new DefaultComboBoxModel<>(ArrayUtilRt.toStringArray(validPathsForUI)));
+    combo.setModel(new DefaultComboBoxModel<>(ArrayUtil.toStringArray(validPathsForUI)));
   }
 
   public static void updateKnownSdkPaths(final @NotNull Project project, final @NotNull String newSdkPath) {

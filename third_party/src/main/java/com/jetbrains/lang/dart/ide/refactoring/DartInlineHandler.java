@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.refactoring;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.application.CommonBundle;
 import consulo.language.Language;
 import consulo.language.editor.refactoring.inline.InlineActionHandler;
@@ -32,6 +33,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+@ExtensionImpl
 public final class DartInlineHandler extends InlineActionHandler {
   @Override
   public boolean canInlineElement(PsiElement element) {

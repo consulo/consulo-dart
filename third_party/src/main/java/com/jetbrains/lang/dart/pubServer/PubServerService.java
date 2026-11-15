@@ -27,7 +27,7 @@ import consulo.util.dataholder.Key;
 import consulo.util.lang.StringUtil;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.project.ui.wm.ToolWindowManager;
-import com.intellij.util.Consumer;
+import java.util.function.Consumer;
 import com.intellij.util.net.NetKt;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ide.actions.DartPubActionBase;

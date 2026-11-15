@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.testIntegration;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.virtualFileSystem.fileType.FileTypeRegistry;
 import consulo.project.Project;
 import consulo.application.util.registry.Registry;
@@ -22,6 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.Collections;
 
+@ExtensionImpl
 public final class DartTestFinder implements TestFinder {
   private static final String TEST_DART_SUFFIX = "_test.dart";
 

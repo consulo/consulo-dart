@@ -15,11 +15,13 @@
  */
 package com.jetbrains.lang.dart.ide.findUsages;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.project.Project;
 import consulo.usage.rule.FileStructureGroupRuleProvider;
 import consulo.usage.rule.UsageGroupingRule;
 import org.jetbrains.annotations.NotNull;
 
+@ExtensionImpl
 public final class DartClassMemberGroupRuleProvider implements FileStructureGroupRuleProvider {
   @Override
   public UsageGroupingRule getUsageGroupingRule(@NotNull Project project) {

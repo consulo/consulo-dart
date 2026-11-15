@@ -25,7 +25,6 @@ import consulo.virtualFileSystem.LocalFileSystem;
 import consulo.virtualFileSystem.util.VirtualFileUtil;
 
 import consulo.util.collection.ArrayUtil;
-import consulo.util.collection.ArrayUtil;
 import com.intellij.util.PlatformUtils;
 import consulo.util.collection.SmartList;
 import com.jetbrains.lang.dart.ide.index.DartLibraryIndex;
@@ -123,7 +122,7 @@ public final class DartSdkLibUtil {
     final SortedSet<String> roots = getRootUrls(project, sdkHomePath);
     if (roots.isEmpty()) return ()->{}; // corrupted SDK
 
-    if (Comparing.haveEqualElements(ArrayUtilRt.toStringArray(roots), library.getRootProvider().getUrls(OrderRootType.CLASSES))) {
+    if (Comparing.haveEqualElements(ArrayUtil.toStringArray(roots), library.getRootProvider().getUrls(OrderRootType.CLASSES))) {
       return ()->{}; // already ok
     }
 
@@ -161,7 +160,7 @@ public final class DartSdkLibUtil {
   private static @NotNull SortedSet<String> getRootUrls(final @NotNull Project project, final @NotNull String sdkHomePath) {
     final SortedSet<String> result = getRootUrlsFromLibrariesFile(project, sdkHomePath);
 
-    if (result.isEmpty() || !result.contains(VfsUtilCore.pathToUrl(sdkHomePath + "/lib/core"))) {
+    if (result.isEmpty() || !result.contains(VirtualFileUtil.pathToUrl(sdkHomePath + "/lib/core"))) {
       LOG.info("Failed to get useful info from " + sdkHomePath + "/lib/_internal/libraries.dart");
       return getRootUrlsFailover(sdkHomePath);
     }
@@ -184,7 +183,7 @@ public final class DartSdkLibUtil {
         continue;
       }
 
-      result.add(VfsUtilCore.pathToUrl(sdkHomePath + "/lib/" + relPath.substring(0, slashIndex)));
+      result.add(VirtualFileUtil.pathToUrl(sdkHomePath + "/lib/" + relPath.substring(0, slashIndex)));
     }
     return result;
   }
@@ -205,7 +204,7 @@ public final class DartSdkLibUtil {
       if (subDirName.startsWith("_")) continue;
       if (ArrayUtil.contains(subDirName, SDK_LIB_SUBFOLDERS_BLACKLIST)) continue;
 
-      result.add(VfsUtilCore.pathToUrl(sdkHomePath + "/lib/" + subDirName));
+      result.add(VirtualFileUtil.pathToUrl(sdkHomePath + "/lib/" + subDirName));
     }
 
     return result;

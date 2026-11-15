@@ -8,7 +8,7 @@ import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
 import consulo.language.psi.PsiWhiteSpace;
 import consulo.language.ast.TokenType;
-import com.intellij.util.Function;
+import java.util.function.Function;
 import com.jetbrains.lang.dart.DartTokenTypes;
 import org.jetbrains.annotations.Nullable;
 
@@ -93,9 +93,9 @@ public final class UsefulPsiTreeUtil {
                                                                   boolean strictly) {
     if (sibling == null) return null;
     if (sibling instanceof PsiFile) return sibling;
-    PsiElement result = strictly ? nextSibling.fun(sibling) : sibling;
+    PsiElement result = strictly ? nextSibling.apply(sibling) : sibling;
     while (result != null && !(result instanceof PsiFile) && condition.value(result)) {
-      result = nextSibling.fun(result);
+      result = nextSibling.apply(result);
     }
     return result;
   }

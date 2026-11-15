@@ -13,9 +13,11 @@
 // limitations under the License.
 package com.jetbrains.lang.dart.projectView;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.project.ui.view.tree.ProjectViewNestingRulesProvider;
 import org.jetbrains.annotations.NotNull;
 
+@ExtensionImpl
 public final class DartNestingRulesProvider implements ProjectViewNestingRulesProvider {
   @Override
   public void addFileNestingRules(@NotNull Consumer consumer) {

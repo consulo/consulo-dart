@@ -105,7 +105,7 @@ public final class PubspecYamlUtil {
       if (packageEntryValue instanceof Map) {
         final Object pathObj = ((Map<?, ?>)packageEntryValue).get(PATH);
         if (pathObj instanceof String) {
-          final VirtualFile packageFolder = VfsUtilCore.findRelativeFile(pathObj + "/" + LIB_DIR_NAME, baseDir);
+          final VirtualFile packageFolder = VirtualFileUtil.findRelativeFile(pathObj + "/" + LIB_DIR_NAME, baseDir);
           if (packageFolder != null &&
               packageFolder.isDirectory() &&
               ProjectRootManager.getInstance(project).getFileIndex().isInContent(packageFolder)) {
@@ -139,7 +139,7 @@ public final class PubspecYamlUtil {
           pubspecYamlInfo = loadPubspecYamlInfo(cachedDocument.getText());
         }
         else {
-          pubspecYamlInfo = loadPubspecYamlInfo(VfsUtilCore.loadText(pubspecYamlFile));
+          pubspecYamlInfo = loadPubspecYamlInfo(VirtualFileUtil.loadText(pubspecYamlFile));
         }
 
         if (pubspecYamlInfo != null) {

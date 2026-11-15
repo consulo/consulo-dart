@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.formatter.settings;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.codeStyle.ui.setting.CodeStyleAbstractConfigurable;
 import consulo.language.codeStyle.ui.setting.CodeStyleAbstractPanel;
 import consulo.language.Language;
@@ -13,6 +14,7 @@ import com.jetbrains.lang.dart.DartLanguage;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@ExtensionImpl
 public final class DartLanguageCodeStyleSettingsProvider extends LanguageCodeStyleSettingsProvider {
 
   @Override

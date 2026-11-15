@@ -1,12 +1,14 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.file.LanguageFileType;
 import consulo.localize.LocalizeValue;
 import consulo.ui.image.Image;
 import icons.DartIcons;
 import org.jetbrains.annotations.NotNull;
 
+@ExtensionImpl
 public final class DartFileType extends LanguageFileType {
   public static final LanguageFileType INSTANCE = new DartFileType();
   public static final String DEFAULT_EXTENSION = "dart";

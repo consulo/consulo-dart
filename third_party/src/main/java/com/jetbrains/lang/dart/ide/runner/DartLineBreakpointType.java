@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.virtualFileSystem.fileType.FileTypeRegistry;
 import consulo.project.Project;
 import consulo.virtualFileSystem.VirtualFile;
@@ -10,6 +11,7 @@ import com.jetbrains.lang.dart.DartFileType;
 import com.jetbrains.lang.dart.ide.runner.base.DartDebuggerEditorsProvider;
 import org.jetbrains.annotations.NotNull;
 
+@ExtensionImpl
 public final class DartLineBreakpointType extends XLineBreakpointTypeBase {
 
   private DartLineBreakpointType() {

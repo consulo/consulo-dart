@@ -1,6 +1,11 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.errorTreeView;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
+import consulo.annotation.component.ComponentScope;
+import consulo.annotation.component.ServiceImpl;
+import consulo.annotation.component.ServiceAPI;
 import com.google.common.annotations.VisibleForTesting;
 import consulo.execution.ExecutionUtil;
 import consulo.project.ui.view.ProjectView;
@@ -16,7 +21,6 @@ import consulo.application.ApplicationManager;
 import consulo.ui.ModalityState;
 import consulo.application.ReadAction;
 import consulo.component.persist.PersistentStateComponent;
-import com.thaiopensource.util.Service;
 import consulo.component.persist.State;
 import consulo.component.persist.Storage;
 import consulo.component.persist.StoragePathMacros;
@@ -54,11 +58,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@Service(Service.Level.PROJECT)
 @State(
   name = "DartProblemsView",
   storages = @Storage(StoragePathMacros.WORKSPACE_FILE)
 )
+@ServiceAPI(ComponentScope.PROJECT)
+@ServiceImpl
+@Singleton
 public final class DartProblemsView implements PersistentStateComponent<DartProblemsViewSettings>, Disposable {
   public static final String TOOLWINDOW_ID = "Dart Analysis"; // the same as in plugin.xml, this is not a user-visible string
 
@@ -146,6 +152,7 @@ public final class DartProblemsView implements PersistentStateComponent<DartProb
     return vFile;
   }
 
+  @Inject
   public DartProblemsView(@NotNull Project project) {
     myProject = project;
     myPresentationHelper = new DartProblemsPresentationHelper(project);
@@ -224,7 +231,7 @@ public final class DartProblemsView implements PersistentStateComponent<DartProb
   }
 
   public static @NotNull DartProblemsView getInstance(final @NotNull Project project) {
-    return project.getService(DartProblemsView.class);
+    return project.getInstance(DartProblemsView.class);
   }
 
   public VirtualFile getCurrentFile() {

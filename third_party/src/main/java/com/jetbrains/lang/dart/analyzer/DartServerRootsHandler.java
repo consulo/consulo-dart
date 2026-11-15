@@ -89,11 +89,11 @@ public class DartServerRootsHandler {
       for (ContentEntry contentEntry : ModuleRootManager.getInstance(module).getContentEntries()) {
         final String contentEntryUrl = contentEntry.getUrl();
         if (contentEntryUrl.startsWith(URLUtil.FILE_PROTOCOL + URLUtil.SCHEME_SEPARATOR)) {
-          newIncludedRootPaths.add(VfsUtilCore.urlToPath(contentEntryUrl));
+          newIncludedRootPaths.add(VirtualFileUtil.urlToPath(contentEntryUrl));
           for (String excludedUrl : contentEntry.getExcludeFolderUrls()) {
             // Analysis Server knows about special 'packages' folders, IDE doesn't need to explicitly list them as excluded.
             if (excludedUrl.startsWith(contentEntryUrl) && !excludedUrl.endsWith("/packages")) {
-              newExcludedRootPaths.add(VfsUtilCore.urlToPath(excludedUrl));
+              newExcludedRootPaths.add(VirtualFileUtil.urlToPath(excludedUrl));
             }
           }
         }

@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.marker;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.DaemonBundle;
 import consulo.language.editor.gutter.LineMarkerInfo;
 import consulo.language.editor.gutter.LineMarkerProvider;
@@ -26,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+@ExtensionImpl
 public final class DartServerImplementationsMarkerProvider implements LineMarkerProvider {
   @Override
   public LineMarkerInfo<?> getLineMarkerInfo(final @NotNull PsiElement element) {

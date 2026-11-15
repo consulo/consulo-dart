@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.imports;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.refactoring.ImportOptimizer;
 import consulo.document.Document;
 import consulo.virtualFileSystem.VirtualFile;
@@ -15,6 +16,7 @@ import org.dartlang.analysis.server.protocol.SourceFileEdit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@ExtensionImpl
 public final class DartImportOptimizer implements ImportOptimizer {
   @Override
   public @NotNull Runnable processFile(final @NotNull PsiFile file) {

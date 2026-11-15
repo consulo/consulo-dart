@@ -9,7 +9,7 @@ import consulo.logging.Logger;
 import com.jetbrains.lang.dart.logging.PluginLogger;
 import consulo.module.Module;
 import consulo.virtualFileSystem.VirtualFile;
-import com.intellij.util.Consumer;
+import java.util.function.Consumer;
 import com.jetbrains.lang.dart.ide.runner.server.DartCommandLineRunConfiguration;
 import com.jetbrains.lang.dart.ide.runner.server.DartCommandLineRunConfigurationType;
 import com.jetbrains.lang.dart.ide.runner.server.DartCommandLineRunnerParameters;
@@ -74,7 +74,7 @@ public abstract class DartProjectTemplate {
         templates.add(new CmdLineAppTemplate());
       }
 
-      ApplicationManager.getApplication().invokeLater(() -> templatesConsumer.consume(templates), ModalityState.any());
+      ApplicationManager.getApplication().invokeLater(() -> templatesConsumer.accept(templates), ModalityState.any());
     }
   }
 

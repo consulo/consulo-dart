@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.completion;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.application.CommonBundle;
 import consulo.language.editor.AutoPopupController;
 import consulo.language.editor.CodeInsightSettings;
@@ -76,6 +77,7 @@ import static consulo.language.pattern.PlatformPatterns.psiElement;
 import static consulo.language.pattern.PlatformPatterns.psiFile;
 import static consulo.language.pattern.StandardPatterns.or;
 
+@ExtensionImpl
 public final class DartServerCompletionContributor extends CompletionContributor {
   private static final Logger LOG = PluginLogger.INSTANCE.createLogger(DartServerCompletionContributor.class);
   @VisibleForTesting

@@ -1,5 +1,6 @@
 package com.jetbrains.lang.dart.ide.surroundWith;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.surroundWith.SurroundDescriptor;
 import consulo.language.editor.surroundWith.Surrounder;
 import consulo.language.psi.PsiElement;
@@ -8,6 +9,7 @@ import com.jetbrains.lang.dart.ide.surroundWith.statement.*;
 import com.jetbrains.lang.dart.util.DartRefactoringUtil;
 import org.jetbrains.annotations.NotNull;
 
+@ExtensionImpl
 public final class DartStatementsSurroundDescriptor implements SurroundDescriptor {
   @Override
   public PsiElement @NotNull [] getElementsToSurround(PsiFile file, int startOffset, int endOffset) {

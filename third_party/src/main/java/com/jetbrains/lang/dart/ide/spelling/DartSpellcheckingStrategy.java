@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.spelling;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.application.dumb.DumbAware;
 import consulo.util.lang.Pair;
 import consulo.document.util.TextRange;
@@ -16,6 +17,7 @@ import com.jetbrains.lang.dart.ide.annotator.DartAnnotator;
 import com.jetbrains.lang.dart.psi.DartComponentName;
 import org.jetbrains.annotations.NotNull;
 
+@ExtensionImpl
 public final class DartSpellcheckingStrategy extends SpellcheckingStrategy implements DumbAware {
   private final Tokenizer<PsiElement> myStringLiteralTokenizer = new DartStringLiteralTokenizer();
 

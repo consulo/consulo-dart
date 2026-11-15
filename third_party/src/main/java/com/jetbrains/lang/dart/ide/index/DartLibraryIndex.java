@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.index;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.application.ReadAction;
 import consulo.project.Project;
 import consulo.util.dataholder.Key;
@@ -35,6 +36,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+@ExtensionImpl
 public final class DartLibraryIndex extends ScalarIndexExtension<String> {
   public static final ID<String, Void> DART_LIBRARY_INDEX = ID.create("DartLibraryIndex");
 
@@ -109,7 +111,7 @@ public final class DartLibraryIndex extends ScalarIndexExtension<String> {
     final VirtualFile finalLibrariesDartFile = librariesDartFile;
     return ReadAction.compute(() -> {
       try {
-        final String contents = StringUtil.convertLineSeparators(VfsUtilCore.loadText(finalLibrariesDartFile));
+        final String contents = StringUtil.convertLineSeparators(VirtualFileUtil.loadText(finalLibrariesDartFile));
         final PsiFile psiFile =
           PsiFileFactory.getInstance(project).createFileFromText("libraries.dart", DartLanguage.INSTANCE, contents);
         if (!(psiFile instanceof DartFile)) {

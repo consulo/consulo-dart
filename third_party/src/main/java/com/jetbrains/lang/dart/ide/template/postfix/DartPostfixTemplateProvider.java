@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.template.postfix;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.postfixTemplate.PostfixTemplate;
 import consulo.language.editor.postfixTemplate.PostfixTemplateProvider;
 import consulo.logging.Logger;
@@ -17,6 +18,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+@ExtensionImpl
 public final class DartPostfixTemplateProvider implements PostfixTemplateProvider {
   private static final Logger LOG = PluginLogger.INSTANCE.createLogger(DartPostfixTemplateProvider.class);
 

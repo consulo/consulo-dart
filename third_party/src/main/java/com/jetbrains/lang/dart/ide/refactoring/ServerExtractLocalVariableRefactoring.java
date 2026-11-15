@@ -33,7 +33,7 @@ public class ServerExtractLocalVariableRefactoring extends ServerRefactoring {
   }
 
   public String @NotNull [] getNames() {
-    return feedback != null ? ArrayUtilRt.toStringArray(feedback.getNames()) : ArrayUtilRt.EMPTY_STRING_ARRAY;
+    return feedback != null ? ArrayUtil.toStringArray(feedback.getNames()) : ArrayUtil.EMPTY_STRING_ARRAY;
   }
 
   public int @NotNull [] getOccurrencesOffsets() {

@@ -108,7 +108,7 @@ public final class DartQuickFix implements IntentionAction, Comparable<Intention
         final String directoryPath = PathUtil.getParentPath(filePath);
         if (directoryPath.isEmpty()) throw new IOException("empty folder path");
 
-        final VirtualFile directory = VfsUtil.createDirectoryIfMissing(directoryPath);
+        final VirtualFile directory = VirtualFileUtil.createDirectoryIfMissing(directoryPath);
         if (directory == null) throw new IOException("failed to create folder " + FileUtil.toSystemDependentName(directoryPath));
 
         virtualFile = directory.createChildData(sourceChange, PathUtil.getFileName(filePath));

@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.server;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.execution.action.ConfigurationContext;
 import com.intellij.execution.actions.LazyRunConfigurationProducer;
 import consulo.execution.configuration.ConfigurationFactory;
@@ -18,6 +19,7 @@ import com.jetbrains.lang.dart.util.DartResolveUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@ExtensionImpl
 public final class DartCommandLineRuntimeConfigurationProducer extends LazyRunConfigurationProducer<DartCommandLineRunConfiguration> {
   @Override
   public @NotNull ConfigurationFactory getConfigurationFactory() {

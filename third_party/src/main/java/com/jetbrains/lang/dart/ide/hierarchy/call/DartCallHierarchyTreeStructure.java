@@ -11,7 +11,6 @@ import consulo.language.psi.PsiElement;
 import consulo.language.psi.scope.GlobalSearchScope;
 import consulo.language.psi.util.PsiTreeUtil;
 import consulo.util.collection.ArrayUtil;
-import consulo.util.collection.ArrayUtil;
 import com.jetbrains.lang.dart.ide.findUsages.DartServerFindUsagesHandler;
 import com.jetbrains.lang.dart.ide.hierarchy.DartHierarchyUtil;
 import com.jetbrains.lang.dart.psi.*;
@@ -55,16 +54,16 @@ public abstract class DartCallHierarchyTreeStructure extends HierarchyTreeStruct
     if (descriptor instanceof DartCallHierarchyNodeDescriptor dartDescriptor) {
       PsiElement element = dartDescriptor.getPsiElement();
       if (element == null) {
-        return ArrayUtilRt.EMPTY_OBJECT_ARRAY;
+        return ArrayUtil.EMPTY_OBJECT_ARRAY;
       }
       boolean isCallable = DartHierarchyUtil.isExecutable(element);
       HierarchyNodeDescriptor nodeDescriptor = getBaseDescriptor();
       if (!(element instanceof DartComponent) || !isCallable || nodeDescriptor == null) {
-        return ArrayUtilRt.EMPTY_OBJECT_ARRAY;
+        return ArrayUtil.EMPTY_OBJECT_ARRAY;
       }
       DartComponentName name = ((DartComponent)element).getComponentName();
       if (name == null) {
-        return ArrayUtilRt.EMPTY_OBJECT_ARRAY;
+        return ArrayUtil.EMPTY_OBJECT_ARRAY;
       }
 
       final List<PsiElement> children = getChildren(name);

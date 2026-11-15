@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.index;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.index.io.DataIndexer;
 import consulo.language.psi.stub.DefaultFileTypeSpecificInputFilter;
 import consulo.language.psi.stub.FileBasedIndex;
@@ -15,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
+@ExtensionImpl
 public final class DartClassIndex extends ScalarIndexExtension<String> {
   public static final ID<String, Void> DART_CLASS_INDEX = ID.create("DartClassIndex");
   private final DataIndexer<String, Void, FileContent> myDataIndexer = new MyDataIndexer();

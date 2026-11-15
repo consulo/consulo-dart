@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.highlight;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.colorScheme.TextAttributesKey;
 import consulo.language.editor.highlight.SyntaxHighlighter;
 import consulo.colorScheme.setting.AttributesDescriptor;
@@ -16,6 +17,7 @@ import java.util.Map;
 
 import static com.jetbrains.lang.dart.highlight.DartSyntaxHighlighterColors.*;
 
+@ExtensionImpl
 public final class DartColorsAndFontsPage implements ColorSettingsPage {
   private static final AttributesDescriptor[] ATTRS;
 

@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.server.webdev;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.execution.configuration.ConfigurationFactory;
 import consulo.execution.configuration.ConfigurationTypeBase;
 import consulo.execution.configuration.ConfigurationTypeUtil;
@@ -16,6 +17,7 @@ import com.jetbrains.lang.dart.DartFileType;
 import icons.DartIcons;
 import org.jetbrains.annotations.NotNull;
 
+@ExtensionImpl
 public final class DartWebdevConfigurationType extends ConfigurationTypeBase implements DumbAware {
   public static @NotNull DartWebdevConfigurationType getInstance() {
     return ConfigurationTypeUtil.findConfigurationType(DartWebdevConfigurationType.class);

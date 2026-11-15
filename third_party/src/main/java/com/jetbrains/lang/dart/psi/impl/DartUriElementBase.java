@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.psi.impl;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.ast.ASTNode;
 import consulo.util.lang.function.Condition;
 import consulo.document.util.TextRange;
@@ -37,14 +38,20 @@ public abstract class DartUriElementBase extends DartPsiCompositeElementImpl imp
     return new PsiReference[]{new DartFileReference(this, getUriStringAndItsRange().first)};
   }
 
+  @ExtensionImpl
   public static final class DartUriElementManipulator extends AbstractElementManipulator<DartUriElement> {
+    @Override
+    public @NotNull Class<DartUriElement> getElementClass() {
+      return DartUriElement.class;
+    }
+
     @Override
     public DartUriElement handleContentChange(final @NotNull DartUriElement oldUriElement,
                                               final @NotNull TextRange range,
                                               final @NotNull String newContent) {
-      final String newUriElementText = StringUtil.replaceSubstring(oldUriElement.getText(), getRangeInElement(oldUriElement), newContent);
+      final String newUriElementText = StringUtil.replaceSubstring(oldUriElement.getText(), getRangeInElement(oldUriElement).getStartOffset(), getRangeInElement(oldUriElement).getEndOffset(), newContent);
       final PsiFile fileFromText = PsiFileFactory.getInstance(oldUriElement.getProject())
-        .createFileFromText(DartLanguage.INSTANCE, "import " + newUriElementText + ";");
+        .createFileFromText("foo.bar", DartLanguage.INSTANCE, "import " + newUriElementText + ";");
 
       final DartImportStatement importStatement = PsiTreeUtil.findChildOfType(fileFromText, DartImportStatement.class);
       assert importStatement != null : fileFromText.getText();

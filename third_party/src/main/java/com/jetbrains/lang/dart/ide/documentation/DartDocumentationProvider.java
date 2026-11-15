@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.documentation;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.completion.lookup.Lookup;
 import consulo.language.editor.completion.lookup.LookupElement;
 import consulo.language.editor.completion.lookup.LookupManager;
@@ -25,6 +26,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
+@ExtensionImpl
 public final class DartDocumentationProvider implements DocumentationProvider {
   private static final String BASE_DART_DOC_URL = "https://api.dart.dev/stable/";
 

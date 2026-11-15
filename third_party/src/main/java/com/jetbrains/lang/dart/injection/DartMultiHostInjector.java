@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.injection;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.Language;
 import consulo.html.language.HTMLLanguage;
 import consulo.language.inject.MultiHostInjector;
@@ -19,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.List;
 
+@ExtensionImpl
 public final class DartMultiHostInjector implements MultiHostInjector {
 
   // Trailing space is intentional, it helps to avoid errors like "XML attribute Dart_string_template_placeholderhref is not allowed here"

@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.test;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.execution.action.ConfigurationContext;
 import com.intellij.execution.actions.LazyRunConfigurationProducer;
 import consulo.execution.configuration.ConfigurationFactory;
@@ -25,6 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Objects;
 
+@ExtensionImpl
 public final class DartTestRunConfigurationProducer extends LazyRunConfigurationProducer<DartTestRunConfiguration> {
   @Override
   public @NotNull ConfigurationFactory getConfigurationFactory() {
@@ -86,7 +88,7 @@ public final class DartTestRunConfigurationProducer extends LazyRunConfiguration
     final VirtualFile testDir = rootDir == null ? null : rootDir.findChild("test");
     if (testDir == null || !testDir.isDirectory()) return false;
 
-    if (!rootDir.equals(dir) && !VfsUtilCore.isAncestor(testDir, dir, false)) return false;
+    if (!rootDir.equals(dir) && !VirtualFileUtil.isAncestor(testDir, dir, false)) return false;
 
     return setupRunnerParametersForFolder(params, dir);
   }
@@ -126,7 +128,7 @@ public final class DartTestRunConfigurationProducer extends LazyRunConfiguration
     final VirtualFile pubspec = urlResolver.getPubspecYamlFile();
     final VirtualFile rootDir = pubspec == null ? null : pubspec.getParent();
     final VirtualFile testDir = rootDir == null ? null : rootDir.findChild("test");
-    return testDir != null && testDir.isDirectory() && VfsUtilCore.isAncestor(testDir, file, true);
+    return testDir != null && testDir.isDirectory() && VirtualFileUtil.isAncestor(testDir, file, true);
   }
 
   private static boolean setupRunnerParametersForFile(final @NotNull DartTestRunnerParameters runnerParams,

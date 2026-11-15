@@ -5,6 +5,7 @@
  */
 package com.jetbrains.lang.dart.ide.findUsages;
 
+import consulo.annotation.component.ExtensionImpl;
 import com.intellij.codeInsight.TargetElementEvaluatorEx2;
 import consulo.project.Project;
 import consulo.language.psi.PsiElement;
@@ -31,6 +32,7 @@ import java.util.Collections;
  * once the plugin is fully migrated to LSP and legacy DAS / PSI reference resolution is
  * deprecated, or if the platform avoids the TargetElementUtil fallback when LSP targets exist.
  */
+@ExtensionImpl
 public class DartTargetElementEvaluator extends TargetElementEvaluatorEx2 {
   @Override
   public @Nullable Collection<PsiElement> getTargetCandidates(@NotNull PsiReference reference) {

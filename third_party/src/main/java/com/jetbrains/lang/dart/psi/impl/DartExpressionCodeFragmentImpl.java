@@ -1,19 +1,18 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.psi.impl;
 
+import static consulo.language.impl.parser.GeneratedParserUtilBase.*;
 import consulo.language.ast.ASTNode;
 import consulo.language.Language;
 import consulo.language.parser.PsiBuilder;
 import consulo.language.parser.PsiBuilderFactory;
 import consulo.language.file.FileTypeManager;
 import consulo.project.Project;
-import com.intellij.psi.*;
 import consulo.language.file.FileViewProvider;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiManager;
 import consulo.language.impl.file.SingleRootFileViewProvider;
-import consulo.language.impl.internal.psi.PsiManagerEx;
-import consulo.language.impl.internal.file.FileManager;
+import consulo.language.version.LanguageVersionUtil;
 import consulo.language.impl.ast.FileElement;
 import consulo.language.impl.ast.TreeElement;
 import consulo.language.psi.scope.GlobalSearchScope;
@@ -72,9 +71,9 @@ public class DartExpressionCodeFragmentImpl extends DartFile implements DartExpr
     final DartExpressionCodeFragmentImpl clone = (DartExpressionCodeFragmentImpl)cloneImpl((FileElement)calcTreeElement().clone());
     clone.myPhysical = false;
     clone.myOriginalFile = this;
-    final FileManager fileManager = ((PsiManagerEx)getManager()).getFileManager();
     final SingleRootFileViewProvider cloneViewProvider =
-      (SingleRootFileViewProvider)fileManager.createFileViewProvider(new LightVirtualFile(getName(), getLanguage(), getText()), false);
+      // Consulo: FileManager is internal
+      new SingleRootFileViewProvider(getManager(), new LightVirtualFile(getName(), getLanguage(), getText()), false);
     clone.myViewProvider = cloneViewProvider;
     cloneViewProvider.forceCachedPsi(clone);
     clone.init(getContentElementType(), getContentElementType());
@@ -114,7 +113,8 @@ public class DartExpressionCodeFragmentImpl extends DartFile implements DartExpr
     @Override
     protected ASTNode doParseContents(@NotNull ASTNode chameleon, @NotNull PsiElement psi) {
       final PsiBuilderFactory factory = PsiBuilderFactory.getInstance();
-      final PsiBuilder psiBuilder = factory.createBuilder(((TreeElement)chameleon).getManager().getProject(), chameleon);
+      final PsiBuilder psiBuilder = factory.createBuilder(((TreeElement)chameleon).getManager().getProject(), chameleon,
+                                                          LanguageVersionUtil.findDefaultVersion(getLanguage()));
 //      var startTime = System.nanoTime();
       final PsiBuilder builder = adapt_builder_(DartTokenTypes.STATEMENTS, psiBuilder, new DartParser(), DartParser.EXTENDS_SETS_);
 

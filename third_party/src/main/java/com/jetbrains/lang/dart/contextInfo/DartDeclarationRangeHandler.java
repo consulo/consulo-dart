@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.contextInfo;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.hint.DeclarationRangeHandler;
 import consulo.document.util.TextRange;
 import consulo.language.psi.PsiElement;
@@ -8,6 +9,7 @@ import com.jetbrains.lang.dart.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@ExtensionImpl
 public final class DartDeclarationRangeHandler implements DeclarationRangeHandler<DartPsiCompositeElement> {
   @Override
   public @Nullable TextRange getDeclarationRange(@NotNull DartPsiCompositeElement element) {

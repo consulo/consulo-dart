@@ -1,6 +1,7 @@
 // Copyright 2000-2019 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.ImplementationTextSelectioner;
 import consulo.document.util.TextRange;
 import consulo.language.psi.PsiElement;
@@ -10,6 +11,7 @@ import com.jetbrains.lang.dart.psi.DartVarInit;
 import com.jetbrains.lang.dart.util.UsefulPsiTreeUtil;
 import org.jetbrains.annotations.NotNull;
 
+@ExtensionImpl
 public final class DartImplementationTextSelectioner implements ImplementationTextSelectioner {
   @Override
   public int getTextStartOffset(@NotNull PsiElement element) {

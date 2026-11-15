@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.util;
 
+import consulo.language.psi.util.LanguageCachedValueUtil;
 import consulo.application.progress.ProgressManager;
 import consulo.project.DumbService;
 import consulo.project.Project;
@@ -22,8 +23,8 @@ import consulo.application.util.CachedValueProvider;
 import consulo.application.util.CachedValuesManager;
 import consulo.language.psi.PsiModificationTracker;
 import consulo.language.psi.util.PsiTreeUtil;
-import com.intellij.util.BooleanValueHolder;
-import com.intellij.util.Function;
+import consulo.dart.compat.BooleanValueHolder;
+import java.util.function.Function;
 import consulo.util.collection.SmartList;
 import consulo.util.collection.ContainerUtil;
 import com.jetbrains.lang.dart.DartComponentType;
@@ -363,7 +364,7 @@ public final class DartResolveUtil {
     }
 
     final VirtualFile parent = contextFile.getParent();
-    return parent == null ? null : VfsUtilCore.findRelativeFile(importText, parent);
+    return parent == null ? null : VirtualFileUtil.findRelativeFile(importText, parent);
   }
 
   public static @Nullable VirtualFile getRealVirtualFile(PsiFile psiFile) {
@@ -415,7 +416,7 @@ public final class DartResolveUtil {
     final VirtualFile contextVirtualFile = getRealVirtualFile(context);
     if (contextVirtualFile == null) return LibraryChain.EMPTY;
 
-    return CachedValuesManager.getCachedValue(context, () -> {
+    return LanguageCachedValueUtil.getCachedValue(context, () -> {
       final Project project = context.getProject();
       final List<VirtualFile> partOfTargets = getPartOfTargets(context);
       final LibraryChain result;
@@ -595,7 +596,7 @@ public final class DartResolveUtil {
                                                        DartClass @NotNull ... rootDartClasses) {
     final List<T> unfilteredResult = new ArrayList<>();
     processSuperClasses(dartClass -> {
-      unfilteredResult.addAll(fun.fun(dartClass));
+      unfilteredResult.addAll(fun.apply(dartClass));
       return true;
     }, rootDartClasses);
     return unfilteredResult;

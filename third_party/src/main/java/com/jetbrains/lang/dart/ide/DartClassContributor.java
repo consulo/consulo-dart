@@ -1,12 +1,13 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.ide.navigation.ChooseByNameContributorEx;
 import consulo.navigation.NavigationItem;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiManager;
 import consulo.language.psi.scope.GlobalSearchScope;
-import com.intellij.util.Function;
+import java.util.function.Function;
 import consulo.application.util.function.Processor;
 import consulo.util.collection.JBIterable;
 import consulo.language.psi.stub.FileBasedIndex;
@@ -23,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collections;
 import java.util.Objects;
 
+@ExtensionImpl
 public final class DartClassContributor implements ChooseByNameContributorEx {
   @Override
   public void processNames(@NotNull Processor<? super String> processor, @NotNull GlobalSearchScope scope, @Nullable IdFilter filter) {

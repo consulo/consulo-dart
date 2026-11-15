@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.sdk;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.content.library.DummyLibraryProperties;
 import consulo.content.library.LibraryKind;
 import consulo.content.library.LibraryPresentationProvider;
@@ -12,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import java.util.List;
 
+@ExtensionImpl
 public final class DartSdkLibraryPresentationProvider extends LibraryPresentationProvider<DummyLibraryProperties> {
 
   private static final LibraryKind KIND = LibraryKind.create("dart");

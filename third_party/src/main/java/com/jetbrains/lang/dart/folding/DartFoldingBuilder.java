@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.folding;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.folding.CodeFoldingSettings;
 import consulo.language.ast.ASTNode;
 import consulo.language.editor.folding.CustomFoldingBuilder;
@@ -29,6 +30,7 @@ import java.util.List;
 
 import static com.jetbrains.lang.dart.DartParserDefinition.DART_FILE;
 
+@ExtensionImpl
 public final class DartFoldingBuilder extends CustomFoldingBuilder implements DumbAware {
 
   private static final String SMILEY = "<~>";

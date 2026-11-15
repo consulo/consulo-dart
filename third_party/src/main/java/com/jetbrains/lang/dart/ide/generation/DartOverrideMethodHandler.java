@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.generation;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.util.lang.Pair;
 import consulo.util.collection.ContainerUtil;
 import com.jetbrains.lang.dart.DartBundle;
@@ -14,6 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@ExtensionImpl
 public final class DartOverrideMethodHandler extends BaseDartGenerateHandler {
   @Override
   protected @NotNull String getTitle() {

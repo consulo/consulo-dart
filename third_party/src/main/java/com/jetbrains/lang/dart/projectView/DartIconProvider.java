@@ -1,6 +1,7 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.projectView;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.application.AllIcons;
 import com.intellij.ide.IconProvider;
 import com.intellij.ide.scratch.ScratchFileTypeIcon;
@@ -23,6 +24,7 @@ import javax.swing.*;
 
 import static com.jetbrains.lang.dart.util.PubspecYamlUtil.PUBSPEC_YAML;
 
+@ExtensionImpl
 public final class DartIconProvider extends IconProvider {
   private static final NotNullLazyValue<Icon> DART_NOT_LOCAL_FILE_ICON =
     NotNullLazyValue.lazy(() -> new ScratchFileTypeIcon(DartFileType.INSTANCE.getIcon()));

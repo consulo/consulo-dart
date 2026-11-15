@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.projectWizard;
 
+import consulo.annotation.component.ExtensionImpl;
 import com.intellij.ide.util.projectWizard.WebProjectTemplate;
 import consulo.application.ApplicationManager;
 import consulo.module.Module;
@@ -15,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 
+@ExtensionImpl
 public final class DartProjectGenerator extends WebProjectTemplate<DartProjectWizardData> implements Comparable<DartProjectGenerator> {
 
   @Override

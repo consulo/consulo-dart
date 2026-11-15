@@ -1,7 +1,10 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.index;
 
+import consulo.util.collection.Lists;
+import consulo.annotation.component.ExtensionImpl;
 import consulo.project.Project;
+import consulo.dart.compat.FileBasedIndexCompat;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.util.collection.ContainerUtil;
 import consulo.language.psi.stub.DefaultFileTypeSpecificInputFilter;
@@ -11,13 +14,14 @@ import consulo.index.io.ID;
 import consulo.language.psi.stub.SingleEntryFileBasedIndexExtension;
 import consulo.language.psi.stub.SingleEntryIndexer;
 import consulo.index.io.data.DataExternalizer;
-import com.intellij.util.io.externalizer.StringCollectionExternalizer;
+import consulo.dart.compat.StringCollectionExternalizer;
 import com.jetbrains.lang.dart.DartFileType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+@ExtensionImpl
 public final class DartPartUriIndex extends SingleEntryFileBasedIndexExtension<List<String>> {
   public static final ID<Integer, List<String>> DART_PATH_INDEX = ID.create("DartPathIndex");
 
@@ -52,6 +56,6 @@ public final class DartPartUriIndex extends SingleEntryFileBasedIndexExtension<L
   }
 
   public static @NotNull List<String> getPartUris(final @NotNull Project project, final @NotNull VirtualFile virtualFile) {
-    return ContainerUtil.notNullize(FileBasedIndex.getInstance().getSingleEntryIndexData(DART_PATH_INDEX, virtualFile, project));
+    return Lists.notNullize(FileBasedIndexCompat.getSingleEntryIndexData(DART_PATH_INDEX, virtualFile, project));
   }
 }

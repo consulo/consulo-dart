@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.formatter;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.module.Module;
 import consulo.language.util.ModuleUtilCore;
 import consulo.project.Project;
@@ -17,6 +18,7 @@ import com.jetbrains.lang.dart.psi.DartFile;
 import com.jetbrains.lang.dart.sdk.DartSdkLibUtil;
 import org.jetbrains.annotations.NotNull;
 
+@ExtensionImpl
 final class DartPostFormatProcessor implements PostFormatProcessor {
   @Override
   public @NotNull PsiElement processElement(final @NotNull PsiElement source, final @NotNull CodeStyleSettings settings) {

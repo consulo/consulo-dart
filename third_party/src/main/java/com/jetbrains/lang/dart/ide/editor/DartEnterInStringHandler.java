@@ -1,6 +1,7 @@
 // Copyright 2000-2025 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.editor;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.action.EnterHandlerDelegate;
 import consulo.language.ast.ASTNode;
 import consulo.dataContext.DataContext;
@@ -19,6 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static com.jetbrains.lang.dart.DartTokenTypes.*;
 
+@ExtensionImpl
 public final class DartEnterInStringHandler implements EnterHandlerDelegate {
 
   @Override

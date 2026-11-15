@@ -38,10 +38,10 @@ public class DartMethodHierarchyTreeStructure extends HierarchyTreeStructure {
   protected Object @NotNull [] buildChildren(@NotNull HierarchyNodeDescriptor descript) {
     final DartMethodHierarchyNodeDescriptor descriptor = (DartMethodHierarchyNodeDescriptor)descript;
     final DartClass dartClass = descriptor.getType();
-    if (dartClass == null) return ArrayUtilRt.EMPTY_OBJECT_ARRAY;
+    if (dartClass == null) return ArrayUtil.EMPTY_OBJECT_ARRAY;
 
     final List<TypeHierarchyItem> items = getTypeHierarchyItems(dartClass);
-    if (items.isEmpty()) return ArrayUtilRt.EMPTY_OBJECT_ARRAY;
+    if (items.isEmpty()) return ArrayUtil.EMPTY_OBJECT_ARRAY;
 
     addAllVisibleSubclasses(new HashSet<>(), myProject, items, items.getFirst(), descriptor);
     return descriptor.getCachedChildren();
@@ -53,7 +53,7 @@ public class DartMethodHierarchyTreeStructure extends HierarchyTreeStructure {
                                        final @NotNull TypeHierarchyItem item,
                                        final @NotNull DartMethodHierarchyNodeDescriptor descriptor) {
     if (!stackItems.add(item)) {
-      descriptor.setCachedChildren(ArrayUtilRt.EMPTY_OBJECT_ARRAY);
+      descriptor.setCachedChildren(ArrayUtil.EMPTY_OBJECT_ARRAY);
       return;
     }
     HierarchyBrowserManager.State state = HierarchyBrowserManager.getInstance(myProject).getState();

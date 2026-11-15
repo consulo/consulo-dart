@@ -5,7 +5,6 @@ import consulo.project.Project;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
 import consulo.language.psi.PsiFileFactory;
-import consulo.language.impl.internal.psi.PsiFileFactoryImpl;
 import consulo.language.psi.util.PsiTreeUtil;
 import consulo.language.file.light.LightVirtualFile;
 import com.jetbrains.lang.dart.DartFileType;
@@ -63,8 +62,8 @@ public final class DartElementGenerator {
   public static PsiFile createDummyFile(Project myProject, String text) {
     final PsiFileFactory factory = PsiFileFactory.getInstance(myProject);
     final String name = "dummy." + DartFileType.INSTANCE.getDefaultExtension();
-    final LightVirtualFile virtualFile = new LightVirtualFile(name, DartFileType.INSTANCE, text);
-    final PsiFile psiFile = ((PsiFileFactoryImpl)factory).trySetupPsiForFile(virtualFile, DartLanguage.INSTANCE, false, true);
+    // Consulo: PsiFileFactoryImpl.trySetupPsiForFile is internal, this is its public equivalent
+    final PsiFile psiFile = factory.createFileFromText(name, DartLanguage.INSTANCE.getVersions()[0], text, false, true, false);
     assert psiFile != null;
     return psiFile;
   }

@@ -1,11 +1,13 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart;
 
+import consulo.annotation.component.ExtensionImpl;
 import com.intellij.application.options.CodeCompletionConfigurable;
 import consulo.configurable.search.SearchableOptionContributor;
 import consulo.configurable.search.SearchableOptionProcessor;
 import org.jetbrains.annotations.NotNull;
 
+@ExtensionImpl
 final class DartSearchableOptionContributor extends SearchableOptionContributor {
   @Override
   public void processOptions(@NotNull SearchableOptionProcessor processor) {

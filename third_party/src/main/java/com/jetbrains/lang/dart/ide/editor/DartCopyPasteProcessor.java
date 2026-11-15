@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.editor;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.CodeInsightSettings;
 import consulo.ide.impl.idea.codeInsight.editorActions.CopyPastePostProcessor;
 import consulo.ide.impl.idea.codeInsight.editorActions.TextBlockTransferableData;
@@ -42,6 +43,7 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
+@ExtensionImpl
 public final class DartCopyPasteProcessor extends CopyPastePostProcessor<DartCopyPasteProcessor.DartImportsTransferableData> {
   private static final DataFlavor FLAVOR = new DataFlavor(DartImportsTransferableData.class, "Dart imports");
 

@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.template.macro;
 
+import consulo.annotation.component.ExtensionImpl;
 import com.google.common.annotations.VisibleForTesting;
 import consulo.language.editor.template.Expression;
 import consulo.language.editor.template.ExpressionContext;
@@ -12,6 +13,7 @@ import com.jetbrains.lang.dart.psi.*;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@ExtensionImpl
 public final class DartMethodReturnTypeMacro extends DartMacroBase {
   @Override
   public String getName() {

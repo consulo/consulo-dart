@@ -255,7 +255,8 @@ public interface DartTokenTypesSets {
     }
 
     private static boolean isSyncOrAsync(final @NotNull ASTNode newBlock) {
-      // TODO consulo-api: BlockSupport.TREE_TO_BE_REPARSED is not exported by consulo.language.impl
+      // Consulo: upstream reads the old block from BlockSupport.TREE_TO_BE_REPARSED (internal in Consulo). The key is only set
+      // when a block is reparsed alone, which never happens since upstream removed isParsable() (55c526da8).
       final ASTNode oldBlock = null;
       final IElementType type = (oldBlock != null ? oldBlock : newBlock).getTreeParent().getFirstChildNode().getElementType();
       return type == SYNC || type == ASYNC;

@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.marker;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.DaemonCodeAnalyzerSettings;
 import consulo.language.editor.gutter.LineMarkerInfo;
 import consulo.language.editor.gutter.LineMarkerProvider;
@@ -19,6 +20,7 @@ import com.jetbrains.lang.dart.psi.*;
 import com.jetbrains.lang.dart.psi.impl.AbstractDartMethodDeclarationImpl;
 import org.jetbrains.annotations.NotNull;
 
+@ExtensionImpl
 public final class DartMethodLineMarkerProvider implements LineMarkerProvider {
   @Override
   public LineMarkerInfo<?> getLineMarkerInfo(final @NotNull PsiElement element) {

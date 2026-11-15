@@ -1,10 +1,14 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.pubServer;
 
+import jakarta.inject.Inject;
+import jakarta.inject.Singleton;
+import consulo.annotation.component.ComponentScope;
+import consulo.annotation.component.ServiceImpl;
+import consulo.annotation.component.ServiceAPI;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
 import consulo.disposer.Disposable;
-import com.thaiopensource.util.Service;
 import consulo.logging.Logger;
 import com.jetbrains.lang.dart.logging.PluginLogger;
 import consulo.project.Project;
@@ -24,7 +28,9 @@ import io.netty.handler.codec.http.HttpHeaders;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.builtInWebServer.ConsoleManager;
 
-@Service(Service.Level.PROJECT)
+@ServiceAPI(ComponentScope.PROJECT)
+@ServiceImpl
+@Singleton
 public final class PubServerManager implements Disposable {
   private static final Logger LOG = PluginLogger.INSTANCE.createLogger(PubServerManager.class);
 
@@ -36,9 +42,10 @@ public final class PubServerManager implements Disposable {
   private final LoadingCache<@NotNull VirtualFile, PubServerService> myServedDirToPubService;
 
   public static @NotNull PubServerManager getInstance(@NotNull Project project) {
-    return project.getService(PubServerManager.class);
+    return project.getInstance(PubServerManager.class);
   }
 
+  @Inject
   public PubServerManager(@NotNull Project project) {
     this.project = project;
 

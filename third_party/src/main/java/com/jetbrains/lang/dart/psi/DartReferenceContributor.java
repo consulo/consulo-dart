@@ -1,6 +1,8 @@
 // Copyright 2000-2025 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.psi;
 
+import consulo.language.Language;
+import consulo.annotation.component.ExtensionImpl;
 import consulo.html.language.HTMLLanguage;
 import consulo.language.inject.InjectedLanguageManager;
 import consulo.logging.Logger;
@@ -18,6 +20,7 @@ import consulo.xml.language.psi.XmlTokenType;
 import consulo.language.util.ProcessingContext;
 import consulo.application.util.function.Processor;
 import consulo.util.collection.SmartList;
+import com.jetbrains.lang.dart.DartLanguage;
 import com.jetbrains.lang.dart.DartTokenTypesSets;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.analyzer.DartServerData;
@@ -32,7 +35,13 @@ import static consulo.language.pattern.PlatformPatterns.psiElement;
 import static consulo.language.pattern.PlatformPatterns.psiFile;
 import static consulo.language.pattern.StandardPatterns.or;
 
-final class DartReferenceContributor extends PsiReferenceContributor {
+@ExtensionImpl
+class DartReferenceContributor extends PsiReferenceContributor {
+  @Override
+  public @NotNull Language getLanguage() {
+    return DartLanguage.INSTANCE;
+  }
+
   private static final Logger LOG = PluginLogger.INSTANCE.createLogger(DartReferenceContributor.class);
 
   @Override

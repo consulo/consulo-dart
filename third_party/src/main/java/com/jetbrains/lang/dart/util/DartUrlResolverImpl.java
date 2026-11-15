@@ -8,7 +8,7 @@ import consulo.module.content.layer.orderEntry.LibraryOrderEntry;
 import consulo.module.content.ModuleRootManager;
 import consulo.module.content.layer.orderEntry.OrderEntry;
 import consulo.module.content.ProjectRootManager;
-import consulo.content.internal.LibraryEx;
+import consulo.content.library.Library;
 import consulo.content.library.LibraryProperties;
 import consulo.content.library.LibraryTablesRegistrar;
 import consulo.application.util.SystemInfo;
@@ -153,7 +153,7 @@ public final class DartUrlResolverImpl extends DartUrlResolver {
                                                          final @NotNull VirtualFile file,
                                                          final @NotNull DartSdk sdk) {
     final VirtualFile sdkLibFolder = LocalFileSystem.getInstance().findFileByPath(sdk.getHomePath() + "/lib");
-    final String relativeToSdkLibFolder = sdkLibFolder == null ? null : VfsUtilCore.getRelativePath(file, sdkLibFolder, '/');
+    final String relativeToSdkLibFolder = sdkLibFolder == null ? null : VirtualFileUtil.getRelativePath(file, sdkLibFolder, '/');
     final String sdkLibUri = relativeToSdkLibFolder == null
                              ? null
                              : DartLibraryIndex.getSdkLibUriByRelativePath(project, relativeToSdkLibFolder);
@@ -169,7 +169,7 @@ public final class DartUrlResolverImpl extends DartUrlResolver {
     for (Map.Entry<String, VirtualFile> entry : livePackageNameToDirMap.entrySet()) {
       final String packageName = entry.getKey();
       final VirtualFile packageDir = entry.getValue();
-      final String relPath = VfsUtilCore.getRelativePath(file, packageDir, '/');
+      final String relPath = VirtualFileUtil.getRelativePath(file, packageDir, '/');
       if (relPath != null) {
         return PACKAGE_PREFIX + packageName + "/" + relPath;
       }
@@ -230,7 +230,7 @@ public final class DartUrlResolverImpl extends DartUrlResolver {
       if (orderEntry instanceof LibraryOrderEntry &&
           LibraryTablesRegistrar.PROJECT_LEVEL.equals(((LibraryOrderEntry)orderEntry).getLibraryLevel()) &&
           DartPackagesLibraryType.DART_PACKAGES_LIBRARY_NAME.equals(((LibraryOrderEntry)orderEntry).getLibraryName())) {
-        final LibraryEx library = (LibraryEx)((LibraryOrderEntry)orderEntry).getLibrary();
+        final Library library = ((LibraryOrderEntry)orderEntry).getLibrary();
         final LibraryProperties properties = library == null ? null : library.getProperties();
 
         if (properties instanceof DartPackagesLibraryProperties) {

@@ -1,6 +1,11 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.codeInsight;
 
+import jakarta.inject.Singleton;
+import consulo.annotation.component.ComponentScope;
+import consulo.annotation.component.ServiceImpl;
+import consulo.annotation.component.ServiceAPI;
+import static consulo.language.editor.CodeInsightSettings.*;
 import consulo.application.ApplicationManager;
 import consulo.component.persist.PersistentStateComponent;
 import consulo.component.persist.State;
@@ -12,9 +17,12 @@ import org.jetbrains.annotations.NotNull;
 
 
 @State(name = "DartCodeInsightSettings", storages = @Storage("other.xml"))
+@ServiceAPI(ComponentScope.APPLICATION)
+@ServiceImpl
+@Singleton
 public class DartCodeInsightSettings implements PersistentStateComponent<DartCodeInsightSettings> {
   public static DartCodeInsightSettings getInstance() {
-    return ApplicationManager.getApplication().getService(DartCodeInsightSettings.class);
+    return ApplicationManager.getApplication().getInstance(DartCodeInsightSettings.class);
   }
 
   public boolean INSERT_DEFAULT_ARG_VALUES = true;

@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.highlight;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.HighlightErrorFilter;
 import consulo.module.content.ProjectFileIndex;
 import consulo.virtualFileSystem.VirtualFile;
@@ -9,6 +10,7 @@ import com.jetbrains.lang.dart.DartLanguage;
 import com.jetbrains.lang.dart.util.DartResolveUtil;
 import org.jetbrains.annotations.NotNull;
 
+@ExtensionImpl
 public final class DartHighlightingErrorFilter extends HighlightErrorFilter {
   @Override
   public boolean shouldHighlightErrorElement(final @NotNull PsiErrorElement element) {

@@ -26,7 +26,7 @@ import consulo.project.Project;
 import consulo.util.dataholder.Key;
 import consulo.util.io.FileUtil;
 import consulo.virtualFileSystem.VirtualFile;
-import com.intellij.util.Consumer;
+import java.util.function.Consumer;
 import consulo.ide.impl.idea.util.net.NetUtils;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ide.devtools.DartDevToolsService;
@@ -123,14 +123,14 @@ public class DartCommandLineRunningState extends CommandLineState {
           processHandler.removeProcessListener(this);
           final String url = "http://" + text.substring(prefix.length());
           for (Consumer<String> consumer : myObservatoryUrlConsumers) {
-            consumer.consume(url);
+            consumer.accept(url);
           }
         }
         else if (text.startsWith(prefix2)) {
           processHandler.removeProcessListener(this);
           final String url = "http://" + text.substring(prefix2.length());
           for (Consumer<String> consumer : myObservatoryUrlConsumers) {
-            consumer.consume(url);
+            consumer.accept(url);
           }
         }
       }

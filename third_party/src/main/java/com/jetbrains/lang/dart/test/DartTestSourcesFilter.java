@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.test;
 
+import consulo.annotation.component.ExtensionImpl;
 import com.intellij.openapi.project.BaseProjectDirectories;
 import consulo.project.Project;
 import consulo.project.content.TestSourcesFilter;
@@ -8,6 +9,7 @@ import consulo.virtualFileSystem.VirtualFile;
 import com.jetbrains.lang.dart.projectView.DartIconProvider;
 import org.jetbrains.annotations.NotNull;
 
+@ExtensionImpl
 public final class DartTestSourcesFilter extends TestSourcesFilter {
   @Override
   public boolean isTestSource(final @NotNull VirtualFile file, final @NotNull Project project) {

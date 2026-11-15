@@ -1,5 +1,6 @@
 package com.jetbrains.lang.dart.ide;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.ide.navigation.ChooseByNameContributorEx;
 import consulo.navigation.NavigationItem;
 import consulo.language.psi.PsiElement;
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 import static com.jetbrains.lang.dart.ide.index.DartSymbolIndex.DART_SYMBOL_INDEX;
 
+@ExtensionImpl
 public final class DartSymbolContributor implements ChooseByNameContributorEx {
   @Override
   public void processNames(@NotNull Processor<? super String> processor, @NotNull GlobalSearchScope scope, @Nullable IdFilter filter) {

@@ -1,6 +1,8 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.editor;
 
+import consulo.annotation.component.ExtensionImpl;
+import static consulo.language.codeStyle.lineIndent.JavaLikeLangLineIndentProvider.JavaLikeElement.*;
 import consulo.language.codeStyle.Indent;
 import consulo.language.Language;
 import consulo.codeEditor.Editor;
@@ -20,6 +22,7 @@ import java.util.Map;
 
 
 
+@ExtensionImpl
 public final class DartLineIndentProvider extends JavaLikeLangLineIndentProvider {
 
     private static volatile Map<IElementType, SemanticEditorPosition.SyntaxElement> SYNTAX_MAP;

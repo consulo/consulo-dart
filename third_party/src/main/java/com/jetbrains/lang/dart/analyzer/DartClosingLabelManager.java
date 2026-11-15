@@ -1,6 +1,10 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.analyzer;
 
+import jakarta.inject.Singleton;
+import consulo.annotation.component.ComponentScope;
+import consulo.annotation.component.ServiceImpl;
+import consulo.annotation.component.ServiceAPI;
 import consulo.language.editor.inlay.DeclarativeInlayHintsSettings;
 import consulo.ide.impl.idea.codeInsight.hints.DeclarativeInlayHintsPassFactory;
 import consulo.application.ApplicationManager;
@@ -9,9 +13,12 @@ import com.jetbrains.lang.dart.hints.DartClosingLabelsInlayHintsProvider;
 
 import java.util.Arrays;
 
+@ServiceAPI(ComponentScope.APPLICATION)
+@ServiceImpl
+@Singleton
 public class DartClosingLabelManager {
   public static DartClosingLabelManager getInstance() {
-    return ApplicationManager.getApplication().getService(DartClosingLabelManager.class);
+    return ApplicationManager.getApplication().getInstance(DartClosingLabelManager.class);
   }
 
   public void setShowClosingLabels(boolean value) {

@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.moveCode;
 
+import consulo.annotation.component.ExtensionImpl;
 import com.google.common.annotations.VisibleForTesting;
 import consulo.language.editor.moveUpDown.LineMover;
 import consulo.language.editor.moveUpDown.LineRange;
@@ -23,6 +24,7 @@ import org.jetbrains.annotations.Nullable;
 /**
  * Move top-level functions, entire class declarations, and class member declarations above or below the neighboring component.
  */
+@ExtensionImpl
 public final class DartComponentMover extends LineMover {
 
   private enum CommentType {

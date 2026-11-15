@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.hierarchy.call;
 
+import consulo.annotation.component.ExtensionImpl;
 import com.intellij.ide.hierarchy.CallHierarchyBrowserBase;
 import consulo.language.editor.internal.hierarchy.HierarchyBrowser;
 import consulo.language.editor.hierarchy.HierarchyProvider;
@@ -27,6 +28,7 @@ import org.jetbrains.annotations.Nullable;
  * and delete this class so the platform's LspCallHierarchyProvider handles Dart directly.
  */
 
+@ExtensionImpl
 public final class DartCallHierarchyProvider implements HierarchyProvider {
   private final HierarchyProvider myLspProvider = new LspCallHierarchyProvider();
 

@@ -1,5 +1,6 @@
 package com.jetbrains.lang.dart.ide.copyright;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.virtualFileSystem.fileType.FileType;
 import consulo.module.Module;
 import consulo.project.Project;
@@ -10,6 +11,7 @@ import com.maddyhome.idea.copyright.psi.UpdateCopyright;
 import com.maddyhome.idea.copyright.psi.UpdateCopyrightsProvider;
 import com.maddyhome.idea.copyright.psi.UpdateJavaScriptFileCopyright;
 
+@ExtensionImpl
 public final class UpdateDartCopyrightsProvider extends UpdateCopyrightsProvider {
 
   @Override

@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.formatter;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.codeStyle.FormattingContext;
 import consulo.language.codeStyle.FormattingModel;
 import consulo.language.codeStyle.FormattingModelBuilder;
@@ -11,6 +12,7 @@ import consulo.language.codeStyle.DocumentBasedFormattingModel;
 import com.jetbrains.lang.dart.psi.DartFile;
 import org.jetbrains.annotations.NotNull;
 
+@ExtensionImpl
 public final class DartFormattingModelBuilder implements FormattingModelBuilder {
 
   @Override

@@ -1,6 +1,10 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.assists;
 
+import jakarta.inject.Singleton;
+import consulo.annotation.component.ComponentScope;
+import consulo.annotation.component.ServiceImpl;
+import consulo.annotation.component.ServiceAPI;
 import com.google.dart.server.utilities.general.ObjectUtilities;
 import consulo.application.ApplicationManager;
 import consulo.codeEditor.Caret;
@@ -13,6 +17,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
+@ServiceAPI(ComponentScope.APPLICATION)
+@ServiceImpl
+@Singleton
 public class DartQuickAssistSet {
 
   private List<SourceChange> lastSourceChanges = new ArrayList<>();
@@ -22,7 +29,7 @@ public class DartQuickAssistSet {
   private int lastLength;
 
   static @NotNull DartQuickAssistSet getInstance() {
-    return ApplicationManager.getApplication().getService(DartQuickAssistSet.class);
+    return ApplicationManager.getApplication().getInstance(DartQuickAssistSet.class);
   }
 
   public synchronized List<SourceChange> getQuickAssists(final @NotNull Editor editor, final @NotNull PsiFile psiFile) {

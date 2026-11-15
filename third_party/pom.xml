@@ -306,6 +306,7 @@
                         <include>com/jetbrains/lang/dart/util/PubspecYamlUtil.java</include>
                         <include>com/jetbrains/lang/dart/util/UsefulPsiTreeUtil.java</include>
                         <include>consulo/dart/**/*.java</include>
+                        <include>com/jetbrains/lang/dart/psi/DartXmlReferenceContributor.java</include>
                         <include>consulo/dart/notification/DartNotificationGroups.java</include>
                         <include>module-info.java</include>
                         <include>icons/*.java</include>

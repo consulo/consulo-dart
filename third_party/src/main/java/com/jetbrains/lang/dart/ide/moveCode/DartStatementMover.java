@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.moveCode;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.moveUpDown.LineMover;
 import consulo.language.editor.moveUpDown.LineRange;
 import consulo.language.editor.moveUpDown.StatementUpDownMover;
@@ -33,6 +34,7 @@ import static com.jetbrains.lang.dart.util.DartRefactoringUtil.*;
  * Move executable statements within a method or function. Statements cannot be moved outside a component.
  * TODO: What about moving statements from a local function to the surrounding method?
  */
+@ExtensionImpl
 public final class DartStatementMover extends LineMover {
   static final TokenSet NESTED_GUARDS = TokenSet.create(LIST_LITERAL_EXPRESSION, ARGUMENT_LIST, ARGUMENTS);
 

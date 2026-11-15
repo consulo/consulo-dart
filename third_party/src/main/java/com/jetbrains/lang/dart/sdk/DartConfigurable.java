@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.sdk;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.DaemonCodeAnalyzer;
 import consulo.application.AllIcons;
 import com.intellij.ide.actions.ShowSettingsUtilImpl;
@@ -72,6 +73,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@ExtensionImpl
 public final class DartConfigurable implements SearchableConfigurable, NoScroll, Disposable {
   public static final int WEBDEV_PORT_DEFAULT = 53322;
   private static final String WEBDEV_PORT_PROPERTY_NAME = "dart.webdev.port";
@@ -290,7 +292,7 @@ public final class DartConfigurable implements SearchableConfigurable, NoScroll,
   }
 
   private static @NotNull String getTextFromCombo(final @NotNull ComboBox<?> combo) {
-    return FileUtilRt.toSystemIndependentName(combo.getEditor().getItem().toString().trim());
+    return FileUtil.toSystemIndependentName(combo.getEditor().getItem().toString().trim());
   }
 
   @Override
@@ -307,7 +309,7 @@ public final class DartConfigurable implements SearchableConfigurable, NoScroll,
 
     // reset UI
     myEnableDartSupportCheckBox.setSelected(myDartSupportEnabledInitial);
-    String sdkInitialPath = mySdkInitial == null ? "" : FileUtilRt.toSystemDependentName(mySdkInitial.getHomePath());
+    String sdkInitialPath = mySdkInitial == null ? "" : FileUtil.toSystemDependentName(mySdkInitial.getHomePath());
     mySdkPathComboWithBrowse.getEditor().setItem(sdkInitialPath);
     if (!sdkInitialPath.isEmpty()) {
       ensureComboModelContainsCurrentItem(mySdkPathComboWithBrowse);

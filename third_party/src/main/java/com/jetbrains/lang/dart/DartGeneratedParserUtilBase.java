@@ -2,6 +2,7 @@
 package com.jetbrains.lang.dart;
 
 import consulo.language.parser.PsiBuilder;
+import consulo.dart.compat.PsiBuilderUtilCompat;
 import consulo.language.parser.PsiBuilderUtil;
 import consulo.language.impl.parser.GeneratedParserUtilBase;
 import consulo.util.dataholder.Key;
@@ -142,7 +143,7 @@ public class DartGeneratedParserUtilBase extends GeneratedParserUtilBase {
   }
 
   public static boolean lazyParseableBlockImpl(PsiBuilder builder, int level) {
-    return PsiBuilderUtil.parseBlockLazy(builder, LBRACE, RBRACE, LAZY_PARSEABLE_BLOCK) != null;
+    return PsiBuilderUtilCompat.parseBlockLazy(builder, LBRACE, RBRACE, LAZY_PARSEABLE_BLOCK) != null;
   }
 
   public static boolean arrowBodyWrapper(PsiBuilder builder_, int level_) {

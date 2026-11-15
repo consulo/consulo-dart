@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.errorTreeView;
 
+import consulo.annotation.component.ExtensionImpl;
 import com.intellij.ide.util.PropertiesComponent;
 import consulo.application.dumb.DumbAware;
 import consulo.project.Project;
@@ -12,6 +13,7 @@ import consulo.ui.ex.content.Content;
 import consulo.ui.ex.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
 
+@ExtensionImpl
 final class DartAnalysisToolWindowFactory implements ToolWindowFactory, DumbAware {
   private static final String TOOL_WINDOW_VISIBLE_PROPERTY = "dart.analysis.tool.window.visible";
 

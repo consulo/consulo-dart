@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.template;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.template.context.TemplateActionContext;
 import consulo.language.editor.template.context.TemplateContextType;
 import consulo.language.editor.highlight.SyntaxHighlighter;
@@ -49,6 +50,7 @@ public abstract class DartTemplateContextType extends TemplateContextType {
     return new DartSyntaxHighlighter();
   }
 
+  @ExtensionImpl
   public static final class Generic extends DartTemplateContextType {
     public Generic() {
       super(DartBundle.message("template.context.type.dart"));
@@ -60,6 +62,7 @@ public abstract class DartTemplateContextType extends TemplateContextType {
     }
   }
 
+  @ExtensionImpl
   public static final class Statement extends DartTemplateContextType {
     public Statement() {
       super(DartBundle.message("template.context.type.dart.statement"));

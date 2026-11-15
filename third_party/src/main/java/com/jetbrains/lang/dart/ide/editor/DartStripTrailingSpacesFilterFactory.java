@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.editor;
 
+import consulo.annotation.component.ExtensionImpl;
 import consulo.language.ast.ASTNode;
 import consulo.language.Language;
 import consulo.document.Document;
@@ -16,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 import static com.jetbrains.lang.dart.DartTokenTypes.RAW_TRIPLE_QUOTED_STRING;
 import static com.jetbrains.lang.dart.DartTokenTypes.REGULAR_STRING_PART;
 
+@ExtensionImpl
 public final class DartStripTrailingSpacesFilterFactory extends PsiBasedStripTrailingSpacesFilter.Factory {
 
   @Override

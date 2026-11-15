@@ -1,6 +1,10 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.psi;
 
+import org.jetbrains.yaml.YAMLLanguage;
+import java.util.function.Predicate;
+import consulo.language.Language;
+import consulo.annotation.component.ExtensionImpl;
 import consulo.util.lang.function.Condition;
 import consulo.application.util.SystemInfo;
 import consulo.util.io.FileUtil;
@@ -27,7 +31,13 @@ import org.jetbrains.yaml.psi.YAMLMapping;
 
 import java.util.Collection;
 
+@ExtensionImpl
 public final class PubspecYamlReferenceContributor extends PsiReferenceContributor {
+  @Override
+  public @NotNull Language getLanguage() {
+    return YAMLLanguage.INSTANCE;
+  }
+
   @Override
   public void registerReferenceProviders(final @NotNull PsiReferenceRegistrar registrar) {
     registrar.registerReferenceProvider(PlatformPatterns.psiElement(YAMLKeyValue.class), new PubspecYamlReferenceProvider());
@@ -95,7 +105,7 @@ public final class PubspecYamlReferenceContributor extends PsiReferenceContribut
         }
 
         @Override
-        protected Condition<PsiFileSystemItem> getReferenceCompletionFilter() {
+        public Predicate<PsiFileSystemItem> getReferenceCompletionFilter() {
           return DIRECTORY_FILTER;
         }
       };
