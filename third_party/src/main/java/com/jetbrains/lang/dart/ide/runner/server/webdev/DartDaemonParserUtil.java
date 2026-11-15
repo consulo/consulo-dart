@@ -2,7 +2,7 @@
 package com.jetbrains.lang.dart.ide.runner.server.webdev;
 
 import com.google.gson.*;
-import consulo.language.spellchecker.editor.impl.Strings;
+import consulo.util.lang.StringUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -106,7 +106,7 @@ public final class DartDaemonParserUtil {
     final JsonPrimitive primLog = params.getAsJsonPrimitive("log");
     if (primLog != null) {
       String primLogAsString = primLog.getAsString();
-      if (Strings.isNotEmpty(primLogAsString)) {
+      if (StringUtil.isNotEmpty(primLogAsString)) {
         return primLogAsString.trim();
       }
     }

@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ui;
 
+import consulo.application.Application;
 import consulo.application.AllIcons;
 import consulo.ui.ModalityState;
 import consulo.application.ReadAction;
@@ -47,7 +48,7 @@ public class BasicComboBoxWithBrowseButton<T> extends ComboBox<T> {
           FileChooser.chooseFile(descriptor, project, this, null, file -> {
             String path = FileUtil.toSystemIndependentName(file.getPath());
             ReadAction.nonBlocking(() -> backgroundResolver.apply(path))
-              .finishOnUiThread(ModalityState.any(), edtConsumer)
+              .finishOnUiThread(Application::getAnyModalityState, edtConsumer)
               .submit(AppExecutorUtil.getAppExecutorService());
           });
         }));

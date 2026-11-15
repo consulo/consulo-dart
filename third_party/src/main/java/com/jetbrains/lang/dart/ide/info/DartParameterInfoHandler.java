@@ -8,7 +8,7 @@ import consulo.language.editor.parameterInfo.ParameterInfoHandler;
 import consulo.language.editor.parameterInfo.ParameterInfoUIContext;
 import consulo.language.editor.parameterInfo.UpdateParameterInfoContext;
 import consulo.application.ApplicationManager;
-import consulo.language.spellchecker.editor.impl.Strings;
+import consulo.util.lang.StringUtil;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.util.PsiTreeUtil;
 import com.jetbrains.lang.dart.psi.*;
@@ -112,7 +112,7 @@ public final class DartParameterInfoHandler implements ParameterInfoHandler<PsiE
       return;
     }
     myParametersListPresentableText = p.getParametersListPresentableText();
-    if (Strings.isEmpty(myParametersListPresentableText)) {
+    if (StringUtil.isEmpty(myParametersListPresentableText)) {
       myParametersListPresentableText = CodeInsightBundle.message("parameter.info.no.parameters");
     }
     context.setupUIComponentPresentation(

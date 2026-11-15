@@ -6,7 +6,7 @@ import consulo.language.editor.generation.MemberChooserObject;
 import consulo.language.editor.generation.PsiElementMemberChooserObject;
 import consulo.navigation.ItemPresentation;
 import consulo.component.util.Iconable;
-import consulo.language.spellchecker.editor.impl.Strings;
+import consulo.util.lang.StringUtil;
 import consulo.language.psi.util.PsiTreeUtil;
 import com.jetbrains.lang.dart.psi.DartClass;
 import com.jetbrains.lang.dart.psi.DartComponent;
@@ -25,7 +25,7 @@ public class DartNamedElementNode extends PsiElementMemberChooserObject implemen
     }
     if (dartComponent instanceof DartClass) {
       final String location = presentation.getLocationString();
-      if (Strings.isNotEmpty(location)) {
+      if (StringUtil.isNotEmpty(location)) {
         return dartComponent.getName() + " " + location;
       }
       return dartComponent.getName();

@@ -1,6 +1,7 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.pubServer;
 
+import consulo.dart.notification.DartNotificationGroups;
 import consulo.process.ExecutionException;
 import consulo.process.cmd.GeneralCommandLine;
 import consulo.execution.ui.console.TextConsoleBuilder;
@@ -69,7 +70,7 @@ final class PubServerService extends NetService {
   private static final Logger LOG = PluginLogger.INSTANCE.createLogger(PubServerService.class);
 
   private static final String DART_WEBDEV = "Dart Webdev";
-  private static final NotificationGroup NOTIFICATION_GROUP = NotificationGroupManager.getInstance().getNotificationGroup("Dart Webdev");
+  private static final NotificationGroup NOTIFICATION_GROUP = DartNotificationGroups.get("Dart Webdev");
 
   private volatile VirtualFile firstServedDir;
 

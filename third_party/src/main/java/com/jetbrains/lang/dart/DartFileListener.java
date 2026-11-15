@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart;
 
+import consulo.application.Application;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.application.ApplicationManager;
 import consulo.ui.ModalityState;
@@ -27,7 +28,7 @@ import consulo.content.library.LibraryTable;
 import consulo.content.library.LibraryTablesRegistrar;
 import consulo.util.lang.function.Condition;
 import consulo.application.util.registry.Registry;
-import consulo.language.spellchecker.editor.impl.Strings;
+import consulo.util.lang.StringUtil;
 import consulo.virtualFileSystem.event.AsyncFileListener;
 import consulo.virtualFileSystem.LocalFileSystem;
 import consulo.virtualFileSystem.util.VirtualFileUtil;
@@ -118,7 +119,7 @@ public final class DartFileListener implements AsyncFileListener {
     ReadAction.nonBlocking(() -> collectPackagesLibraryRoots(project))
       .coalesceBy(DART_PACKAGE_ROOTS_UPDATE_COALESCE)
       .expireWith(DartAnalysisServerService.getInstance(project))
-      .finishOnUiThread(ModalityState.nonModal(), libInfo -> {
+      .finishOnUiThread(Application::getNoneModalityState, libInfo -> {
         if (libInfo.getLibRootUrls().isEmpty()) {
           removeDartPackagesLibraryAndDependencies(project);
           return;
@@ -296,7 +297,7 @@ public final class DartFileListener implements AsyncFileListener {
       return true;
     }
 
-    while (Strings.isNotEmpty(path)) {
+    while (StringUtil.isNotEmpty(path)) {
       final VirtualFile file = LocalFileSystem.getInstance().findFileByPath(path);
       if (file == null) {
         path = PathUtil.getParentPath(path);

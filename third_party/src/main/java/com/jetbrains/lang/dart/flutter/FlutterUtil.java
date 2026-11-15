@@ -1,10 +1,9 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.flutter;
 
-import consulo.ide.impl.idea.ide.plugins.PluginManagerCore;
+import consulo.container.plugin.PluginManager;
 import consulo.container.plugin.PluginId;
 import consulo.module.Module;
-import com.intellij.openapi.module.ModuleType;
 import consulo.virtualFileSystem.VirtualFile;
 import com.jetbrains.lang.dart.sdk.DartSdk;
 import com.jetbrains.lang.dart.sdk.DartSdkLibUtil;
@@ -25,7 +24,7 @@ import java.util.Map;
 public final class FlutterUtil {
   private static final String FLUTTER_MODULE_TYPE_ID = "FLUTTER_MODULE_TYPE";
   private static final String DART_SDK_SUFFIX = "/bin/cache/dart-sdk";
-  private static final boolean FLUTTER_PLUGIN_INSTALLED = PluginManagerCore.isPluginInstalled(PluginId.getId("io.flutter"));
+  private static final boolean FLUTTER_PLUGIN_INSTALLED = PluginManager.findPlugin(PluginId.getId("io.flutter")) != null;
 
   /**
    * @return the Flutter SDK root relative to the given Dart SDK or {@code null}
@@ -35,8 +34,7 @@ public final class FlutterUtil {
   }
 
   public static boolean isFlutterModule(final @NotNull Module module) {
-    // Check the module type for backwards compatibility:
-    if (FLUTTER_MODULE_TYPE_ID.equals(ModuleType.get(module).getId())) return true;
+    // Consulo: no module types, the backwards compatible FLUTTER_MODULE_TYPE check is not needed
 
     // Flutter module support is now defined by:
     // [Flutter support enabled for a module] ===

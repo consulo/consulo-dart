@@ -26,7 +26,7 @@ import consulo.project.Project;
 import consulo.util.io.FileUtil;
 import consulo.application.util.registry.Registry;
 import consulo.util.lang.StringUtil;
-import consulo.language.spellchecker.editor.impl.Strings;
+
 import consulo.virtualFileSystem.VirtualFile;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ide.runner.DartConsoleFilter;
@@ -113,14 +113,14 @@ public class DartTestRunningState extends DartCommandLineRunningState {
         targetName != null &&
         !targetName.isEmpty()) {
       builder.append(" ").append(":").append(targetName).append(" ").append(EXPANDED_REPORTER_OPTION);
-      if (Strings.isNotEmpty(testRunnerOptions)) {
+      if (StringUtil.isNotEmpty(testRunnerOptions)) {
         builder.append(" ").append(testRunnerOptions);
       }
     }
     else {
       builder.append(' ').append(TEST_PACKAGE_SPEC);
       builder.append(' ').append(EXPANDED_REPORTER_OPTION);
-      if (Strings.isNotEmpty(testRunnerOptions)) {
+      if (StringUtil.isNotEmpty(testRunnerOptions)) {
         builder.append(" ").append(testRunnerOptions);
       }
 

@@ -4,7 +4,7 @@ package com.jetbrains.lang.dart.sdk;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import consulo.webBrowser.BrowserUtil;
-import com.intellij.ide.util.PropertiesComponent;
+import consulo.application.ApplicationPropertiesComponent;
 import consulo.project.ui.notification.NotificationType;
 import consulo.project.ui.notification.Notification;
 import consulo.project.ui.notification.NotificationAction;
@@ -45,7 +45,7 @@ public final class DartSdkUpdateChecker {
     final DartSdkUpdateOption option = DartSdkUpdateOption.getDartSdkUpdateOption();
     if (option == DartSdkUpdateOption.DoNotCheck) return;
 
-    final long lastCheckedMillis = PropertiesComponent.getInstance().getLong(DART_LAST_SDK_CHECK_KEY, 0);
+    final long lastCheckedMillis = ApplicationPropertiesComponent.getInstance().getLong(DART_LAST_SDK_CHECK_KEY, 0);
     if (System.currentTimeMillis() - lastCheckedMillis < CHECK_INTERVAL) return;
 
     final DartSdk sdk = DartSdk.getDartSdk(project);
@@ -55,7 +55,7 @@ public final class DartSdkUpdateChecker {
 
     ApplicationManager.getApplication().executeOnPooledThread(() -> {
       if (!project.isDisposed()) {
-        PropertiesComponent.getInstance().setValue(DART_LAST_SDK_CHECK_KEY, String.valueOf(System.currentTimeMillis()));
+        ApplicationPropertiesComponent.getInstance().setValue(DART_LAST_SDK_CHECK_KEY, String.valueOf(System.currentTimeMillis()));
 
         final String currentSdkVersion = sdk.getVersion();
         final SdkUpdateInfo sdkUpdateInfo = getSdkUpdateInfo(option);
@@ -64,7 +64,7 @@ public final class DartSdkUpdateChecker {
           ApplicationManager.getApplication().invokeLater(
             () -> notifySdkUpdateAvailable(project, currentSdkVersion, sdkUpdateInfo.myVersion, sdkUpdateInfo.myDownloadUrl),
             ModalityState.nonModal(),
-            project.getDisposed()
+            project::isDisposed
           );
         }
       }

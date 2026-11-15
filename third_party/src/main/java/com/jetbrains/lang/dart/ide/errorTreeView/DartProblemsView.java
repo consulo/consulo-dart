@@ -1,6 +1,8 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.errorTreeView;
 
+import consulo.application.Application;
+import consulo.dart.notification.DartNotificationGroups;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import consulo.annotation.component.ComponentScope;
@@ -140,7 +142,7 @@ public final class DartProblemsView implements PersistentStateComponent<DartProb
         return filePathToDartProblems;
       })
       .expireWith(getInstance(myProject))
-      .finishOnUiThread(ModalityState.nonModal(), panel::setErrors)
+      .finishOnUiThread(Application::getNoneModalityState, panel::setErrors)
       .submit(AppExecutorUtil.getAppExecutorService());
   }
 
@@ -163,13 +165,13 @@ public final class DartProblemsView implements PersistentStateComponent<DartProb
         @Override
         public void analysisStarted() {
           myAnalysisIsBusy = true;
-          ModalityUiUtil.invokeLaterIfNeeded(ModalityState.nonModal(), myProject.getDisposed(), () -> updateIcon());
+          ModalityUiUtil.invokeLaterIfNeeded(ModalityState.nonModal(), myProject::isDisposed, () -> updateIcon());
         }
 
         @Override
         public void analysisFinished() {
           myAnalysisIsBusy = false;
-          ModalityUiUtil.invokeLaterIfNeeded(ModalityState.nonModal(), myProject.getDisposed(), () -> updateIcon());
+          ModalityUiUtil.invokeLaterIfNeeded(ModalityState.nonModal(), myProject::isDisposed, () -> updateIcon());
         }
       }
     );
@@ -183,7 +185,7 @@ public final class DartProblemsView implements PersistentStateComponent<DartProb
   private @Nullable ToolWindow getDartAnalysisToolWindow() {
     ToolWindow toolWindow = ToolWindowManager.getInstance(myProject).getToolWindow(TOOLWINDOW_ID);
     if (toolWindow != null && !toolWindow.isAvailable()) {
-      ModalityUiUtil.invokeLaterIfNeeded(ModalityState.nonModal(), myProject.getDisposed(), () -> {
+      ModalityUiUtil.invokeLaterIfNeeded(ModalityState.nonModal(), myProject::isDisposed, () -> {
         ToolWindow tw = ToolWindowManager.getInstance(myProject).getToolWindow(TOOLWINDOW_ID);
         if (tw != null && !tw.isAvailable()) {
           tw.setAvailable(true);
@@ -266,7 +268,7 @@ public final class DartProblemsView implements PersistentStateComponent<DartProb
 
     if (myDisabledForSession) return;
 
-    final Notification notification = NotificationGroupManager.getInstance().getNotificationGroup("Dart Analysis")
+    final Notification notification = DartNotificationGroups.get("Dart Analysis")
       .createNotification(title, StringUtil.notNullize(content), notificationType);
 
     if (addOpenAnalysisAction) {
@@ -296,7 +298,7 @@ public final class DartProblemsView implements PersistentStateComponent<DartProb
         () -> {
           notification.expire();
 
-          final Notification innerNotification = NotificationGroupManager.getInstance().getNotificationGroup("Dart Analysis")
+          final Notification innerNotification = DartNotificationGroups.get("Dart Analysis")
             .createNotification(
               DartBundle.message("notification.title.warning.disabled"),
               DartBundle.message("notification.content.you.can.enable.it.back.in.the.settings", ActionCenter.getToolwindowName()),

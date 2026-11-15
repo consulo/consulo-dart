@@ -1,7 +1,8 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.actions;
 
-import com.intellij.ide.util.PropertiesComponent;
+import consulo.project.ProjectPropertiesComponent;
+import consulo.component.PropertiesComponent;
 import consulo.fileChooser.FileChooserDescriptorFactory;
 import consulo.project.Project;
 import consulo.ui.ex.awt.DialogWrapper;
@@ -70,7 +71,7 @@ public class DartPubBuildDialog extends DialogWrapper {
   }
 
   private void reset() {
-    final PropertiesComponent propertiesComponent = PropertiesComponent.getInstance(myProject);
+    final PropertiesComponent propertiesComponent = ProjectPropertiesComponent.getInstance(myProject);
 
     myInputFolderTextField.setText(propertiesComponent.getValue(DART_BUILD_INPUT_KEY, DEFAULT_INPUT_FOLDER));
     myOutputFolderField.setText(propertiesComponent.getValue(DART_BUILD_OUTPUT_KEY, DEFAULT_OUTPUT_FOLDER));
@@ -105,7 +106,7 @@ public class DartPubBuildDialog extends DialogWrapper {
   }
 
   private void saveDialogState() {
-    final PropertiesComponent propertiesComponent = PropertiesComponent.getInstance(myProject);
+    final PropertiesComponent propertiesComponent = ProjectPropertiesComponent.getInstance(myProject);
 
     final String inputPath = StringUtil.nullize(myInputFolderTextField.getText().trim());
     propertiesComponent.setValue(DART_BUILD_INPUT_KEY, inputPath, DEFAULT_INPUT_FOLDER);

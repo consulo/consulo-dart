@@ -11,7 +11,7 @@ import consulo.document.event.DocumentEvent;
 import consulo.document.FileDocumentManager;
 import consulo.project.Project;
 
-import consulo.language.spellchecker.editor.impl.Strings;
+import consulo.util.lang.StringUtil;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.language.psi.resolve.ResolveCache;
 import consulo.content.scope.SearchScope;
@@ -249,7 +249,7 @@ public final class DartServerData {
 
     ApplicationManager.getApplication().executeOnPooledThread(() -> {
       String contents = myService.lspMessage_dart_textDocumentContent(fileUri);
-      if (Strings.isEmpty(contents)) {
+      if (StringUtil.isEmpty(contents)) {
         myNotLocalFileUriToVirtualFileMap.remove(fileUri);
         return;
       }

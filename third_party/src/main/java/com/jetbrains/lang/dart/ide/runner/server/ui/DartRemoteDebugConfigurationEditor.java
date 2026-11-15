@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.server.ui;
 
+import consulo.application.Application;
 import consulo.ui.ModalityState;
 import consulo.application.ReadAction;
 import consulo.fileChooser.FileChooserDescriptorFactory;
@@ -76,7 +77,7 @@ public class DartRemoteDebugConfigurationEditor extends SettingsEditor<DartRemot
       }
       return items;
     })
-      .finishOnUiThread(ModalityState.any(), items -> {
+      .finishOnUiThread(Application::getAnyModalityState, items -> {
         final Object selectedItem = myDartProjectCombo.getSelectedItem();
         myComboItems.addAll(items);
         myDartProjectCombo.setModel(new DefaultComboBoxModel<>(myComboItems.toArray(NameAndPath[]::new)));
@@ -102,7 +103,7 @@ public class DartRemoteDebugConfigurationEditor extends SettingsEditor<DartRemot
     if (projectPath.isEmpty()) return;
 
     ReadAction.nonBlocking(() -> resolveNameAndPath(projectPath))
-      .finishOnUiThread(ModalityState.any(), this::applySelectedProjectPath)
+      .finishOnUiThread(Application::getAnyModalityState, this::applySelectedProjectPath)
       .submit(AppExecutorUtil.getAppExecutorService());
   }
 

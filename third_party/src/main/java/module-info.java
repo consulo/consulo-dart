@@ -42,6 +42,8 @@ module com.jetbrains.lang.dart {
   requires consulo.project.api;
   requires consulo.project.ui.api;
   requires consulo.ui.api;
+  requires consulo.http.api;
+  requires consulo.web.browser.api;
   requires consulo.ui.ex.api;
   requires consulo.ui.ex.awt.api;
   requires consulo.undo.redo.api;

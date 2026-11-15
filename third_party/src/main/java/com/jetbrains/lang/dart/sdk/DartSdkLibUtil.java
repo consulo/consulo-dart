@@ -1,38 +1,57 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
+/*
+ * Copyright 2013-2026 consulo.io
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.jetbrains.lang.dart.sdk;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.jetbrains.lang.dart.ide.index.DartLibraryIndex;
+import com.jetbrains.lang.dart.logging.PluginLogger;
+import consulo.content.bundle.Sdk;
+import consulo.content.bundle.SdkTable;
+import consulo.dart.module.extension.DartModuleExtension;
+import consulo.dart.module.extension.DartMutableModuleExtension;
+import consulo.dart.sdk.DartSdkType;
 import consulo.disposer.Disposable;
 import consulo.language.editor.WriteCommandAction;
+import consulo.language.util.ModuleUtilCore;
 import consulo.logging.Logger;
-import com.jetbrains.lang.dart.logging.PluginLogger;
 import consulo.module.Module;
 import consulo.module.ModuleManager;
-import consulo.project.Project;
-import consulo.module.content.layer.orderEntry.LibraryOrderEntry;
-import consulo.module.content.layer.ModifiableRootModel;
 import consulo.module.content.ModuleRootManager;
+import consulo.module.content.layer.ModifiableRootModel;
+import consulo.module.content.layer.orderEntry.ModuleExtensionWithSdkOrderEntry;
 import consulo.module.content.layer.orderEntry.OrderEntry;
-import consulo.content.OrderRootType;
-import consulo.module.content.ModifiableModelCommitter;
-import consulo.content.internal.LibraryEx;
-import consulo.content.library.Library;
 import consulo.content.library.LibraryTable;
-import consulo.content.library.LibraryTablesRegistrar;
-import consulo.util.lang.Comparing;
-import consulo.disposer.Disposer;
+import consulo.project.Project;
+import consulo.util.collection.ArrayUtil;
+import consulo.util.collection.SmartList;
 import consulo.virtualFileSystem.LocalFileSystem;
 import consulo.virtualFileSystem.util.VirtualFileUtil;
-
-import consulo.util.collection.ArrayUtil;
-import com.intellij.util.PlatformUtils;
-import consulo.util.collection.SmartList;
-import com.jetbrains.lang.dart.ide.index.DartLibraryIndex;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
+import java.nio.file.Path;
 import java.util.*;
 
+/**
+ * Consulo: upstream keeps the Dart SDK as the "Dart SDK" project library and enables Dart in a module by a dependency on it.
+ * Here the SDK is a {@link DartSdkType} SDK and Dart is enabled by {@link DartModuleExtension}; public methods are kept,
+ * so upstream callers do not change.
+ */
 public final class DartSdkLibUtil {
   private static final Logger LOG = PluginLogger.INSTANCE.createLogger(DartSdkLibUtil.class);
 
@@ -48,7 +67,7 @@ public final class DartSdkLibUtil {
   };
 
   public static boolean isIdeWithMultipleModuleSupport() {
-    return PlatformUtils.isIntelliJ() || "AndroidStudio".equals(PlatformUtils.getPlatformPrefix());
+    return true;
   }
 
   public static void ensureDartSdkConfigured(final @NotNull Project project, final @NotNull String sdkHomePath) {
@@ -60,101 +79,44 @@ public final class DartSdkLibUtil {
    */
   @VisibleForTesting
   public static @NotNull Disposable configureDartSdkAndReturnUndoingDisposable(final @NotNull Project project, final @NotNull String sdkHomePath) {
-    final LibraryTable libraryTable = LibraryTablesRegistrar.getInstance().getLibraryTable(project);
-    final Library library = libraryTable.getLibraryByName(DartSdk.DART_SDK_LIB_NAME);
-    if (library == null) {
-      final LibraryTable.ModifiableModel model = libraryTable.getModifiableModel();
-      Library lib = createDartSdkLib(project, model, sdkHomePath);
-      model.commit();
-      return () -> {
-        if (((LibraryEx)lib).isDisposed()) return;
+    final Sdk existing = findDartSdkByHomePath(sdkHomePath);
+    if (existing != null) return () -> {};
 
-        WriteCommandAction.runWriteCommandAction(null, () -> {
-          LibraryTable.ModifiableModel m = libraryTable.getModifiableModel();
-          m.removeLibrary(lib);
-          m.commit();
-        });
-      };
-    }
-    final DartSdk sdk = DartSdk.getSdkByLibrary(library);
-    if (sdk == null || !sdkHomePath.equals(sdk.getHomePath())) {
-      return setupDartSdkRoots(project, library, sdkHomePath);
-    }
-    return ()->{};
+    final Sdk sdk = createDartSdk(sdkHomePath);
+    return () -> WriteCommandAction.runWriteCommandAction(null, () -> SdkTable.getInstance().removeSdk(sdk));
   }
 
   public static void ensureDartSdkConfigured(final @NotNull Project project,
                                              final @NotNull LibraryTable.ModifiableModel libraryTableModel,
                                              final @NotNull String sdkHomePath) {
-    final Library library = libraryTableModel.getLibraryByName(DartSdk.DART_SDK_LIB_NAME);
-    if (library == null) {
-      createDartSdkLib(project, libraryTableModel, sdkHomePath);
-    }
-    else {
-      final DartSdk sdk = DartSdk.getSdkByLibrary(library);
-      if (sdk == null || !sdkHomePath.equals(sdk.getHomePath())) {
-        setupDartSdkRoots(project, library, sdkHomePath);
+    ensureDartSdkConfigured(project, sdkHomePath);
+  }
+
+  public static @Nullable Sdk findDartSdkByHomePath(final @NotNull String sdkHomePath) {
+    final String path = VirtualFileUtil.pathToUrl(sdkHomePath);
+    for (Sdk sdk : SdkTable.getInstance().getSdksOfType(DartSdkType.getInstance())) {
+      final String homePath = sdk.getHomePath();
+      if (homePath != null && VirtualFileUtil.pathToUrl(homePath).equals(path)) {
+        return sdk;
       }
     }
+    return null;
   }
 
-  private static @NotNull Library createDartSdkLib(final @NotNull Project project,
-                                                   final @NotNull LibraryTable.ModifiableModel libraryTableModel,
-                                                   final @NotNull String sdkHomePath) {
-    final Library existingLib = libraryTableModel.getLibraryByName(DartSdk.DART_SDK_LIB_NAME);
-    if (existingLib != null) {
-      setupDartSdkRoots(project, existingLib, sdkHomePath);
-      return existingLib;
-    }
-    else {
-      final Library library = libraryTableModel.createLibrary(DartSdk.DART_SDK_LIB_NAME);
-      setupDartSdkRoots(project, library, sdkHomePath);
-      return library;
-    }
-  }
-
-  /**
-   * @return Disposable which undoes configuration
-   */
-  private static @NotNull Disposable setupDartSdkRoots(final @NotNull Project project, final @NotNull Library library, final @NotNull String sdkHomePath) {
+  private static @NotNull Sdk createDartSdk(final @NotNull String sdkHomePath) {
     LocalFileSystem.getInstance().refreshAndFindFileByPath(sdkHomePath + "/lib");
 
-    final SortedSet<String> roots = getRootUrls(project, sdkHomePath);
-    if (roots.isEmpty()) return ()->{}; // corrupted SDK
+    final DartSdkType sdkType = DartSdkType.getInstance();
+    final String version = DartSdkUtil.getSdkVersion(sdkHomePath);
+    final String name = version == null ? DartSdk.DART_SDK_LIB_NAME : DartSdk.DART_SDK_LIB_NAME + " " + version;
+    final Sdk sdk = SdkTable.getInstance().createSdk(Path.of(sdkHomePath), name, sdkType);
+    sdkType.setupSdkPaths(sdk);
+    SdkTable.getInstance().addSdk(sdk);
+    return sdk;
+  }
 
-    if (Comparing.haveEqualElements(ArrayUtil.toStringArray(roots), library.getRootProvider().getUrls(OrderRootType.CLASSES))) {
-      return ()->{}; // already ok
-    }
-
-    final LibraryEx.ModifiableModelEx libModifiableModel = (LibraryEx.ModifiableModelEx)library.getModifiableModel();
-    try {
-      // remove old
-      for (String url : libModifiableModel.getUrls(OrderRootType.CLASSES)) {
-        libModifiableModel.removeRoot(url, OrderRootType.CLASSES);
-      }
-      for (String url : libModifiableModel.getExcludedRootUrls()) {
-        libModifiableModel.removeExcludedRoot(url);
-      }
-
-      // add new
-      for (String root : roots) {
-        libModifiableModel.addRoot(root, OrderRootType.CLASSES);
-      }
-
-      libModifiableModel.commit();
-      return ()-> WriteCommandAction.runWriteCommandAction(null, ()->{
-        Library.ModifiableModel m = library.getModifiableModel();
-        for (String root : roots) {
-          m.removeRoot(root, OrderRootType.CLASSES);
-        }
-        m.commit();
-      });
-    }
-    catch (Exception e) {
-      LOG.warn(e);
-      Disposer.dispose(libModifiableModel);
-    }
-    return ()->{};
+  private static @Nullable Sdk findAnyDartSdk() {
+    return SdkTable.getInstance().findMostRecentSdkOfType(DartSdkType.getInstance());
   }
 
   private static @NotNull SortedSet<String> getRootUrls(final @NotNull Project project, final @NotNull String sdkHomePath) {
@@ -211,22 +173,7 @@ public final class DartSdkLibUtil {
   }
 
   public static boolean isDartSdkEnabled(final @NotNull Module module) {
-    for (final OrderEntry orderEntry : ModuleRootManager.getInstance(module).getOrderEntries()) {
-      if (isDartSdkOrderEntry(orderEntry)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-
-  public static boolean isDartSdkEnabled(@NotNull ModuleEntity moduleEntity) {
-    for (ModuleDependencyItem dependencyItem : moduleEntity.getDependencies()) {
-      if (isDartSdkOrderEntry(dependencyItem)) {
-        return true;
-      }
-    }
-    return false;
+    return ModuleUtilCore.getExtension(module, DartModuleExtension.class) != null;
   }
 
   public static void enableDartSdk(final @NotNull Module module) {
@@ -238,22 +185,18 @@ public final class DartSdkLibUtil {
    */
   @VisibleForTesting
   public static @NotNull Disposable enableDartSdkAndReturnUndoingDisposable(final @NotNull Module module) {
-    if (isDartSdkEnabled(module)) return Disposer.newDisposable();
+    if (isDartSdkEnabled(module)) return () -> {};
 
     final ModifiableRootModel modifiableModel = ModuleRootManager.getInstance(module).getModifiableModel();
     try {
-      modifiableModel.addInvalidLibrary(DartSdk.DART_SDK_LIB_NAME, LibraryTablesRegistrar.PROJECT_LEVEL);
+      setDartEnabled(modifiableModel, true);
       modifiableModel.commit();
       return () -> {
         if (module.isDisposed()) return;
 
         WriteCommandAction.runWriteCommandAction(null, () -> {
           ModifiableRootModel m = ModuleRootManager.getInstance(module).getModifiableModel();
-          for (OrderEntry orderEntry : m.getOrderEntries()) {
-            if (isDartSdkOrderEntry(orderEntry)) {
-              m.removeOrderEntry(orderEntry);
-            }
-          }
+          setDartEnabled(m, false);
           m.commit();
         });
       };
@@ -262,7 +205,20 @@ public final class DartSdkLibUtil {
       LOG.error(e);
       if (!modifiableModel.isDisposed()) modifiableModel.dispose();
     }
-    return Disposer.newDisposable();
+    return () -> {};
+  }
+
+  private static void setDartEnabled(final @NotNull ModifiableRootModel model, final boolean enabled) {
+    final DartMutableModuleExtension extension = model.getExtensionWithoutCheck(DartMutableModuleExtension.class);
+    if (extension == null) return;
+
+    extension.setEnabled(enabled);
+    if (enabled && extension.getSdk() == null) {
+      final Sdk sdk = findAnyDartSdk();
+      if (sdk != null) {
+        extension.getInheritableSdk().set(null, sdk);
+      }
+    }
   }
 
   public static void disableDartSdk(final @NotNull Collection<? extends Module> modules) {
@@ -272,15 +228,11 @@ public final class DartSdkLibUtil {
 
     for (final Module module : modules) {
       final ModifiableRootModel modifiableModel = ModuleRootManager.getInstance(module).getModifiableModel();
-      for (final OrderEntry orderEntry : modifiableModel.getOrderEntries()) {
-        if (isDartSdkOrderEntry(orderEntry)) {
-          modifiableModel.removeOrderEntry(orderEntry);
-        }
-      }
+      setDartEnabled(modifiableModel, false);
       models.add(modifiableModel);
     }
 
-    commitModifiableModels(modules.iterator().next().getProject(), models);
+    commitModifiableModels(models);
   }
 
   public static Collection<Module> getModulesWithDartSdkEnabled(final @NotNull Project project) {
@@ -301,60 +253,29 @@ public final class DartSdkLibUtil {
 
     for (final Module module : ModuleManager.getInstance(project).getModules()) {
       final boolean mustHaveDart = ArrayUtil.contains(module, modulesWithDart);
-      boolean hasDart = false;
+      if (mustHaveDart == isDartSdkEnabled(module)) continue;
 
       final ModifiableRootModel modifiableModel = ModuleRootManager.getInstance(module).getModifiableModel();
-      for (final OrderEntry orderEntry : modifiableModel.getOrderEntries()) {
-        if (isDartSdkOrderEntry(orderEntry)) {
-          hasDart = true;
-
-          if (!mustHaveDart) {
-            modifiableModel.removeOrderEntry(orderEntry);
-          }
-        }
-      }
-
-      if (mustHaveDart && !hasDart) {
-        modifiableModel.addInvalidLibrary(DartSdk.DART_SDK_LIB_NAME, LibraryTablesRegistrar.PROJECT_LEVEL);
-      }
-
-      if (modifiableModel.isChanged()) {
-        modelsToCommit.add(modifiableModel);
-      }
-      else {
-        modifiableModel.dispose();
-      }
+      setDartEnabled(modifiableModel, mustHaveDart);
+      modelsToCommit.add(modifiableModel);
     }
 
-    commitModifiableModels(project, modelsToCommit);
+    commitModifiableModels(modelsToCommit);
   }
 
   public static boolean isDartSdkOrderEntry(final @NotNull OrderEntry orderEntry) {
-    return orderEntry instanceof LibraryOrderEntry &&
-           LibraryTablesRegistrar.PROJECT_LEVEL.equals(((LibraryOrderEntry)orderEntry).getLibraryLevel()) &&
-           DartSdk.DART_SDK_LIB_NAME.equals(((LibraryOrderEntry)orderEntry).getLibraryName());
+    return orderEntry instanceof ModuleExtensionWithSdkOrderEntry sdkOrderEntry &&
+           sdkOrderEntry.getModuleExtension() instanceof DartModuleExtension;
   }
 
-  public static boolean isDartSdkOrderEntry(@NotNull ModuleDependencyItem dependencyItem) {
-    if (dependencyItem instanceof LibraryDependency) {
-      LibraryId libraryId = ((LibraryDependency)dependencyItem).getLibrary();
-      return libraryId.getTableId() instanceof LibraryTableId.ProjectLibraryTableId &&
-             libraryId.getName().equals(DartSdk.DART_SDK_LIB_NAME);
-    }
-    return false;
-  }
-
-  private static void commitModifiableModels(final @NotNull Project project,
-                                             final @NotNull Collection<ModifiableRootModel> modelsToCommit) {
-    if (!modelsToCommit.isEmpty()) {
+  private static void commitModifiableModels(final @NotNull Collection<ModifiableRootModel> modelsToCommit) {
+    for (ModifiableRootModel model : modelsToCommit) {
       try {
-        ModifiableModelCommitter.multiCommit(modelsToCommit, ModuleManager.getInstance(project).getModifiableModel());
+        model.commit();
       }
       finally {
-        for (ModifiableRootModel model : modelsToCommit) {
-          if (!model.isDisposed()) {
-            model.dispose();
-          }
+        if (!model.isDisposed()) {
+          model.dispose();
         }
       }
     }

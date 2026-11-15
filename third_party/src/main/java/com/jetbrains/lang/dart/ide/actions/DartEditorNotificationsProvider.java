@@ -1,9 +1,9 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.actions;
 
+import consulo.dart.notification.DartNotificationGroups;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.webBrowser.BrowserUtil;
-import com.intellij.notification.NotificationGroupManager;
 import consulo.project.ui.notification.NotificationAction;
 import consulo.project.ui.notification.NotificationType;
 import consulo.application.ApplicationManager;
@@ -160,8 +160,7 @@ public final class DartEditorNotificationsProvider implements EditorNotification
                              : DartBundle.message("dart.support.enabled");
         final String message = DartBundle.message("dart.sdk.0.open.dart.settings", sdk.getVersion());
 
-        NotificationGroupManager.getInstance()
-          .getNotificationGroup("Dart Support")
+        DartNotificationGroups.get("Dart Support")
           .createNotification(title, message, NotificationType.INFORMATION)
           .addAction(NotificationAction.createSimple(DartBundle.message("open.dart.settings"), ()-> {
             DartConfigurable.openDartSettings(project);

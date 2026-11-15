@@ -1,13 +1,15 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.analyzer;
 
+import consulo.dart.notification.DartNotificationGroups;
 import consulo.container.plugin.PluginDescriptor;
-import consulo.ide.impl.idea.ide.plugins.PluginManagerCore;
-import com.intellij.notification.*;
-import consulo.project.ui.notification.NotificationAction;
+import consulo.container.plugin.PluginManager;
+import consulo.localize.LocalizeValue;
+import consulo.project.ui.notification.NotificationService;
+import consulo.ui.ModalityState;
 import consulo.project.ui.notification.NotificationGroup;
 import consulo.project.ui.notification.NotificationType;
-import consulo.application.internal.ApplicationInfo;
+import consulo.application.Application;
 import consulo.application.ApplicationManager;
 import consulo.logging.Logger;
 import consulo.container.plugin.PluginId;
@@ -38,7 +40,7 @@ public class DartAnalysisServerErrorHandler {
 
   // NOTIFICATION_GROUP is used to add an error to Event Log tool window.
   private static final NotificationGroup NOTIFICATION_GROUP =
-    NotificationGroupManager.getInstance().getNotificationGroup("Dart analysis issue");
+    DartNotificationGroups.get("Dart analysis issue");
 
   private final @NotNull Project myProject;
   private int issueCount = 0;
@@ -63,12 +65,11 @@ public class DartAnalysisServerErrorHandler {
     String notificationContent = DartBundle.message("notification.content.dart.analysis.issue", messageOneLine);
 
     // This writes to Event Log tool window but doesn't show a balloon.
-    NOTIFICATION_GROUP
-      .createNotification(
-              DartBundle.message("notification.title.dart.analysis.issue"),
-              notificationContent,
-              isFatal ? NotificationType.ERROR : NotificationType.WARNING)
-      .addAction(NotificationAction.createSimple(DartBundle.message("notification.view.details.action.text"), () -> {
+    NotificationService.getInstance()
+      .newOfType(NOTIFICATION_GROUP, isFatal ? NotificationType.ERROR : NotificationType.WARNING)
+      .title(DartBundle.messageValue("notification.title.dart.analysis.issue"))
+      .content(LocalizeValue.of(notificationContent))
+      .addAction(DartBundle.messageValue("notification.view.details.action.text"), () -> {
         ApplicationManager.getApplication().executeOnPooledThread(() -> {
           String content = calculateIssueText(messageOneLine, sdkVersion, message, stackTrace, debugLog);
           try {
@@ -81,13 +82,13 @@ public class DartAnalysisServerErrorHandler {
            if (file != null) {
              ApplicationManager.getApplication().invokeLater(() -> {
                FileEditorManager.getInstance(myProject).openFile(file, true);
-               }, com.intellij.openapi.application.ModalityState.nonModal(), myProject.getDisposed());
+               }, ModalityState.nonModal(), myProject::isDisposed);
            }
           } catch (IOException ioe) {
             LOG.warn("Error creating issue file", ioe);
           }
         });
-      }))
+      })
       .notify(myProject);
   }
 
@@ -107,8 +108,8 @@ public class DartAnalysisServerErrorHandler {
     text.println("");
 
     // version info
-    final ApplicationInfo platform = ApplicationInfo.getInstance();
-    final IdeaPluginDescriptor plugin = PluginManagerCore.getPlugin(PluginId.getId("Dart"));
+    final Application platform = Application.get();
+    final PluginDescriptor plugin = PluginManager.getPlugin(DartAnalysisServerErrorHandler.class);
 
     text.println("## Version information");
     text.println("");
@@ -116,9 +117,9 @@ public class DartAnalysisServerErrorHandler {
       text.println("- Dart SDK " + sdkVersion);
     }
     if (plugin != null) {
-      text.println("- Dart IntelliJ " + plugin.getVersion());
+      text.println("- Dart Consulo " + plugin.getVersion());
     }
-    text.println("- " + platform.getVersionName() + " " + platform.getFullVersion());
+    text.println("- " + platform.getName().get() + " " + platform.getBuildNumber());
     text.println("- " + System.getProperty("os.name") + " " + System.getProperty("os.version"));
     text.println("");
 

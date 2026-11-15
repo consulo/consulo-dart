@@ -77,7 +77,7 @@ import consulo.util.lang.ref.Ref;
 import consulo.util.io.FileUtil;
 import consulo.application.util.registry.Registry;
 import consulo.util.lang.StringUtil;
-import consulo.language.spellchecker.editor.impl.Strings;
+
 import consulo.virtualFileSystem.util.VirtualFileUtil;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.virtualFileSystem.VirtualFileManager;
@@ -2815,7 +2815,7 @@ public final class DartAnalysisServerService implements Disposable {
     }
 
     final String trace = error.getStackTrace();
-    final String partialTrace = Strings.isEmpty(trace) ? "" : trace.substring(0, Math.min(trace.length(), 1000));
+    final String partialTrace = StringUtil.isEmpty(trace) ? "" : trace.substring(0, Math.min(trace.length(), 1000));
     final String message = getShortErrorMessage(methodName, filePath, error) + "\n" + partialTrace + "...";
     LOG.error(message);
   }

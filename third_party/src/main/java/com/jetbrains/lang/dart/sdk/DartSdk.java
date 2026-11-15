@@ -2,7 +2,12 @@
 package com.jetbrains.lang.dart.sdk;
 
 import consulo.project.Project;
-import consulo.content.OrderRootType;
+import consulo.content.base.BinariesOrderRootType;
+import consulo.content.bundle.Sdk;
+import consulo.dart.module.extension.DartModuleExtension;
+import consulo.language.util.ModuleUtilCore;
+import consulo.module.Module;
+import consulo.module.ModuleManager;
 import consulo.module.content.ProjectRootManager;
 import consulo.content.library.Library;
 import consulo.content.library.LibraryTablesRegistrar;
@@ -45,7 +50,8 @@ public final class DartSdk {
 
   public static @Nullable DartSdk getDartSdk(final @NotNull Project project) {
     return CachedValuesManager.getManager(project).getCachedValue(project, () -> {
-      final DartSdk sdk = findDartSdkAmongLibraries(LibraryTablesRegistrar.getInstance().getLibraryTable(project).getLibraries());
+      // Consulo: the SDK is selected in the Dart module extension, not kept as the "Dart SDK" project library
+      final DartSdk sdk = findDartSdkAmongModules(project);
       if (sdk == null) {
         return new CachedValueProvider.Result<>(null, ProjectRootManager.getInstance(project));
       }
@@ -59,6 +65,25 @@ public final class DartSdk {
     });
   }
 
+  private static @Nullable DartSdk findDartSdkAmongModules(final @NotNull Project project) {
+    for (final Module module : ModuleManager.getInstance(project).getModules()) {
+      final DartModuleExtension extension = ModuleUtilCore.getExtension(module, DartModuleExtension.class);
+      final Sdk sdk = extension == null ? null : extension.getSdk();
+      if (sdk != null) {
+        final DartSdk dartSdk = getSdkByConsuloSdk(sdk);
+        if (dartSdk != null) return dartSdk;
+      }
+    }
+    return null;
+  }
+
+  public static @Nullable DartSdk getSdkByConsuloSdk(final @NotNull Sdk sdk) {
+    final String homePath = sdk.getHomePath();
+    if (homePath == null || !DartSdkUtil.isDartSdkHome(homePath)) return null;
+    final String version = StringUtil.notNullize(DartSdkUtil.getSdkVersion(homePath), UNKNOWN_VERSION);
+    return new DartSdk(homePath, version);
+  }
+
   private static @Nullable DartSdk findDartSdkAmongLibraries(final Library[] libs) {
     for (final Library library : libs) {
       if (DART_SDK_LIB_NAME.equals(library.getName())) {
@@ -70,7 +95,7 @@ public final class DartSdk {
   }
 
   public static @Nullable DartSdk getSdkByLibrary(final @NotNull Library library) {
-    final VirtualFile[] roots = library.getFiles(OrderRootType.CLASSES);
+    final VirtualFile[] roots = library.getFiles(BinariesOrderRootType.getInstance());
     final VirtualFile dartCoreRoot = DartSdkLibraryPresentationProvider.findDartCoreRoot(Arrays.asList(roots));
     if (dartCoreRoot != null) {
       final String homePath = dartCoreRoot.getParent().getParent().getPath();

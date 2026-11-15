@@ -2,7 +2,7 @@
 package com.jetbrains.lang.dart.ide.errorTreeView;
 
 import consulo.annotation.component.ExtensionImpl;
-import com.intellij.ide.util.PropertiesComponent;
+import consulo.project.ProjectPropertiesComponent;
 import consulo.application.dumb.DumbAware;
 import consulo.project.Project;
 import consulo.ui.ex.toolWindow.ToolWindow;
@@ -31,7 +31,7 @@ final class DartAnalysisToolWindowFactory implements ToolWindowFactory, DumbAwar
 
     DartProblemsView.getInstance(project).panelCreated(panel);
 
-    if (PropertiesComponent.getInstance(project).getBoolean(TOOL_WINDOW_VISIBLE_PROPERTY, true)) {
+    if (ProjectPropertiesComponent.getInstance(project).getBoolean(TOOL_WINDOW_VISIBLE_PROPERTY, true)) {
       toolWindow.activate(null, false);
     }
   }
@@ -51,7 +51,7 @@ final class DartAnalysisToolWindowFactory implements ToolWindowFactory, DumbAwar
     public void stateChanged(@NotNull ToolWindowManager toolWindowManager) {
       ToolWindow toolWindow = toolWindowManager.getToolWindow(DartProblemsView.TOOLWINDOW_ID);
       if (toolWindow != null) {
-        PropertiesComponent.getInstance(myProject).setValue(TOOL_WINDOW_VISIBLE_PROPERTY, toolWindow.isVisible(), true);
+        ProjectPropertiesComponent.getInstance(myProject).setValue(TOOL_WINDOW_VISIBLE_PROPERTY, toolWindow.isVisible(), true);
       }
     }
   }

@@ -8,7 +8,7 @@ import consulo.ide.impl.idea.execution.impl.ConsoleViewImpl;
 import consulo.execution.ui.console.ConsoleView;
 import consulo.execution.ui.console.ConsoleViewContentType;
 import consulo.project.Project;
-import consulo.language.spellchecker.editor.impl.Strings;
+import consulo.util.lang.StringUtil;
 import consulo.language.psi.scope.GlobalSearchScope;
 import org.jetbrains.annotations.NotNull;
 
@@ -43,7 +43,7 @@ public class DartWebdevConsoleView extends ConsoleViewImpl {
       super.print(text, contentType);
     }
     final String logMessage = DartDaemonParserUtil.getLogMessage(text.trim());
-    if (Strings.isNotEmpty(logMessage)) {
+    if (StringUtil.isNotEmpty(logMessage)) {
       super.print(logMessage + "\n", contentType);
     }
   }

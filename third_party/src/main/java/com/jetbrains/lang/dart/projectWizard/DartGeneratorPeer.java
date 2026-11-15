@@ -1,8 +1,9 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.projectWizard;
 
+import consulo.application.Application;
 import consulo.application.AllIcons;
-import com.intellij.ide.util.PropertiesComponent;
+import consulo.application.ApplicationPropertiesComponent;
 import com.intellij.ide.util.projectWizard.SettingsStep;
 import consulo.disposer.Disposable;
 import consulo.application.ApplicationManager;
@@ -72,7 +73,7 @@ public class DartGeneratorPeer implements ProjectGeneratorPeer<DartProjectWizard
     myCreateSampleProjectCheckBox.addActionListener(e -> {
       myTemplatesList.setEnabled(myCreateSampleProjectCheckBox.isSelected());
     });
-    String selectedTemplateName = PropertiesComponent.getInstance().getValue(DART_PROJECT_TEMPLATE);
+    String selectedTemplateName = ApplicationPropertiesComponent.getInstance().getValue(DART_PROJECT_TEMPLATE);
     myCreateSampleProjectCheckBox.setSelected(!CREATE_SAMPLE_UNCHECKED.equals(selectedTemplateName));
 
     myTemplatesList.setEmptyText(DartBundle.message("set.sdk.to.see.sample.content.options"));
@@ -118,7 +119,7 @@ public class DartGeneratorPeer implements ProjectGeneratorPeer<DartProjectWizard
     }
 
     ReadAction.nonBlocking(() -> DartSdkUtil.getErrorMessageIfWrongSdkRootPath(sdkPath))
-      .finishOnUiThread(ModalityState.any(), errorMessage -> {
+      .finishOnUiThread(Application::getAnyModalityState, errorMessage -> {
         mySdkPathValidationError = errorMessage;
         if (myIntellijLiveValidationEnabled) {
           validateInIntelliJ();
@@ -207,7 +208,7 @@ public class DartGeneratorPeer implements ProjectGeneratorPeer<DartProjectWizard
     myLoadedTemplatesPanel.setVisible(true);
     myCreateSampleProjectCheckBox.setEnabled(true);
 
-    final String selectedTemplateName = PropertiesComponent.getInstance().getValue(DART_PROJECT_TEMPLATE);
+    final String selectedTemplateName = ApplicationPropertiesComponent.getInstance().getValue(DART_PROJECT_TEMPLATE);
 
     myTemplatesList.setVisibleRowCount(Math.min(8, templates.size()));
     myTemplatesList.setEnabled(myCreateSampleProjectCheckBox.isSelected());
@@ -253,7 +254,7 @@ public class DartGeneratorPeer implements ProjectGeneratorPeer<DartProjectWizard
   public @NotNull DartProjectWizardData getSettings() {
     final String sdkPath = FileUtil.toSystemIndependentName(mySdkPathComboWithBrowse.getEditor().getItem().toString().trim());
     final DartProjectTemplate template = myCreateSampleProjectCheckBox.isSelected() ? myTemplatesList.getSelectedValue() : null;
-    PropertiesComponent.getInstance().setValue(DART_PROJECT_TEMPLATE, template == null ? CREATE_SAMPLE_UNCHECKED : template.getName());
+    ApplicationPropertiesComponent.getInstance().setValue(DART_PROJECT_TEMPLATE, template == null ? CREATE_SAMPLE_UNCHECKED : template.getName());
 
     return new DartProjectWizardData(sdkPath, template);
   }
