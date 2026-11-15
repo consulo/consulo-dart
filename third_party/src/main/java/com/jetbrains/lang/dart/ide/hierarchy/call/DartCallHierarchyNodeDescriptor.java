@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.hierarchy.call;
 
+import consulo.ide.localize.IdeLocalize;
 import consulo.language.editor.hierarchy.HierarchyNodeDescriptor;
 import consulo.ui.ex.tree.NodeDescriptor;
 import consulo.navigation.ItemPresentation;
@@ -28,7 +29,12 @@ public class DartCallHierarchyNodeDescriptor extends HierarchyNodeDescriptor {
     myHighlightedText = new CompositeAppearance();
     NavigatablePsiElement element = (NavigatablePsiElement)getPsiElement();
     if (element == null) {
-      return invalidElement();
+      // Consulo: no HierarchyNodeDescriptor.invalidElement()
+      final String invalidPrefix = IdeLocalize.nodeHierarchyInvalid().get();
+      if (!myHighlightedText.getText().startsWith(invalidPrefix)) {
+        myHighlightedText.getBeginning().addText(invalidPrefix, getInvalidPrefixAttributes());
+      }
+      return true;
     }
 
     final ItemPresentation presentation = element.getPresentation();

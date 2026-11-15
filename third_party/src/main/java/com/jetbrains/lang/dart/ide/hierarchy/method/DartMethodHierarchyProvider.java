@@ -1,10 +1,15 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.hierarchy.method;
 
+import consulo.project.Project;
+import consulo.language.editor.hierarchy.StandardHierarchyKinds;
+import consulo.language.editor.hierarchy.HierarchyModel;
+import consulo.language.editor.hierarchy.HierarchyKind;
+import consulo.language.Language;
+import consulo.annotation.access.RequiredReadAction;
+import com.jetbrains.lang.dart.DartLanguage;
 import consulo.annotation.component.ExtensionImpl;
-import consulo.language.editor.internal.hierarchy.HierarchyBrowser;
 import consulo.language.editor.hierarchy.HierarchyProvider;
-import com.intellij.ide.hierarchy.MethodHierarchyBrowserBase;
 import consulo.dataContext.DataContext;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.util.PsiTreeUtil;
@@ -17,7 +22,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @ExtensionImpl
-public final class DartMethodHierarchyProvider implements HierarchyProvider {
+public final class DartMethodHierarchyProvider implements HierarchyProvider<PsiElement> {
+  @Override
+  public HierarchyKind getKind() {
+    return StandardHierarchyKinds.METHOD;
+  }
+
+  @RequiredReadAction
   @Override
   public @Nullable PsiElement getTarget(@NotNull DataContext dataContext) {
     PsiElement element = DartHierarchyUtil.getResolvedElementAtCursor(dataContext);
@@ -30,13 +41,15 @@ public final class DartMethodHierarchyProvider implements HierarchyProvider {
     return null;
   }
 
+  // Consulo: the hierarchy view is built from DartMethodHierarchyModel
+  @RequiredReadAction
   @Override
-  public @NotNull HierarchyBrowser createHierarchyBrowser(@NotNull PsiElement target) {
-    return new DartMethodHierarchyBrowser(target.getProject(), target);
+  public HierarchyModel<PsiElement> createModel(Project project, PsiElement target) {
+    return new DartMethodHierarchyModel(project, target);
   }
 
   @Override
-  public void browserActivated(@NotNull HierarchyBrowser hierarchyBrowser) {
-    ((DartMethodHierarchyBrowser)hierarchyBrowser).changeView(MethodHierarchyBrowserBase.getMethodType());
+  public @NotNull Language getLanguage() {
+    return DartLanguage.INSTANCE;
   }
 }

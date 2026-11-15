@@ -41,13 +41,13 @@ public final class DartServerRenameHandler implements RenameHandler, TitledHandl
 
   @Override
   public boolean isAvailableOnDataContext(final @NotNull DataContext dataContext) {
-    final Editor editor = CommonDataKeys.EDITOR.getData(dataContext);
+    final Editor editor = dataContext.getData(CommonDataKeys.EDITOR);
     if (editor == null) return false;
 
-    final VirtualFile file = CommonDataKeys.VIRTUAL_FILE.getData(dataContext);
+    final VirtualFile file = dataContext.getData(CommonDataKeys.VIRTUAL_FILE);
     if (!DartAnalysisServerService.isLocalAnalyzableFile(file)) return false;
 
-    final PsiElement psiElement = CommonDataKeys.PSI_ELEMENT.getData(dataContext);
+    final PsiElement psiElement = dataContext.getData(CommonDataKeys.PSI_ELEMENT);
     if (psiElement != null) {
       if (psiElement.getUseScope() instanceof LocalSearchScope) {
         // Standard VariableInplaceRenameHandler or PsiElementRenameHandler will do the trick (based on existing navigation data from Analysis Server)
@@ -57,23 +57,23 @@ public final class DartServerRenameHandler implements RenameHandler, TitledHandl
     }
 
     // in case of comment (that also may contain reference that is valid to rename) psiElement is null
-    final PsiFile psiFile = CommonDataKeys.PSI_FILE.getData(dataContext);
+    final PsiFile psiFile = dataContext.getData(CommonDataKeys.PSI_FILE);
     final PsiElement elementAtOffset = psiFile == null ? null : psiFile.findElementAt(editor.getCaretModel().getOffset());
 
     return elementAtOffset != null && elementAtOffset.getLanguage() == DartLanguage.INSTANCE;
   }
 
   private static void showRenameDialog(@NotNull Project project, @NotNull Editor editor, DataContext context) {
-    final PsiFile psiFile = CommonDataKeys.PSI_FILE.getData(context);
-    final VirtualFile virtualFile = CommonDataKeys.VIRTUAL_FILE.getData(context);
+    final PsiFile psiFile = context.getData(CommonDataKeys.PSI_FILE);
+    final VirtualFile virtualFile = context.getData(CommonDataKeys.VIRTUAL_FILE);
     if (psiFile == null || virtualFile == null) {
       return;
     }
     // Prepare the offset in the editor or of the selected element.
     final int offset;
     {
-      final Caret caret = CommonDataKeys.CARET.getData(context);
-      final PsiElement element = CommonDataKeys.PSI_ELEMENT.getData(context);
+      final Caret caret = context.getData(CommonDataKeys.CARET);
+      final PsiElement element = context.getData(CommonDataKeys.PSI_ELEMENT);
       if (caret != null) {
         offset = caret.getOffset();
       }

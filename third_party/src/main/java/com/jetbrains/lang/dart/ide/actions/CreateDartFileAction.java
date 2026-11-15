@@ -18,7 +18,7 @@ public class CreateDartFileAction extends CreateFileFromTemplateAction {
 
   @Override
   protected boolean isAvailable(@NotNull DataContext dataContext) {
-    Project project = CommonDataKeys.PROJECT.getData(dataContext);
+    Project project = dataContext.getData(CommonDataKeys.PROJECT);
     return super.isAvailable(dataContext) && project != null && DartSdk.getDartSdk(project) != null;
   }
 

@@ -1,7 +1,6 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.hierarchy.method;
 
-import consulo.language.editor.impl.internal.hierarchy.HierarchyBrowserManager;
 import consulo.language.editor.hierarchy.HierarchyNodeDescriptor;
 import consulo.language.editor.hierarchy.HierarchyTreeStructure;
 import consulo.project.Project;
@@ -24,9 +23,16 @@ import static com.jetbrains.lang.dart.ide.hierarchy.DartHierarchyUtil.getTypeHie
 
 public class DartMethodHierarchyTreeStructure extends HierarchyTreeStructure {
   private final SmartPsiElementPointer<DartComponent> myMethod;
+  // Consulo: HierarchyBrowserManager state is internal, the option comes from DartMethodHierarchyModel
+  private final boolean myHideClassesWhereMethodNotImplemented;
 
   public DartMethodHierarchyTreeStructure(Project project, DartComponent element) {
+    this(project, element, false);
+  }
+
+  public DartMethodHierarchyTreeStructure(Project project, DartComponent element, boolean hideClassesWhereMethodNotImplemented) {
     super(project, null);
+    myHideClassesWhereMethodNotImplemented = hideClassesWhereMethodNotImplemented;
     DartClass baseClass = PsiTreeUtil.getParentOfType(element, DartClass.class);
     myBaseDescriptor = new DartMethodHierarchyNodeDescriptor(project, null, baseClass, true, this);
     setBaseElement(myBaseDescriptor);
@@ -56,8 +62,6 @@ public class DartMethodHierarchyTreeStructure extends HierarchyTreeStructure {
       descriptor.setCachedChildren(ArrayUtil.EMPTY_OBJECT_ARRAY);
       return;
     }
-    HierarchyBrowserManager.State state = HierarchyBrowserManager.getInstance(myProject).getState();
-    if (state == null) throw new NullPointerException();
 
     List<DartMethodHierarchyNodeDescriptor> subDescriptors = new ArrayList<>();
     try {
@@ -92,7 +96,7 @@ public class DartMethodHierarchyTreeStructure extends HierarchyTreeStructure {
           break;
         }
       }
-      if (state.HIDE_CLASSES_WHERE_METHOD_NOT_IMPLEMENTED) {
+      if (myHideClassesWhereMethodNotImplemented) {
         List<DartMethodHierarchyNodeDescriptor> toRemove = new ArrayList<>();
         for (DartMethodHierarchyNodeDescriptor subDescriptor : subDescriptors) {
           if (!(subDescriptor.myIsSuperclassOfImplementor || subDescriptor.myIsImplementor)) {

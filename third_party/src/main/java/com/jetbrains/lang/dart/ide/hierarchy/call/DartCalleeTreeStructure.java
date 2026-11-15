@@ -1,6 +1,8 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.hierarchy.call;
 
+import org.jetbrains.annotations.Nullable;
+import consulo.language.editor.hierarchy.HierarchyScope;
 import consulo.project.Project;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.language.psi.PsiElement;
@@ -23,7 +25,7 @@ import static com.jetbrains.lang.dart.analyzer.DartServerData.DartNavigationTarg
 
 public class DartCalleeTreeStructure extends DartCallHierarchyTreeStructure {
 
-  public DartCalleeTreeStructure(Project project, PsiElement element, String currentScopeType) {
+  public DartCalleeTreeStructure(Project project, PsiElement element, @Nullable HierarchyScope currentScopeType) {
     super(project, element, currentScopeType);
   }
 

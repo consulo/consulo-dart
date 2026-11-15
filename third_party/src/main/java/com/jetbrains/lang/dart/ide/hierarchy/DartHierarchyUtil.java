@@ -1,7 +1,6 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.hierarchy;
 
-import consulo.language.editor.impl.internal.hierarchy.HierarchyBrowserManager;
 import consulo.ui.ex.tree.AlphaComparator;
 import consulo.ui.ex.tree.NodeDescriptor;
 import consulo.language.editor.CommonDataKeys;
@@ -50,13 +49,8 @@ public final class DartHierarchyUtil {
   }
 
   public static Comparator<NodeDescriptor<?>> getComparator(Project project) {
-    final HierarchyBrowserManager.State state = HierarchyBrowserManager.getInstance(project).getState();
-    if (state != null && state.SORT_ALPHABETICALLY) {
-      return AlphaComparator.getInstance();
-    }
-    else {
-      return NODE_DESCRIPTOR_COMPARATOR;
-    }
+    // Consulo: HierarchyBrowserManager is internal, alphabetical sorting is done by the hierarchy view itself
+    return NODE_DESCRIPTOR_COMPARATOR;
   }
 
   public static @NotNull List<TypeHierarchyItem> getTypeHierarchyItems(@NotNull DartClass dartClass) {
@@ -100,8 +94,8 @@ public final class DartHierarchyUtil {
   }
 
   public static PsiElement getResolvedElementAtCursor(DataContext dataContext) {
-    final Project project = CommonDataKeys.PROJECT.getData(dataContext);
-    final Editor editor = CommonDataKeys.EDITOR.getData(dataContext);
+    final Project project = dataContext.getData(CommonDataKeys.PROJECT);
+    final Editor editor = dataContext.getData(CommonDataKeys.EDITOR);
     if (project == null || editor == null) return null;
 
     final PsiFile file = PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());

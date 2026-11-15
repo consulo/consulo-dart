@@ -1,6 +1,8 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.hierarchy.method;
 
+import consulo.platform.base.icon.PlatformIconGroup;
+import consulo.ui.image.ImageEffects;
 import consulo.application.AllIcons;
 import consulo.ui.image.Image;
 import consulo.ide.IdeBundle;
@@ -12,7 +14,6 @@ import consulo.ui.ex.util.CompositeAppearance;
 import consulo.util.lang.Comparing;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
-import com.intellij.ui.IconManager;
 import com.jetbrains.lang.dart.psi.DartClass;
 
 import org.jetbrains.annotations.NotNull;
@@ -81,10 +82,11 @@ public class DartMethodHierarchyNodeDescriptor extends HierarchyNodeDescriptor {
       Image newIcon = myRawIcon = baseIcon;
       myStateIcon = stateIcon;
       if (myIsBase) {
-        newIcon = getBaseMarkerIcon(newIcon);
+        // Consulo: no getBaseMarkerIcon in HierarchyNodeDescriptor
+        newIcon = ImageEffects.appendRight(PlatformIconGroup.hierarchyBase(), newIcon);
       }
       if (myStateIcon != null) {
-        newIcon = IconManager.getInstance().createRowIcon(myStateIcon, newIcon);
+        newIcon = ImageEffects.appendRight(myStateIcon, newIcon);
       }
 
       setIcon(newIcon);

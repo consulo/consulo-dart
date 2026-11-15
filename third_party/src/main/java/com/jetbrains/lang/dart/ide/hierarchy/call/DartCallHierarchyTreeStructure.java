@@ -1,8 +1,9 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.hierarchy.call;
 
+import consulo.content.scope.SearchScope;
+import consulo.language.editor.hierarchy.HierarchyScope;
 import consulo.find.FindUsagesHandler;
-import com.intellij.ide.hierarchy.HierarchyBrowserBaseEx;
 import consulo.language.editor.hierarchy.HierarchyNodeDescriptor;
 import consulo.language.editor.hierarchy.HierarchyTreeStructure;
 import consulo.project.Project;
@@ -22,9 +23,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public abstract class DartCallHierarchyTreeStructure extends HierarchyTreeStructure {
-  private final String myScopeType;
+  private final @Nullable HierarchyScope myScopeType;
 
-  public DartCallHierarchyTreeStructure(Project project, PsiElement element, String currentScopeType) {
+  public DartCallHierarchyTreeStructure(Project project, PsiElement element, @Nullable HierarchyScope currentScopeType) {
     super(project, new DartCallHierarchyNodeDescriptor(null, element, true));
     myScopeType = currentScopeType;
   }
@@ -71,7 +72,8 @@ public abstract class DartCallHierarchyTreeStructure extends HierarchyTreeStruct
       PsiElement baseClass = element instanceof DartMethodDeclaration ? PsiTreeUtil.getParentOfType(name, DartClass.class) : null;
 
       for (PsiElement caller : children) {
-        if (isInScope(baseClass, caller, myScopeType)) {
+        // Consulo: scope is a HierarchyScope, null means all
+        if (myScopeType == null || isInScope(baseClass, caller, myScopeType)) {
           DartCallHierarchyNodeDescriptor callerDescriptor = callerToDescriptorMap.get(caller);
           if (callerDescriptor == null) {
             callerDescriptor = new DartCallHierarchyNodeDescriptor(descriptor, caller, false);
@@ -85,26 +87,13 @@ public abstract class DartCallHierarchyTreeStructure extends HierarchyTreeStruct
   }
 
   protected @NotNull GlobalSearchScope getScope() {
-    if (HierarchyBrowserBaseEx.SCOPE_CLASS.equals(myScopeType)) {
-      Object root = getRootElement();
-      if (root instanceof DartCallHierarchyNodeDescriptor rootElement) {
-        PsiElement element = rootElement.getPsiElement();
-        DartFile file = PsiTreeUtil.getParentOfType(element, DartFile.class);
-        if (file != null) {
-          return GlobalSearchScope.fileScope(file);
-        }
-      }
+    // Consulo: the scope is a HierarchyScope instead of the HierarchyBrowserBaseEx.SCOPE_* name
+    if (myScopeType == null) {
       return GlobalSearchScope.projectScope(myProject);
     }
-    else if (HierarchyBrowserBaseEx.SCOPE_PROJECT.equals(myScopeType)) {
-      return GlobalSearchScope.projectScope(myProject);
-    }
-    else if (HierarchyBrowserBaseEx.SCOPE_TEST.equals(myScopeType)) {
-      return GlobalSearchScope.projectScope(myProject); // We do not have a module to get its test scope.
-    }
-    else if (HierarchyBrowserBaseEx.SCOPE_ALL.equals(myScopeType)) {
-      return GlobalSearchScope.allScope(myProject);
-    }
-    return GlobalSearchScope.projectScope(myProject);
+    Object root = getRootElement();
+    PsiElement element = root instanceof DartCallHierarchyNodeDescriptor rootElement ? rootElement.getPsiElement() : null;
+    SearchScope searchScope = myScopeType.getSearchScope(element);
+    return searchScope instanceof GlobalSearchScope globalSearchScope ? globalSearchScope : GlobalSearchScope.projectScope(myProject);
   }
 }
