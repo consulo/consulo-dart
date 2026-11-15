@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.runner.server.vmService.frame;
 
+import consulo.execution.debug.icon.ExecutionDebugIconGroup;
 import consulo.application.AllIcons;
 
 import consulo.util.lang.StringUtil;
@@ -98,7 +99,7 @@ public class DartVmServiceStackFrame extends XStackFrame {
       component.append(text, SimpleTextAttributes.GRAY_ATTRIBUTES);
     }
 
-    component.setIcon(AllIcons.Debugger.Frame);
+    component.setIcon(ExecutionDebugIconGroup.nodeFrame());
   }
 
   @Override

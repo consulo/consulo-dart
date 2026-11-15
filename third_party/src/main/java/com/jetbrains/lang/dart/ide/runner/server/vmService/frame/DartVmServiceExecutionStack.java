@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.runner.server.vmService.frame;
 
+import consulo.execution.debug.icon.ExecutionDebugIconGroup;
 import consulo.application.AllIcons;
 
 import consulo.execution.debug.frame.XExecutionStack;
@@ -30,9 +31,9 @@ public class DartVmServiceExecutionStack extends XExecutionStack {
     super(debugProcess.isIsolateSuspended(isolateId)
           ? beautify(isolateName)
           : DartBundle.message("debugger.isolate.name.running", beautify(isolateName)),
-          topFrame != null ? AllIcons.Debugger.ThreadCurrent
-                           : debugProcess.isIsolateSuspended(isolateId) ? AllIcons.Debugger.ThreadAtBreakpoint
-                                                                        : AllIcons.Debugger.ThreadRunning);
+          topFrame != null ? ExecutionDebugIconGroup.threadThreadcurrent()
+                           : debugProcess.isIsolateSuspended(isolateId) ? ExecutionDebugIconGroup.threadThreadatbreakpoint()
+                                                                        : ExecutionDebugIconGroup.threadThreadrunning());
     myDebugProcess = debugProcess;
     myIsolateId = isolateId;
     myException = exception;

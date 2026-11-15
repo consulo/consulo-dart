@@ -5,9 +5,9 @@ package com.jetbrains.lang.dart.ide.surroundWith.statement;
 
 public class DartWithIfSurrounder extends DartLiteralAndBlockStatementSurrounderBase {
   @Override
-  public String getTemplateDescription() {
+  public @NotNull LocalizeValue getTemplateDescription() {
     String description = "if";
-    return description;
+    return LocalizeValue.of(description);
   }
 
   @Override

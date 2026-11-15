@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.runner.server.vmService.frame;
 
+import consulo.execution.debug.icon.ExecutionDebugIconGroup;
 import consulo.application.AllIcons;
 import consulo.ui.image.Image;
 import consulo.application.ApplicationManager;
@@ -166,7 +167,7 @@ public final class DartVmServiceValue extends XNamedValue {
   }
 
   private Image getIcon() {
-    if (myIsException) return AllIcons.Debugger.Db_exception_breakpoint;
+    if (myIsException) return ExecutionDebugIconGroup.breakpointBreakpointexception();
 
     if (myFieldRef != null) {
       if (myFieldRef.isStatic() && (myFieldRef.isFinal() || myFieldRef.isConst())) {
@@ -183,17 +184,17 @@ public final class DartVmServiceValue extends XNamedValue {
 
     final InstanceKind kind = myInstanceRef.getKind();
 
-    if (kind == InstanceKind.Map || isListKind(kind)) return AllIcons.Debugger.Db_array;
+    if (kind == InstanceKind.Map || isListKind(kind)) return ExecutionDebugIconGroup.nodeArray();
 
     if (kind == InstanceKind.Null ||
         kind == InstanceKind.Bool ||
         kind == InstanceKind.Double ||
         kind == InstanceKind.Int ||
         kind == InstanceKind.String) {
-      return AllIcons.Debugger.Db_primitive;
+      return ExecutionDebugIconGroup.nodePrimitive();
     }
 
-    return AllIcons.Debugger.Value;
+    return ExecutionDebugIconGroup.nodeValue();
   }
 
   private boolean computeVarHavingStringValuePresentation(@NotNull XValueNode node) {
@@ -453,7 +454,7 @@ public final class DartVmServiceValue extends XNamedValue {
         @Override
         public void computePresentation(@NotNull XValueNode node, @NotNull XValuePlace place) {
           final String value = getShortPresentableValue(keyInstanceRef) + " -> " + getShortPresentableValue(valueInstanceRef);
-          node.setPresentation(AllIcons.Debugger.Value, "map entry", value, true);
+          node.setPresentation(ExecutionDebugIconGroup.nodeValue(), "map entry", value, true);
         }
 
         @Override

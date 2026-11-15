@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.surroundWith.expression;
 
+import consulo.localize.LocalizeValue;
 import consulo.language.psi.PsiElement;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.psi.DartNamedArgument;
@@ -15,9 +16,9 @@ public class DartWithBracketsExpressionSurrounder extends DartWithExpressionSurr
   }
 
   @Override
-  public String getTemplateDescription() {
+  public @NotNull LocalizeValue getTemplateDescription() {
     //noinspection DialogTitleCapitalization
-    return DartBundle.message("dart.surround.with.brackets");
+    return LocalizeValue.of(DartBundle.message("dart.surround.with.brackets"));
   }
 
   @Override

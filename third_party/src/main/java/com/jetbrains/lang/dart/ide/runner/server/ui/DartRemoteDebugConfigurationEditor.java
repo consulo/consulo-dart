@@ -62,7 +62,7 @@ public class DartRemoteDebugConfigurationEditor extends SettingsEditor<DartRemot
 
     ReadAction.nonBlocking(() -> {
       SortedSet<NameAndPath> items = new TreeSet<>();
-      for (VirtualFile pubspecFile : FilenameIndex.getVirtualFilesByName(PUBSPEC_YAML, GlobalSearchScope.projectScope(project))) {
+      for (VirtualFile pubspecFile : FilenameIndex.getVirtualFilesByName(project, PUBSPEC_YAML, GlobalSearchScope.projectScope(project))) {
         ProgressManager.checkCanceled();
         items.add(new NameAndPath(PubspecYamlUtil.getDartProjectName(pubspecFile), pubspecFile.getParent().getPath()));
       }

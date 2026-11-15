@@ -5,9 +5,9 @@ package com.jetbrains.lang.dart.ide.surroundWith.statement;
 
 public class DartWithWhileSurrounder extends DartLiteralAndBlockStatementSurrounderBase {
   @Override
-  public String getTemplateDescription() {
+  public @NotNull LocalizeValue getTemplateDescription() {
     String description = "while";
-    return description;
+    return LocalizeValue.of(description);
   }
 
   @Override

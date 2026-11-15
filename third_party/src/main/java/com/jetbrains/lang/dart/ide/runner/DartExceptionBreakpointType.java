@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.runner;
 
+import consulo.execution.debug.icon.ExecutionDebugIconGroup;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.application.AllIcons;
 import consulo.project.Project;
@@ -27,12 +28,12 @@ public final class DartExceptionBreakpointType
 
   @Override
   public @NotNull Icon getEnabledIcon() {
-    return AllIcons.Debugger.Db_exception_breakpoint;
+    return ExecutionDebugIconGroup.breakpointBreakpointexception();
   }
 
   @Override
   public @NotNull Icon getDisabledIcon() {
-    return AllIcons.Debugger.Db_disabled_exception_breakpoint;
+    return ExecutionDebugIconGroup.breakpointBreakpointexceptiondisabled();
   }
 
   @Override

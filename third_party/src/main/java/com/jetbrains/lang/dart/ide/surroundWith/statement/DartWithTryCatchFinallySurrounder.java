@@ -1,15 +1,16 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.surroundWith.statement;
 
+import consulo.localize.LocalizeValue;
 import consulo.language.psi.PsiElement;
 import com.jetbrains.lang.dart.psi.DartTryStatement;
 import org.jetbrains.annotations.Nullable;
 
 public class DartWithTryCatchFinallySurrounder extends DartBlockStatementSurrounderBase {
   @Override
-  public String getTemplateDescription() {
+  public @NotNull LocalizeValue getTemplateDescription() {
     String description = "try / catch / finally";
-    return description;
+    return LocalizeValue.of(description);
   }
 
   @Override
