@@ -8,6 +8,7 @@ import consulo.project.Project;
 import consulo.module.content.ProjectRootManager;
 import consulo.virtualFileSystem.VirtualFile;
 import com.jetbrains.lang.dart.DartFileType;
+import jakarta.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 
 @ExtensionImpl
@@ -15,6 +16,7 @@ public final class DartWritingAccessProvider implements NonProjectFileWritingAcc
 
   private final Project myProject;
 
+  @Inject
   public DartWritingAccessProvider(Project project) {
     myProject = project;
   }

@@ -3,11 +3,10 @@ package com.jetbrains.lang.dart.ide.runner.test;
 
 import consulo.annotation.component.ExtensionImpl;
 import consulo.execution.action.ConfigurationContext;
-import com.intellij.execution.actions.LazyRunConfigurationProducer;
-import consulo.execution.configuration.ConfigurationFactory;
+import consulo.execution.action.RunConfigurationProducer;
 import consulo.project.Project;
 import consulo.util.lang.Comparing;
-import consulo.util.lang.ref.Ref;
+import consulo.util.lang.ref.SimpleReference;
 import consulo.util.io.FileUtil;
 import consulo.virtualFileSystem.util.VirtualFileUtil;
 import consulo.virtualFileSystem.VirtualFile;
@@ -27,16 +26,16 @@ import java.util.List;
 import java.util.Objects;
 
 @ExtensionImpl
-public final class DartTestRunConfigurationProducer extends LazyRunConfigurationProducer<DartTestRunConfiguration> {
-  @Override
-  public @NotNull ConfigurationFactory getConfigurationFactory() {
-    return DartTestRunConfigurationType.getInstance().getConfigurationFactories()[0];
+public final class DartTestRunConfigurationProducer extends RunConfigurationProducer<DartTestRunConfiguration> {
+  // Consulo: no LazyRunConfigurationProducer, the factory is passed to the constructor
+  public DartTestRunConfigurationProducer() {
+    super(DartTestRunConfigurationType.getInstance().getConfigurationFactories()[0]);
   }
 
   @Override
   protected boolean setupConfigurationFromContext(final @NotNull DartTestRunConfiguration configuration,
                                                   final @NotNull ConfigurationContext context,
-                                                  final @NotNull Ref<PsiElement> sourceElement) {
+                                                  final @NotNull SimpleReference<PsiElement> sourceElement) {
     final boolean ok;
     final PsiElement location = context.getPsiLocation();
     if (location instanceof PsiDirectory) {
@@ -107,7 +106,7 @@ public final class DartTestRunConfigurationProducer extends LazyRunConfiguration
 
   private static boolean setupRunnerParametersForFileIfApplicable(final @NotNull DartTestRunnerParameters params,
                                                                   final @NotNull ConfigurationContext context,
-                                                                  final @NotNull Ref<PsiElement> sourceElement) {
+                                                                  final @NotNull SimpleReference<PsiElement> sourceElement) {
     final VirtualFile dartFile = DartCommandLineRuntimeConfigurationProducer.getRunnableDartFileFromContext(context, false);
     if (dartFile == null || !isFileInTestDirAndTestPackageExists(context.getProject(), dartFile)) return false;
 

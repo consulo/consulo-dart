@@ -39,7 +39,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
-@ExtensionImpl
+// Consulo: registered by consulo.dart.annotator.DartAnnotatorFactories
 public final class DartAnnotator implements Annotator {
   private static final Key<List<DartServerData.DartError>> DART_ERRORS = Key.create("DART_ERRORS");
   private static final Key<List<DartServerData.DartHighlightRegion>> DART_HIGHLIGHTING = Key.create("DART_HIGHLIGHTING");

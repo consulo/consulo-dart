@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.generation;
 
+import consulo.language.editor.generation.ImplementMethodHandler;
 import com.jetbrains.lang.dart.DartLanguage;
 import consulo.language.Language;
 import consulo.annotation.component.ExtensionImpl;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 @ExtensionImpl
-public final class DartImplementMethodHandler extends BaseDartGenerateHandler {
+public final class DartImplementMethodHandler extends BaseDartGenerateHandler implements ImplementMethodHandler {
   @Override
   public @NotNull Language getLanguage() {
     return DartLanguage.INSTANCE;

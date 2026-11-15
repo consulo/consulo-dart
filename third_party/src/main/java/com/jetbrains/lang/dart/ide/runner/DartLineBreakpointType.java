@@ -18,7 +18,7 @@ public final class DartLineBreakpointType extends XLineBreakpointTypeBase {
     super("Dart", DartBundle.message("dart.line.breakpoints.title"), new DartDebuggerEditorsProvider());
   }
 
-  @Override
+  // Consulo: called by consulo.dart.debugger.breakpoint.DartLineBreakpointTypeResolver
   public boolean canPutAt(final @NotNull VirtualFile file, final int line, final @NotNull Project project) {
     return FileTypeRegistry.getInstance().isFileOfType(file, DartFileType.INSTANCE);
   }

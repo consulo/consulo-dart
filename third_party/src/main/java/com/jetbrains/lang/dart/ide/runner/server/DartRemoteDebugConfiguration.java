@@ -3,43 +3,71 @@ package com.jetbrains.lang.dart.ide.runner.server;
 
 import consulo.execution.executor.Executor;
 import consulo.execution.configuration.EmptyRunProfileState;
+import consulo.execution.configuration.LegacyRunConfigurationConverter;
 import consulo.execution.configuration.RunConfigurationBase;
+import consulo.execution.configuration.fragment.RunConfigurationFragment;
 import consulo.execution.configuration.RunProfileState;
 import consulo.execution.configuration.RuntimeConfigurationError;
 import consulo.execution.runner.ExecutionEnvironment;
 import consulo.execution.configuration.RunConfigurationWithSuppressedDefaultRunAction;
-import consulo.execution.configuration.ui.SettingsEditor;
 import consulo.project.Project;
 import consulo.module.content.ProjectRootManager;
-import consulo.util.xml.serializer.InvalidDataException;
-import consulo.util.xml.serializer.WriteExternalException;
 import consulo.util.io.FileUtil;
 import consulo.virtualFileSystem.LocalFileSystem;
 import consulo.virtualFileSystem.VirtualFile;
-import consulo.util.xml.serializer.SkipDefaultValuesSerializationFilters;
-import consulo.util.xml.serializer.XmlSerializer;
 import com.jetbrains.lang.dart.DartBundle;
-import com.jetbrains.lang.dart.ide.runner.server.ui.DartRemoteDebugConfigurationEditor;
-import org.jdom.Element;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DartRemoteDebugConfiguration extends RunConfigurationBase<Element> implements RunConfigurationWithSuppressedDefaultRunAction {
-  @NotNull DartRemoteDebugParameters myParameters = new DartRemoteDebugParameters();
+import java.util.List;
 
+public class DartRemoteDebugConfiguration extends RunConfigurationBase implements RunConfigurationWithSuppressedDefaultRunAction {
   protected DartRemoteDebugConfiguration(final @NotNull Project project,
                                          final @NotNull DartRemoteDebugConfigurationType configType,
                                          final @NotNull String name) {
     super(project, configType.getConfigurationFactories()[0], name);
   }
 
+  // Consulo: settings are kept in DartRemoteDebugConfigurationOptions and edited by DartRemoteDebugFragment,
+  // getParameters() is a snapshot, changes go through setParameters()
+  @Override
+  protected Class<DartRemoteDebugConfigurationOptions> getOptionsClass() {
+    return DartRemoteDebugConfigurationOptions.class;
+  }
+
+  @Override
+  public DartRemoteDebugConfigurationOptions getOptions() {
+    return (DartRemoteDebugConfigurationOptions)super.getOptions();
+  }
+
+  @Override
+  protected void convertLegacyState(LegacyRunConfigurationConverter converter) {
+    super.convertLegacyState(converter);
+
+    DartRemoteDebugParameters old = converter.readXml(DartRemoteDebugParameters.class);
+    DartRemoteDebugConfigurationOptions options = new DartRemoteDebugConfigurationOptions();
+    options.setDartProjectPath(old.getDartProjectPath());
+    converter.setOptions(options);
+  }
+
+  @Override
+  public List<RunConfigurationFragment<?>> createFragments() {
+    return List.of(new DartRemoteDebugFragment());
+  }
+
   public @NotNull DartRemoteDebugParameters getParameters() {
-    return myParameters;
+    DartRemoteDebugParameters parameters = new DartRemoteDebugParameters();
+    parameters.setDartProjectPath(getOptions().getDartProjectPath());
+    return parameters;
+  }
+
+  public void setParameters(@NotNull DartRemoteDebugParameters parameters) {
+    getOptions().setDartProjectPath(parameters.getDartProjectPath());
   }
 
   @Override
   public void checkConfiguration() throws RuntimeConfigurationError {
-    final String path = myParameters.getDartProjectPath();
+    final String path = getParameters().getDartProjectPath();
     if (path.isEmpty()) {
       throw new RuntimeConfigurationError(DartBundle.message("dialog.message.dart.project.path.not.specified"));
     }
@@ -56,37 +84,8 @@ public class DartRemoteDebugConfiguration extends RunConfigurationBase<Element> 
   }
 
   @Override
-  public DartRemoteDebugConfiguration clone() {
-    final DartRemoteDebugConfiguration clone = (DartRemoteDebugConfiguration)super.clone();
-      try {
-          clone.myParameters = myParameters.clone();
-      } catch (CloneNotSupportedException e) {
-          throw new RuntimeException(e);
-      }
-      return clone;
-  }
-
-  @Override
-  public @NotNull SettingsEditor<DartRemoteDebugConfiguration> getConfigurationEditor() {
-    return new DartRemoteDebugConfigurationEditor(getProject());
-  }
-
-  @Override
   public @Nullable RunProfileState getState(final @NotNull Executor executor,
                                             final @NotNull ExecutionEnvironment environment) {
     return EmptyRunProfileState.INSTANCE;
   }
-
-  @Override
-  public void writeExternal(@NotNull Element element) throws WriteExternalException {
-    super.writeExternal(element);
-    XmlSerializer.serializeInto(myParameters, element, new SkipDefaultValuesSerializationFilters());
-  }
-
-  @Override
-  public void readExternal(@NotNull Element element) throws InvalidDataException {
-    super.readExternal(element);
-    XmlSerializer.deserializeInto(myParameters, element);
-  }
 }
-

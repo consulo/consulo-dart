@@ -20,6 +20,7 @@ import com.jetbrains.lang.dart.ide.runner.server.vmService.frame.DartVmServiceSu
 import com.jetbrains.lang.dart.ide.runner.server.vmService.frame.DartVmServiceValue;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.vmServiceDrivers.service.VmServiceListener;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.vmServiceDrivers.service.element.*;
+import consulo.localize.LocalizeValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -181,7 +182,9 @@ public class DartVmServiceListener implements VmServiceListener {
       }
 
       @Override
-      public void errorOccurred(final @NotNull String errorMessage) {
+      public void errorOccurred(final @NotNull LocalizeValue errorMessageValue) {
+        // Consulo: XValueCallback reports LocalizeValue
+        final String errorMessage = errorMessageValue.get();
         evalResult.set("Failed to evaluate log expression [" + evalText + "]: " + errorMessage);
         semaphore.up();
       }

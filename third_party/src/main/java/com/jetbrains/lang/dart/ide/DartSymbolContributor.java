@@ -1,7 +1,7 @@
 package com.jetbrains.lang.dart.ide;
 
 import consulo.annotation.component.ExtensionImpl;
-import consulo.ide.navigation.ChooseByNameContributorEx;
+import consulo.ide.navigation.GotoSymbolContributor;
 import consulo.navigation.NavigationItem;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.SyntaxTraverser;
@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
 import static com.jetbrains.lang.dart.ide.index.DartSymbolIndex.DART_SYMBOL_INDEX;
 
 @ExtensionImpl
-public final class DartSymbolContributor implements ChooseByNameContributorEx {
+public final class DartSymbolContributor implements GotoSymbolContributor {
   @Override
   public void processNames(@NotNull Processor<String> processor, @NotNull SearchScope scope, @Nullable IdFilter filter) {
     FileBasedIndex.getInstance().processAllKeys(DART_SYMBOL_INDEX, processor, scope, null);

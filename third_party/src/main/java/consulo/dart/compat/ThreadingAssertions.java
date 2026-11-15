@@ -24,6 +24,12 @@ public final class ThreadingAssertions {
     Application.get().assertReadAccessAllowed();
   }
 
+  public static void assertNoReadAccess() {
+    if (Application.get().isReadAccessAllowed()) {
+      throw new IllegalStateException("Must not be executed under read action");
+    }
+  }
+
   public static void assertWriteAccess() {
     Application.get().assertWriteAccessAllowed();
   }

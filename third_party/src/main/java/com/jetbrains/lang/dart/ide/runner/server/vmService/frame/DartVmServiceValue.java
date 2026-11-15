@@ -7,7 +7,7 @@ import consulo.ui.image.Image;
 import consulo.application.ApplicationManager;
 
 import consulo.util.lang.StringUtil;
-import com.intellij.ui.LayeredIcon;
+import consulo.ui.image.ImageEffects;
 import consulo.execution.debug.XSourcePosition;
 import consulo.execution.debug.frame.ImmediateFullValueEvaluator;
 import consulo.execution.debug.frame.XCompositeNode;
@@ -37,9 +37,9 @@ import java.util.Objects;
 // See https://youtrack.jetbrains.com/issue/WEB-17629.
 
 public final class DartVmServiceValue extends XNamedValue {
-  private static final LayeredIcon FINAL_FIELD_ICON = LayeredIcon.layeredIcon(() -> new Image[]{AllIcons.Nodes.Field, AllIcons.Nodes.FinalMark});
-  private static final LayeredIcon STATIC_FIELD_ICON = LayeredIcon.layeredIcon(() -> new Image[]{AllIcons.Nodes.Field, AllIcons.Nodes.StaticMark});
-  private static final LayeredIcon STATIC_FINAL_FIELD_ICON = LayeredIcon.layeredIcon(() -> new Image[]{AllIcons.Nodes.Field, AllIcons.Nodes.StaticMark, AllIcons.Nodes.FinalMark});
+  private static final Image FINAL_FIELD_ICON = ImageEffects.layered(AllIcons.Nodes.Field, AllIcons.Nodes.FinalMark);
+  private static final Image STATIC_FIELD_ICON = ImageEffects.layered(AllIcons.Nodes.Field, AllIcons.Nodes.StaticMark);
+  private static final Image STATIC_FINAL_FIELD_ICON = ImageEffects.layered(AllIcons.Nodes.Field, AllIcons.Nodes.StaticMark, AllIcons.Nodes.FinalMark);
 
   private final @NotNull DartVmServiceDebugProcess myDebugProcess;
   private final @NotNull String myIsolateId;
@@ -212,7 +212,7 @@ public final class DartVmServiceValue extends XNamedValue {
         }
       }
       case StackTrace -> {
-        node.setFullValueEvaluator(new ImmediateFullValueEvaluator(DartBundle.message("debugger.link.see.stack.trace"),
+        node.setFullValueEvaluator(new ImmediateFullValueEvaluator(DartBundle.messageValue("debugger.link.see.stack.trace"),
                                                                    Objects.requireNonNull(myInstanceRef.getValueAsString())));
         node.setPresentation(getIcon(), myInstanceRef.getClassRef().getName(), "", true);
       }

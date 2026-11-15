@@ -29,6 +29,7 @@ import com.jetbrains.lang.dart.psi.*;
 import com.jetbrains.lang.dart.util.DartResolveUtil;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.vmServiceDrivers.service.consumer.GetObjectConsumer;
 
+import consulo.localize.LocalizeValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -76,7 +77,9 @@ public class DartVmServiceEvaluator extends XDebuggerEvaluator {
       }
 
       @Override
-      public void errorOccurred(@NotNull String errorMessage) {
+      public void errorOccurred(@NotNull LocalizeValue errorMessageValue) {
+        // Consulo: XValueCallback reports LocalizeValue
+        final String errorMessage = errorMessageValue.get();
         vmService.setExceptionPauseMode(myDebugProcess.getBreakOnExceptionMode());
         callback.errorOccurred(errorMessage);
       }
@@ -90,7 +93,9 @@ public class DartVmServiceEvaluator extends XDebuggerEvaluator {
     else {
       // TODO(jacobr): we could use the most recently selected Dart file instead
       // of using the selected file.
-      final FileEditor editor = manager.getSelectedEditor();
+      // Consulo: no FileEditorManager.getSelectedEditor()
+      final FileEditor[] selectedEditors = manager.getSelectedEditors();
+      final FileEditor editor = selectedEditors.length > 0 ? selectedEditors[0] : null;
       if (editor instanceof TextEditor textEditor) {
         final FileEditorLocation fileEditorLocation = textEditor.getCurrentLocation();
         final VirtualFile virtualFile = editor.getFile();

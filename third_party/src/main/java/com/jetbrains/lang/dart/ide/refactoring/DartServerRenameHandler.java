@@ -40,6 +40,12 @@ public final class DartServerRenameHandler implements RenameHandler, TitledHandl
     // Dart file rename is not handled using server yet
   }
 
+  // Consulo: isRenaming() has no default implementation, IntelliJ default delegates to isAvailableOnDataContext()
+  @Override
+  public boolean isRenaming(@NotNull DataContext dataContext) {
+    return isAvailableOnDataContext(dataContext);
+  }
+
   @Override
   public boolean isAvailableOnDataContext(final @NotNull DataContext dataContext) {
     final Editor editor = dataContext.getData(CommonDataKeys.EDITOR);

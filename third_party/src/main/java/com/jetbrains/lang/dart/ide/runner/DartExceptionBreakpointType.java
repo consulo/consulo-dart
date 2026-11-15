@@ -8,10 +8,11 @@ import consulo.project.Project;
 import consulo.ui.ex.awt.IdeBorderFactory;
 import consulo.ui.ex.awt.JBRadioButton;
 import consulo.execution.debug.breakpoint.XBreakpoint;
-import consulo.execution.debug.event.XBreakpointListener;
+import consulo.execution.debug.event.XTopicBreakpointListener;
 import consulo.execution.debug.breakpoint.XBreakpointType;
 import consulo.execution.debug.breakpoint.ui.XBreakpointCustomPropertiesPanel;
 import com.jetbrains.lang.dart.DartBundle;
+import consulo.ui.image.Image;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -27,12 +28,12 @@ public final class DartExceptionBreakpointType
   }
 
   @Override
-  public @NotNull Icon getEnabledIcon() {
+  public @NotNull Image getEnabledIcon() {
     return ExecutionDebugIconGroup.breakpointBreakpointexception();
   }
 
   @Override
-  public @NotNull Icon getDisabledIcon() {
+  public @NotNull Image getDisabledIcon() {
     return ExecutionDebugIconGroup.breakpointBreakpointexceptiondisabled();
   }
 
@@ -92,8 +93,8 @@ public final class DartExceptionBreakpointType
       final boolean newValue = myBreakOnAllExceptions.isSelected();
       if (oldValue != newValue) {
         breakpoint.getProperties().setBreakOnAllExceptions(newValue);
-        @SuppressWarnings("unchecked")
-        final XBreakpointListener<XBreakpoint<DartExceptionBreakpointProperties>> publisher = myProject.getMessageBus().syncPublisher(XBreakpointListener.TOPIC);
+        // Consulo: the project topic is XTopicBreakpointListener
+        final XTopicBreakpointListener publisher = myProject.getMessageBus().syncPublisher(XTopicBreakpointListener.class);
         publisher.breakpointChanged(breakpoint);
       }
     }

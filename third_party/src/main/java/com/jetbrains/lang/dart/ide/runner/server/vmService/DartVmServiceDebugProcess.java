@@ -31,7 +31,6 @@ import consulo.util.lang.TimeoutUtil;
 import consulo.execution.debug.XDebugProcess;
 import consulo.execution.debug.XDebugSession;
 import consulo.execution.debug.event.XDebugSessionListener;
-import consulo.execution.debug.XDebuggerBundle;
 import consulo.execution.debug.XDebuggerUtil;
 import consulo.execution.debug.XSourcePosition;
 import consulo.execution.debug.breakpoint.XBreakpointHandler;
@@ -59,6 +58,8 @@ import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.vmServiceDrivers.service.VmService;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.vmServiceDrivers.service.logging.Logging;
+import consulo.execution.debug.localize.XDebuggerLocalize;
+import consulo.localize.LocalizeValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -189,7 +190,8 @@ public class DartVmServiceDebugProcess extends XDebugProcess {
                                                    public boolean canClose(String inputString) {
                                                      return true;
                                                    }
-                                                 }, null, DartBundle.message("connect.to.running.app.comment"));
+                                                 });
+      // Consulo: Messages.showInputDialog has no comment text, "connect.to.running.app.comment" is not shown
 
       if (debugUrl == null) {
         // Cancel button pressed
@@ -410,7 +412,7 @@ public class DartVmServiceDebugProcess extends XDebugProcess {
       final Collection<VirtualFile> localFilesWithSameName = ReadAction.compute(() -> {
         final String remoteFileName = PathUtil.getFileName(remoteUri);
         final GlobalSearchScope scope = GlobalSearchScopesCore.directoryScope(getSession().getProject(), projectRoot, true);
-        return FilenameIndex.getVirtualFilesByName(remoteFileName, scope);
+        return FilenameIndex.getVirtualFilesByName(getSession().getProject(), remoteFileName, scope);
       });
 
       int howManyFilesMatch = 0;
@@ -535,12 +537,12 @@ public class DartVmServiceDebugProcess extends XDebugProcess {
   }
 
   @Override
-  public String getCurrentStateMessage() {
+  public @NotNull LocalizeValue getCurrentStateMessage() {
     return getSession().isStopped()
-           ? XDebuggerBundle.message("debugger.state.message.disconnected")
+           ? XDebuggerLocalize.debuggerStateMessageDisconnected()
            : myVmConnected
-             ? XDebuggerBundle.message("debugger.state.message.connected")
-             : DartBundle.message("debugger.trying.to.connect");
+             ? XDebuggerLocalize.debuggerStateMessageConnected()
+             : DartBundle.messageValue("debugger.trying.to.connect");
   }
 
   @Override

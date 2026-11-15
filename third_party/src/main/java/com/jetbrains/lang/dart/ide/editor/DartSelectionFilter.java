@@ -1,8 +1,8 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.editor;
 
+import consulo.language.editor.action.WordSelectionerFilter;
 import consulo.annotation.component.ExtensionImpl;
-import consulo.util.lang.function.Condition;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.util.PsiTreeUtil;
 import com.jetbrains.lang.dart.DartTokenTypes;
@@ -12,8 +12,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @ExtensionImpl
-public final class DartSelectionFilter implements Condition<PsiElement> {
+public final class DartSelectionFilter implements WordSelectionerFilter {
+  // Consulo: the basicWordSelectionFilter is a WordSelectionerFilter
   @Override
+  public boolean canSelect(final @NotNull PsiElement psiElement) {
+    return value(psiElement);
+  }
+
   public boolean value(final @NotNull PsiElement psiElement) {
       return getSiblingSemicolonIfExpression(psiElement) == null; // DartWordSelectionHandler will select this expression with the following semicolon
   }

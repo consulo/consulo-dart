@@ -52,7 +52,12 @@ public class DartVmServiceExecutionStack extends XExecutionStack {
     return myTopFrame;
   }
 
+  // Consulo: computeStackFrames has no firstFrameIndex, the frames view does not add the top frame itself
   @Override
+  public void computeStackFrames(@NotNull XStackFrameContainer container) {
+    computeStackFrames(0, container);
+  }
+
   public void computeStackFrames(int firstFrameIndex, @NotNull XStackFrameContainer container) {
     if (myDebugProcess.isIsolateSuspended(myIsolateId)) {
       myDebugProcess.getVmServiceWrapper().computeStackFrames(myIsolateId, firstFrameIndex, container, myException);

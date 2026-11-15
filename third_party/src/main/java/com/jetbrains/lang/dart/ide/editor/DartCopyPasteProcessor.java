@@ -133,7 +133,7 @@ public final class DartCopyPasteProcessor extends CopyPastePostProcessor<DartCop
           }
         };
 
-        if (!MessageDialogBuilder.yesNo(title, message).doNotAsk(doNotAskOption).ask(project)) {
+        if (!MessageDialogBuilder.yesNo(title, message).doNotAsk(doNotAskOption).project(project).isYes()) {
           return;
         }
       }

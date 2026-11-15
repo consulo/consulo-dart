@@ -15,6 +15,7 @@ import consulo.execution.debug.frame.XValuePlace;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.DartVmServiceDebugProcess;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.vmServiceDrivers.service.consumer.GetObjectConsumer;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.vmServiceDrivers.service.element.*;
+import consulo.localize.LocalizeValue;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -31,7 +32,7 @@ class DartStaticFieldsGroup extends XValueGroup {
                         final @NotNull String isolateId,
                         final @NotNull String className,
                         final @NotNull SmartList<? extends FieldRef> fieldsRefs) {
-    super("static");
+    super(LocalizeValue.of("static"));
     myDebugProcess = debugProcess;
     myIsolateId = isolateId;
     myClassName = className;

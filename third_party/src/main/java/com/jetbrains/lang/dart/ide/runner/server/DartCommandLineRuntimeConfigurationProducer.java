@@ -3,10 +3,9 @@ package com.jetbrains.lang.dart.ide.runner.server;
 
 import consulo.annotation.component.ExtensionImpl;
 import consulo.execution.action.ConfigurationContext;
-import com.intellij.execution.actions.LazyRunConfigurationProducer;
-import consulo.execution.configuration.ConfigurationFactory;
+import consulo.execution.action.RunConfigurationProducer;
 import consulo.module.content.ProjectFileIndex;
-import consulo.util.lang.ref.Ref;
+import consulo.util.lang.ref.SimpleReference;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
@@ -20,16 +19,16 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @ExtensionImpl
-public final class DartCommandLineRuntimeConfigurationProducer extends LazyRunConfigurationProducer<DartCommandLineRunConfiguration> {
-  @Override
-  public @NotNull ConfigurationFactory getConfigurationFactory() {
-    return DartCommandLineRunConfigurationType.getInstance().getConfigurationFactories()[0];
+public final class DartCommandLineRuntimeConfigurationProducer extends RunConfigurationProducer<DartCommandLineRunConfiguration> {
+  // Consulo: no LazyRunConfigurationProducer, the factory is passed to the constructor
+  public DartCommandLineRuntimeConfigurationProducer() {
+    super(DartCommandLineRunConfigurationType.getInstance().getConfigurationFactories()[0]);
   }
 
   @Override
   protected boolean setupConfigurationFromContext(final @NotNull DartCommandLineRunConfiguration configuration,
                                                   final @NotNull ConfigurationContext context,
-                                                  final @NotNull Ref<PsiElement> sourceElement) {
+                                                  final @NotNull SimpleReference<PsiElement> sourceElement) {
     final VirtualFile dartFile = getRunnableDartFileFromContext(context, true);
     if (dartFile == null || DartTestRunConfigurationProducer.isFileInTestDirAndTestPackageExists(context.getProject(), dartFile)) {
       return false;

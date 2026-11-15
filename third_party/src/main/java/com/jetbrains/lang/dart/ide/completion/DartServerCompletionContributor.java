@@ -76,7 +76,7 @@ import static consulo.language.pattern.PlatformPatterns.psiFile;
 import static consulo.language.pattern.StandardPatterns.or;
 
 @ExtensionImpl
-public final class DartServerCompletionContributor extends CompletionContributor {
+public class DartServerCompletionContributor extends CompletionContributor { // Consulo: not final, see consulo.dart.yaml.DartYamlServerCompletionContributor
   @Override
   public @NotNull Language getLanguage() {
     return DartLanguage.INSTANCE;

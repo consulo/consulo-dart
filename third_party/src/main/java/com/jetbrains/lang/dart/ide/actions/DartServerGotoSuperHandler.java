@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.actions;
 
+import consulo.language.editor.action.GotoSuperActionHander;
 import com.jetbrains.lang.dart.psi.DartComponentName;
 import consulo.localize.LocalizeValue;
 import consulo.language.editor.ui.navigation.PsiTargetNavigationService;
@@ -32,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @ExtensionImpl
-public final class DartServerGotoSuperHandler implements LanguageCodeInsightActionHandler {
+public final class DartServerGotoSuperHandler implements GotoSuperActionHander {
   @Override
   public @NotNull Language getLanguage() {
     return DartLanguage.INSTANCE;

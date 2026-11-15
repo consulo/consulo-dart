@@ -132,7 +132,7 @@ public final class DartRunner extends GenericProgramRunner<RunnerSettings> {
 
     XDebugProcessStarter starter = new XDebugProcessStarter() {
       @Override
-      public @NotNull XDebugProcess start(@NotNull XDebugSession session) {
+      public @NotNull XDebugProcess start(@NotNull XDebugSession session) throws ExecutionException {
         DartUrlResolver dartUrlResolver = DartUrlResolver.getInstance(project, executionInfo.contextFileOrDir());
         DartVmServiceDebugProcess dartVmServiceDebugProcess = new DartVmServiceDebugProcess(
           session,

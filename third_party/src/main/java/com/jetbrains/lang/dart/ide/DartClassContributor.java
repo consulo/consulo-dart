@@ -2,7 +2,7 @@
 package com.jetbrains.lang.dart.ide;
 
 import consulo.annotation.component.ExtensionImpl;
-import consulo.ide.navigation.ChooseByNameContributorEx;
+import consulo.ide.navigation.GotoClassOrTypeContributor;
 import consulo.navigation.NavigationItem;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiManager;
@@ -25,7 +25,7 @@ import java.util.Collections;
 import java.util.Objects;
 
 @ExtensionImpl
-public final class DartClassContributor implements ChooseByNameContributorEx {
+public final class DartClassContributor implements GotoClassOrTypeContributor {
   @Override
   public void processNames(@NotNull Processor<String> processor, @NotNull SearchScope scope, @Nullable IdFilter filter) {
     FileBasedIndex.getInstance().processAllKeys(DartClassIndex.DART_CLASS_INDEX, processor, scope, filter);

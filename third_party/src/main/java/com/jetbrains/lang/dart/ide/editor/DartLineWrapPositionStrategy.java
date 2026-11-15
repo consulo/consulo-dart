@@ -1,5 +1,8 @@
 package com.jetbrains.lang.dart.ide.editor;
 
+import com.jetbrains.lang.dart.DartLanguage;
+import consulo.language.Language;
+import consulo.language.editor.LanguageLineWrapPositionStrategy;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.codeEditor.DefaultLineWrapPositionStrategy;
 import consulo.document.Document;
@@ -8,7 +11,12 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @ExtensionImpl
-public final class DartLineWrapPositionStrategy extends DefaultLineWrapPositionStrategy {
+public final class DartLineWrapPositionStrategy extends DefaultLineWrapPositionStrategy implements LanguageLineWrapPositionStrategy {
+  @Override
+  public @NotNull Language getLanguage() {
+    return DartLanguage.INSTANCE;
+  }
+
 
   public DartLineWrapPositionStrategy() {
     super();

@@ -4,12 +4,11 @@ package com.jetbrains.lang.dart.ide.runner.server.webdev;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.execution.action.ConfigurationContext;
 import consulo.execution.action.ConfigurationFromContext;
-import com.intellij.execution.actions.LazyRunConfigurationProducer;
-import consulo.execution.configuration.ConfigurationFactory;
+import consulo.execution.action.RunConfigurationProducer;
 import consulo.project.Project;
 import consulo.module.content.ProjectFileIndex;
 import consulo.module.content.ProjectRootManager;
-import consulo.util.lang.ref.Ref;
+import consulo.util.lang.ref.SimpleReference;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
@@ -20,10 +19,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 @ExtensionImpl
-public final class DartWebdevConfigurationProducer extends LazyRunConfigurationProducer<DartWebdevConfiguration> {
-  @Override
-  public @NotNull ConfigurationFactory getConfigurationFactory() {
-    return DartWebdevConfigurationType.getInstance().getConfigurationFactories()[0];
+public final class DartWebdevConfigurationProducer extends RunConfigurationProducer<DartWebdevConfiguration> {
+  // Consulo: no LazyRunConfigurationProducer, the factory is passed to the constructor
+  public DartWebdevConfigurationProducer() {
+    super(DartWebdevConfigurationType.getInstance().getConfigurationFactories()[0]);
   }
 
   @Override
@@ -35,7 +34,7 @@ public final class DartWebdevConfigurationProducer extends LazyRunConfigurationP
   @Override
   protected boolean setupConfigurationFromContext(@NotNull DartWebdevConfiguration configuration,
                                                   @NotNull ConfigurationContext context,
-                                                  @NotNull Ref<PsiElement> sourceElement) {
+                                                  @NotNull SimpleReference<PsiElement> sourceElement) {
     final VirtualFile htmlFile = getRunnableHtmlFileFromContext(context);
     if (htmlFile == null) {
       return false;

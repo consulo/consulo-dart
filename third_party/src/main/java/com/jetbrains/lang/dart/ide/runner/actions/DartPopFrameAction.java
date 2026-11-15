@@ -3,7 +3,6 @@
 package com.jetbrains.lang.dart.ide.runner.actions;
 
 import consulo.ui.ex.action.AnActionWithSyncUpdate;
-import consulo.application.AllIcons;
 import consulo.ui.ex.action.ActionPlaces;
 import consulo.ui.ex.action.AnAction;
 import consulo.ui.ex.action.AnActionEvent;
@@ -11,7 +10,7 @@ import consulo.ui.ex.action.Presentation;
 import consulo.application.dumb.DumbAware;
 import consulo.execution.debug.XDebugSession;
 import consulo.execution.debug.frame.XStackFrame;
-import consulo.execution.debug.ui.DebuggerUIUtil;
+import consulo.execution.debug.icon.ExecutionDebugIconGroup;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ide.runner.server.vmService.frame.DartVmServiceStackFrame;
 import org.jetbrains.annotations.NotNull;
@@ -22,7 +21,7 @@ public class DartPopFrameAction extends AnAction implements DumbAware, AnActionW
     Presentation presentation = getTemplatePresentation();
     presentation.setText(DartBundle.messagePointer("dart.pop.frame.action.text"));
     presentation.setDescription(DartBundle.messagePointer("dart.pop.frame.action.description"));
-    presentation.setIcon(AllIcons.Actions.PopFrame);
+    presentation.setIcon(ExecutionDebugIconGroup.actionInlinedropframe()); // Consulo: no Actions.PopFrame icon
   }
 
   @Override
@@ -50,7 +49,7 @@ public class DartPopFrameAction extends AnAction implements DumbAware, AnActionW
   }
 
   private static @Nullable DartVmServiceStackFrame getStackFrame(final @NotNull AnActionEvent e) {
-    XDebugSession session = DebuggerUIUtil.getSession(e);
+    XDebugSession session = e.getData(XDebugSession.DATA_KEY);
     if (session != null) {
       XStackFrame frame = session.getCurrentStackFrame();
       if (frame instanceof DartVmServiceStackFrame) {
