@@ -19,6 +19,8 @@
         <maven.consulo.plugin>3.37-SNAPSHOT</maven.consulo.plugin>
         <!-- TODO: drop after consulo-compiler-apt release with nested class bindings -->
         <compiler.apt.version>4.10-SNAPSHOT</compiler.apt.version>
+        <!-- upstream tests (src/test) use the IntelliJ test framework -->
+        <maven.test.skip>true</maven.test.skip>
     </properties>
 
     <repositories>
