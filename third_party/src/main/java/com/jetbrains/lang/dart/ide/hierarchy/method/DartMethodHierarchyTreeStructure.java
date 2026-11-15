@@ -109,7 +109,7 @@ public class DartMethodHierarchyTreeStructure extends HierarchyTreeStructure {
     finally {
       stackItems.remove(item);
     }
-    descriptor.setCachedChildren(subDescriptors.toArray(HierarchyNodeDescriptor.EMPTY_ARRAY));
+    descriptor.setCachedChildren(subDescriptors.toArray(new HierarchyNodeDescriptor[0]));
   }
 
   private DartComponent getBaseMethod() {
