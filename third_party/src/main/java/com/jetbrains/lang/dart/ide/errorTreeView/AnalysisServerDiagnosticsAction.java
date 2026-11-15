@@ -12,8 +12,6 @@ import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.project.DumbAwareAction;
 import com.intellij.openapi.project.Project;
 import com.jetbrains.lang.dart.DartBundle;
-import com.jetbrains.lang.dart.analytics.Analytics;
-import com.jetbrains.lang.dart.analytics.AnalyticsData;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.lsp.DartLspService;
 import com.jetbrains.lang.dart.sdk.DartSdk;
@@ -67,11 +65,9 @@ public class AnalysisServerDiagnosticsAction extends DumbAwareAction {
     }
 
     if (event != null) {
-      Analytics.report(AnalyticsData.forAction(this, event));
     } else {
       ActionManager actionManager = ActionManager.getInstance();
       if (actionManager != null) {
-        Analytics.report(AnalyticsData.forAction(actionManager.getId(this), project));
       }
     }
   }

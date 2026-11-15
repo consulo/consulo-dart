@@ -25,8 +25,6 @@ import com.intellij.psi.search.GlobalSearchScopesCore;
 import com.intellij.ui.LightweightHint;
 import com.intellij.util.SmartList;
 import com.jetbrains.lang.dart.DartFileType;
-import com.jetbrains.lang.dart.analytics.Analytics;
-import com.jetbrains.lang.dart.analytics.AnalyticsData;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.sdk.DartSdk;
 import com.jetbrains.lang.dart.sdk.DartSdkLibUtil;
@@ -56,7 +54,6 @@ public abstract class AbstractDartFileProcessingAction extends AnAction implemen
     final DartSdk sdk = DartSdk.getDartSdk(project);
     if (sdk == null || !DartAnalysisServerService.isDartSdkVersionSufficient(sdk)) return;
 
-    Analytics.report(AnalyticsData.forAction(this, event));
 
     PsiDocumentManager.getInstance(project).commitAllDocuments();
     final Editor editor = event.getData(CommonDataKeys.EDITOR);

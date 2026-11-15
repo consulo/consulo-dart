@@ -8,7 +8,6 @@ package com.jetbrains.lang.dart.ide.toolingDaemon
 
 import com.intellij.execution.configurations.GeneralCommandLine
 import com.intellij.openapi.util.io.FileUtil
-import com.jetbrains.lang.dart.analytics.Analytics
 import com.jetbrains.lang.dart.sdk.DartSdk
 import com.jetbrains.lang.dart.sdk.DartSdkUpdateChecker
 import com.jetbrains.lang.dart.sdk.DartSdkUtil
@@ -32,7 +31,6 @@ internal fun createDtdCommandLine(sdk: DartSdk, pingInterval: Int = 15): General
   if (supportsDtdPingInterval(sdk.version)) {
     commandLine.addParameter("$DTD_PING_INTERVAL_PARAMETER_PREFIX$pingInterval")
   }
-  Analytics.updateEnvironment(commandLine)
   return commandLine
 }
 

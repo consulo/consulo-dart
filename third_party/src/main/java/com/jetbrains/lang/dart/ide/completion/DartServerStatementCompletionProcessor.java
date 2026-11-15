@@ -7,9 +7,6 @@ import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 import com.intellij.refactoring.util.CommonRefactoringUtil;
-import com.jetbrains.lang.dart.analytics.Analytics;
-import com.jetbrains.lang.dart.analytics.AnalyticsConstants;
-import com.jetbrains.lang.dart.analytics.AnalyticsData;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.assists.AssistUtils;
 import com.jetbrains.lang.dart.assists.DartSourceEditException;
@@ -46,10 +43,6 @@ public final class DartServerStatementCompletionProcessor extends SmartEnterProc
         outcome = "apply_error";
       }
     }
-    AnalyticsData data = AnalyticsData.forAction("dart.completeStatement", project);
-    data.add(AnalyticsConstants.OUTCOME, outcome);
-    data.add(AnalyticsConstants.DURATION_MS, (int)((System.nanoTime() - startTime) / 1_000_000));
-    Analytics.report(data);
     return handled;
   }
 

@@ -29,9 +29,6 @@ import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService
 import com.jetbrains.lang.dart.ide.toolingDaemon.DartToolingDaemonService
 import com.jetbrains.lang.dart.projectWizard.DartModuleBuilder
 import com.jetbrains.lang.dart.sdk.DartSdk
-import com.jetbrains.lang.dart.analytics.Analytics
-import com.jetbrains.lang.dart.analytics.AnalyticsConstants
-import com.jetbrains.lang.dart.analytics.SettingsData
 import com.jetbrains.lang.dart.sdk.DartConfigurable
 import com.jetbrains.lang.dart.sdk.DartSdkLibUtil
 import com.jetbrains.lang.dart.util.PubspecYamlUtil
@@ -69,10 +66,6 @@ class DartStartupActivity : ProjectActivity {
     serviceScope.launch {
       startAnalysisServerIfNeeded(project)
     }
-
-    serviceScope.launch {
-      reportSettingsAnalytics(project)
-    }
   }
 
   private suspend fun startAnalysisServerIfNeeded(project: Project) {
@@ -93,55 +86,8 @@ class DartStartupActivity : ProjectActivity {
     }
   }
 
-  private suspend fun reportSettingsAnalytics(project: Project) {
-    val info = readAction {
-      val sdk = DartSdk.getDartSdk(project)
-      val enabled = sdk != null && project.moduleManager.modules.any { DartSdkLibUtil.isDartSdkEnabled(it) }
-      val version = sdk?.version ?: "unknown"
-      val experimentalEnabled = DartConfigurable.isExperimentalLspFeaturesEnabled(project)
-      SettingsReportInfo(sdk, enabled, version, experimentalEnabled)
-    }
-
-    if (!info.dartSupportEnabled || info.sdk == null) return
-
-    val config = Analytics.getConfiguration(info.sdk, project)
-    if (config.suppressAnalytics) return
-
-    Analytics.report(buildSettingsData(project, info))
-  }
 }
 
-/**
- * Builds the once-per-project-open settings event. Besides settings state, it carries
- * attribution that the Flutter plugin's events (which go through the Dart reporter) otherwise
- * lack: the Dart plugin version, the Flutter plugin version (only when io.flutter is enabled),
- * and the raw IDE product code.
- *
- * [productCode] and [pluginVersion] default to the live IDE values; tests pass fakes.
- */
-@VisibleForTesting
-internal fun buildSettingsData(
-  project: Project,
-  info: SettingsReportInfo,
-  productCode: String = Analytics.productCode,
-  pluginVersion: (String) -> String? = Analytics::pluginVersion,
-): SettingsData {
-  val settingsData = SettingsData(project)
-  settingsData["experimentalLspFeaturesEnabled"] = info.experimentalLspFeaturesEnabled
-  settingsData.add(AnalyticsConstants.SDK_VERSION, info.sdkVersion)
-  settingsData.add(AnalyticsConstants.PRODUCT_CODE, productCode)
-  pluginVersion(AnalyticsConstants.DART_PLUGIN_ID)?.let { settingsData.add(AnalyticsConstants.DART_PLUGIN_VERSION, it) }
-  pluginVersion(AnalyticsConstants.FLUTTER_PLUGIN_ID)?.let { settingsData.add(AnalyticsConstants.FLUTTER_PLUGIN_VERSION, it) }
-  return settingsData
-}
-
-@VisibleForTesting
-internal data class SettingsReportInfo(
-  val sdk: DartSdk?,
-  val dartSupportEnabled: Boolean,
-  val sdkVersion: String,
-  val experimentalLspFeaturesEnabled: Boolean
-)
 
 @VisibleForTesting
 fun collectExclusionsByModule(project: Project): Map<Module, Map<String, Set<String>>> {

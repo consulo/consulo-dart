@@ -123,7 +123,6 @@ public abstract class ServerRefactoringDialog<T extends ServerRefactoring> exten
     });
 
     if (error == null) {
-      myRefactoring.reportAnalytics();
       close(DialogWrapper.OK_EXIT_CODE);
     }
     else {

@@ -10,8 +10,6 @@ import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiDirectory;
 import com.jetbrains.lang.dart.DartBundle;
-import com.jetbrains.lang.dart.analytics.Analytics;
-import com.jetbrains.lang.dart.analytics.AnalyticsData;
 import com.jetbrains.lang.dart.sdk.DartSdk;
 import icons.DartIcons;
 import org.jetbrains.annotations.NotNull;
@@ -46,6 +44,5 @@ public class CreateDartFileAction extends CreateFileFromTemplateAction {
     // expected `actionPerformed` is marked final in super.
 
     // TODO (pq): see if there's some way to find this action's place (w/o event data).
-    Analytics.report(AnalyticsData.forAction(ActionManager.getInstance().getId(this), project));
   }
 }

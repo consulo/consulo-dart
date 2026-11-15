@@ -31,8 +31,6 @@ import com.intellij.util.EditSourceOnEnterKeyHandler;
 import com.intellij.util.OpenSourceUtil;
 import com.intellij.util.SmartList;
 import com.jetbrains.lang.dart.DartBundle;
-import com.jetbrains.lang.dart.analytics.Analytics;
-import com.jetbrains.lang.dart.analytics.AnalyticsData;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.analyzer.DartFileInfo;
 import com.jetbrains.lang.dart.analyzer.DartFileInfoKt;
@@ -181,7 +179,6 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
           }
           catch (DartSourceEditException ignored) {/**/}
 
-          Analytics.report(AnalyticsData.forAction(this, event));
         }
       });
     }
@@ -217,7 +214,6 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
           public void actionPerformed(@NotNull AnActionEvent e) {
             int offset = DartAnalysisServerService.getInstance(myProject).getConvertedOffset(vFile, location.getOffset());
             OpenSourceUtil.navigate(PsiNavigationSupport.getInstance().createNavigatable(myProject, vFile, offset));
-            Analytics.report(AnalyticsData.forAction(JUMP_TO_SOURCE_ACTION_ID, e));
           }
         });
       }
@@ -240,7 +236,6 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
       @Override
       public void actionPerformed(@NotNull AnActionEvent e) {
         BrowserUtil.browse(url);
-        Analytics.report(AnalyticsData.forAction(OPEN_DOCUMENTATION_ACTION_ID, e));
       }
     });
   }
@@ -463,7 +458,6 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
       showFiltersPopup();
-      Analytics.report(AnalyticsData.forAction(FILTER_PROBLEMS_ACTION_ID, e));
     }
   }
 
@@ -487,7 +481,6 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
       showAnalysisServerSettingsPopup();
-      Analytics.report(AnalyticsData.forAction(OPEN_SERVER_SETTINGS_ACTION_ID, e));
     }
   }
 }

@@ -9,8 +9,6 @@ import com.intellij.execution.runners.ExecutionEnvironment;
 import com.intellij.openapi.options.SettingsEditor;
 import com.intellij.openapi.project.Project;
 import com.intellij.util.PathUtil;
-import com.jetbrains.lang.dart.analytics.Analytics;
-import com.jetbrains.lang.dart.analytics.AnalyticsConstants;
 import com.jetbrains.lang.dart.ide.runner.base.DartRunConfigurationBase;
 import com.jetbrains.lang.dart.ide.runner.server.ui.DartCommandLineConfigurationEditorForm;
 import org.jetbrains.annotations.NotNull;
@@ -35,7 +33,6 @@ public class DartCommandLineRunConfiguration extends DartRunConfigurationBase {
 
   @Override
   public RunProfileState getState(@NotNull Executor executor, @NotNull ExecutionEnvironment env) throws ExecutionException {
-    Analytics.recordRunOrDebugSession(AnalyticsConstants.MECHANISM_APP, executor, getProject());
     return new DartCommandLineRunningState(env);
   }
 

@@ -42,10 +42,6 @@ import com.intellij.util.ui.ColumnInfo;
 import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.UIUtil;
 import com.jetbrains.lang.dart.DartBundle;
-import com.jetbrains.lang.dart.analytics.Analytics;
-import com.jetbrains.lang.dart.analytics.AnalyticsConstants;
-import com.jetbrains.lang.dart.analytics.AnalyticsData;
-import com.jetbrains.lang.dart.analytics.SettingsChangeData;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.flutter.FlutterUtil;
 import com.jetbrains.lang.dart.lsp.DartBridgeLspServerManager;
@@ -399,9 +395,6 @@ public final class DartConfigurable implements SearchableConfigurable, NoScroll,
 
     ApplicationManager.getApplication().runWriteAction(runnable);
 
-    reportExperimentalLspFeaturesChange(myProject, myEnableDartSupportCheckBox.isSelected(),
-                                        initialExperimentalEnabled, currentExperimentalEnabled);
-
     if (myEnableDartSupportCheckBox.isSelected() && initialExperimentalEnabled != currentExperimentalEnabled) {
       DartBridgeLspServerManager bridgeManager = myProject.getService(DartBridgeLspServerManager.class);
       bridgeManager.stopBridgeServer();
@@ -555,25 +548,4 @@ public final class DartConfigurable implements SearchableConfigurable, NoScroll,
     PropertiesComponent.getInstance(project).setValue(DART_LSP_EXPERIMENTAL_ENABLED, enabled, true);
   }
 
-  /**
-   * Reports a persisted change to the experimental LSP features setting. Both directions are
-   * reported ({@code enabled=false} is an opt-out, {@code enabled=true} an opt back in) so that
-   * net churn can be measured. Nothing is reported if the value is unchanged or Dart support
-   * is disabled, since the setting is not persisted in that case.
-   */
-  @VisibleForTesting
-  static void reportExperimentalLspFeaturesChange(@NotNull Project project,
-                                                  boolean dartSupportEnabled,
-                                                  boolean previouslyEnabled,
-                                                  boolean enabled) {
-    if (!dartSupportEnabled || previouslyEnabled == enabled) return;
-
-    final AnalyticsData data = new SettingsChangeData(EXPERIMENTAL_LSP_FEATURES_SETTING_ID, project);
-    data.add(AnalyticsConstants.ENABLED, enabled);
-    final DartSdk sdk = DartSdk.getDartSdk(project);
-    if (sdk != null) {
-      data.add(AnalyticsConstants.SDK_VERSION, sdk.getVersion());
-    }
-    Analytics.report(data);
-  }
 }

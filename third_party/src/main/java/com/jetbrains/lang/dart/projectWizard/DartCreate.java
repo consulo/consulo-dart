@@ -10,7 +10,6 @@ import com.intellij.execution.configurations.GeneralCommandLine;
 import com.intellij.execution.process.CapturingProcessHandler;
 import com.intellij.execution.process.ProcessOutput;
 import com.intellij.openapi.diagnostic.Logger;
-import com.jetbrains.lang.dart.analytics.Analytics;
 import com.jetbrains.lang.dart.logging.PluginLogger;
 import com.intellij.openapi.util.NlsSafe;
 import com.intellij.openapi.util.text.StringUtil;
@@ -67,7 +66,6 @@ public class DartCreate {
     command.addParameter("create");
     command.addParameters(parameters);
 
-    Analytics.updateEnvironment(command);
 
     return new CapturingProcessHandler(command).runProcess(timeoutInSeconds * 1000, false);
   }

@@ -88,8 +88,6 @@ import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.io.URLUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartFileType;
-import com.jetbrains.lang.dart.analytics.Analytics;
-import com.jetbrains.lang.dart.analytics.AnalyticsConfiguration;
 import com.jetbrains.lang.dart.assists.DartQuickAssistIntention;
 import com.jetbrains.lang.dart.assists.DartQuickAssistIntentionListener;
 import com.jetbrains.lang.dart.fixes.DartQuickFix;
@@ -2666,8 +2664,7 @@ public final class DartAnalysisServerService implements Disposable {
         stopServer();
         DartProblemsView.getInstance(myProject).setInitialCurrentFileBeforeServerStart(getCurrentOpenFile());
 
-        AnalyticsConfiguration analyticsConfig = Analytics.getConfiguration(sdk, myProject);
-        startServer(sdk, analyticsConfig.getSuppressAnalytics());
+        startServer(sdk, true);
 
         if (myServer != null) {
           myRootsHandler.onServerStarted();
