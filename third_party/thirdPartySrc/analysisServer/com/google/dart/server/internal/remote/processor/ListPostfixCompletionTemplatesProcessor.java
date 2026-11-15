@@ -19,7 +19,6 @@ import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
 import org.dartlang.analysis.server.protocol.PostfixTemplateDescriptor;
 import org.dartlang.analysis.server.protocol.RequestError;
-import org.jetbrains.io.JsonUtil;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;

@@ -5,3 +5,6 @@
 /.vscode
 /dart-sdk/
 .dart_tool/
+
+# Maven
+target/
