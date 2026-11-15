@@ -14,6 +14,11 @@
     <version>3-SNAPSHOT</version>
     <packaging>consulo-plugin</packaging>
 
+    <properties>
+        <!-- TODO: drop after maven-consulo-plugin release with psiImplUtil type fixes -->
+        <maven.consulo.plugin>3.37-SNAPSHOT</maven.consulo.plugin>
+    </properties>
+
     <repositories>
         <repository>
             <id>consulo</id>
