@@ -51,7 +51,7 @@ public class DartTestRunningState extends DartCommandLineRunningState {
   }
 
   @Override
-  public @NotNull ExecutionResult execute(final @NotNull Executor executor, final @NotNull ProgramRunner<?> runner) throws ExecutionException {
+  public @NotNull ExecutionResult execute(final @NotNull Executor executor, final @NotNull ProgramRunner runner) throws ExecutionException {
     final ProcessHandler processHandler = startProcess();
     final ConsoleView consoleView = createConsole(getEnvironment());
     consoleView.attachToProcess(processHandler);

@@ -19,7 +19,7 @@ import com.jetbrains.lang.dart.sdk.DartSdkLibUtil;
 import org.jetbrains.annotations.NotNull;
 
 @ExtensionImpl
-final class DartPostFormatProcessor implements PostFormatProcessor {
+public final class DartPostFormatProcessor implements PostFormatProcessor {
   @Override
   public @NotNull PsiElement processElement(final @NotNull PsiElement source, final @NotNull CodeStyleSettings settings) {
     return source;

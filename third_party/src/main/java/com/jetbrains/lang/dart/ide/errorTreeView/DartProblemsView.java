@@ -1,7 +1,9 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.errorTreeView;
 
+import consulo.ide.impl.idea.ide.projectView.impl.ProjectViewPaneImpl;
 import consulo.application.Application;
+import consulo.ui.image.Image;
 import consulo.dart.notification.DartNotificationGroups;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
@@ -11,13 +13,10 @@ import consulo.annotation.component.ServiceAPI;
 import com.google.common.annotations.VisibleForTesting;
 import consulo.execution.ExecutionUtil;
 import consulo.project.ui.view.ProjectView;
-import consulo.project.ui.view.ProjectViewPane;
-import com.intellij.notification.*;
 import consulo.project.ui.notification.Notification;
-import consulo.project.ui.notification.NotificationAction;
-import consulo.project.ui.notification.NotificationDisplayType;
+import consulo.project.ui.notification.NotificationService;
+import consulo.localize.LocalizeValue;
 import consulo.project.ui.notification.NotificationType;
-import consulo.project.ui.internal.NotificationsConfiguration;
 import consulo.disposer.Disposable;
 import consulo.application.ApplicationManager;
 import consulo.ui.ModalityState;
@@ -41,7 +40,7 @@ import consulo.ui.ex.awt.util.Alarm;
 import consulo.dart.compat.ModalityUiUtil;
 import consulo.util.io.PathUtil;
 import consulo.application.util.concurrent.AppExecutorUtil;
-import com.intellij.util.concurrency.ThreadingAssertions;
+import consulo.dart.compat.ThreadingAssertions;
 import consulo.util.collection.ContainerUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerMessages;
@@ -82,7 +81,7 @@ public final class DartProblemsView implements PersistentStateComponent<DartProb
   private final Map<String, Integer> myFolderPathsWithErrors = new HashMap<>();
   private final Alarm myAlarm;
 
-  private @NotNull Icon myCurrentIcon = DartIcons.Dart_13;
+  private @NotNull Image myCurrentIcon = DartIcons.Dart_13;
   private boolean myAnalysisIsBusy;
 
   private int myFilesWithErrorsHash;
@@ -92,7 +91,7 @@ public final class DartProblemsView implements PersistentStateComponent<DartProb
   private final Runnable myUpdateRunnable = new Runnable() {
     @Override
     public void run() {
-      if (ProjectViewPane.ID.equals(ProjectView.getInstance(myProject).getCurrentViewId())) {
+      if (ProjectViewPaneImpl.ID.equals(ProjectView.getInstance(myProject).getCurrentViewId())) {
         final int hash = getFilePathsWithErrorsHash();
         if (myFilesWithErrorsHash != hash) {
           // refresh red squiggles managed by com.jetbrains.lang.dart.projectView.DartNodeDecorator
@@ -207,7 +206,7 @@ public final class DartProblemsView implements PersistentStateComponent<DartProb
     return project == null ? null : ToolWindowManager.getInstance(project).getToolWindow("Notifications");
   }
 
-  void setTabTitle(@TabTitle @NotNull String tabTitle) {
+  void setTabTitle(@NotNull String tabTitle) {
     ToolWindow toolWindow = getDartAnalysisToolWindow();
     Content content = toolWindow != null ? toolWindow.getContentManager().getContent(0) : null;
     if (content != null) {
@@ -215,7 +214,7 @@ public final class DartProblemsView implements PersistentStateComponent<DartProb
     }
   }
 
-  void setToolWindowIcon(@NotNull Icon icon) {
+  void setToolWindowIcon(@NotNull Image icon) {
     myCurrentIcon = icon;
     updateIcon();
   }
@@ -225,7 +224,7 @@ public final class DartProblemsView implements PersistentStateComponent<DartProb
     if (toolWindow == null) return;
 
     if (myAnalysisIsBusy) {
-      toolWindow.setIcon(ExecutionUtil.getLiveIndicator(myCurrentIcon));
+      toolWindow.setIcon(ExecutionUtil.getIconWithLiveIndicator(myCurrentIcon));
     }
     else {
       toolWindow.setIcon(myCurrentIcon);
@@ -246,7 +245,7 @@ public final class DartProblemsView implements PersistentStateComponent<DartProb
 
   public void showErrorNotification(@NotNull String title,
                                     @Nullable String content,
-                                    @Nullable Icon icon,
+                                    @Nullable Image icon,
                                     boolean addOpenAnalysisAction) {
     showNotification(NotificationType.ERROR, title, content, icon, false, addOpenAnalysisAction);
   }
@@ -261,73 +260,53 @@ public final class DartProblemsView implements PersistentStateComponent<DartProb
   private void showNotification(@NotNull NotificationType notificationType,
                                 @NotNull String title,
                                 @Nullable String content,
-                                @Nullable Icon icon,
+                                @Nullable Image icon,
                                 boolean terse,
                                 boolean addOpenAnalysisAction) {
     clearNotifications();
 
     if (myDisabledForSession) return;
 
-    final Notification notification = DartNotificationGroups.get("Dart Analysis")
-      .createNotification(title, StringUtil.notNullize(content), notificationType);
+    final Notification.Builder builder = NotificationService.getInstance()
+      .newOfType(DartNotificationGroups.get("Dart Analysis"), notificationType)
+      .title(LocalizeValue.of(title))
+      .content(LocalizeValue.of(StringUtil.notNullize(content)));
 
     if (addOpenAnalysisAction) {
-      notification.addAction(NotificationAction.createSimple(
-        DartBundle.message("notification.open.dart.analysis.action.text"),
-        () -> {
-          notification.expire();
-          ToolWindow toolWindow = getDartAnalysisToolWindow();
-          if (toolWindow != null) {
-            toolWindow.activate(null);
-          }
+      builder.addClosingAction(DartBundle.messageValue("notification.open.dart.analysis.action.text"), () -> {
+        ToolWindow toolWindow = getDartAnalysisToolWindow();
+        if (toolWindow != null) {
+          toolWindow.activate(null);
         }
-      ));
+      });
     }
 
     if (!terse) {
-      notification.addAction(NotificationAction.createSimple(
-        DartBundle.message("notification.don.t.show.for.this.session.action.text"),
-        () -> {
-          notification.expire();
-          myDisabledForSession = true;
-        }
-      ));
+      builder.addClosingAction(DartBundle.messageValue("notification.don.t.show.for.this.session.action.text"),
+                               () -> myDisabledForSession = true);
 
-      notification.addAction(NotificationAction.createSimple(
-        DartBundle.message("notification.never.show.again.action.text"),
-        () -> {
-          notification.expire();
+      builder.addClosingAction(DartBundle.messageValue("notification.never.show.again.action.text"), () -> {
+        // Consulo: NotificationsConfiguration is internal, the group display type can not be changed to NONE;
+        // the notifications are disabled for this session instead
+        myDisabledForSession = true;
 
-          final Notification innerNotification = DartNotificationGroups.get("Dart Analysis")
-            .createNotification(
-              DartBundle.message("notification.title.warning.disabled"),
-              DartBundle.message("notification.content.you.can.enable.it.back.in.the.settings", ActionCenter.getToolwindowName()),
-              NotificationType.INFORMATION
-            );
-
-          innerNotification.addAction(NotificationAction.createSimple(
-            DartBundle.message("notification.restore.settings.action.text", ActionCenter.getToolwindowName()),
-            () -> {
-              innerNotification.expire();
-              final ToolWindow toolWindow = getToolWindow(myProject);
-              if (toolWindow != null) toolWindow.activate(null);
-            }
-          ));
-
-          innerNotification.notify(myProject);
-
-          NotificationsConfiguration.getNotificationsConfiguration()
-            .setDisplayType(notification.getGroupId(), NotificationDisplayType.NONE);
-        }
-      ));
+        NotificationService.getInstance()
+          .newInfo(DartNotificationGroups.get("Dart Analysis"))
+          .title(DartBundle.messageValue("notification.title.warning.disabled"))
+          .content(DartBundle.messageValue("notification.content.you.can.enable.it.back.in.the.settings", "Notifications"))
+          .addClosingAction(DartBundle.messageValue("notification.restore.settings.action.text", "Notifications"), () -> {
+            final ToolWindow toolWindow = getToolWindow(myProject);
+            if (toolWindow != null) toolWindow.activate(null);
+          })
+          .notify(myProject);
+      });
     }
 
     if (icon != null) {
-      notification.setIcon(icon);
+      builder.icon(icon);
     }
 
-    myNotification = notification;
-    notification.notify(myProject);
+    myNotification = builder.notifyAndGet(myProject);
   }
 
   @Override

@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
  * Upstream registers {@link DartReferenceContributor} for Dart and XML, a Consulo extension has one language.
  */
 @ExtensionImpl
-final class DartXmlReferenceContributor extends DartReferenceContributor {
+public final class DartXmlReferenceContributor extends DartReferenceContributor {
   @Override
   public @NotNull Language getLanguage() {
     return XMLLanguage.INSTANCE;

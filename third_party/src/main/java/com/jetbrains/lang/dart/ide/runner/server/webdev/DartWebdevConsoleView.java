@@ -25,7 +25,7 @@ public class DartWebdevConsoleView extends ConsoleViewImpl {
     final TextConsoleBuilder builder = new TextConsoleBuilderImpl(project, GlobalSearchScope.allScope(project)) {
       @Override
       protected @NotNull ConsoleView createConsole() {
-        return new DartWebdevConsoleView(project, getScope());
+        return new DartWebdevConsoleView(project, (GlobalSearchScope)getScope());
       }
     };
 

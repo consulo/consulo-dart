@@ -6,7 +6,6 @@ import consulo.localize.LocalizeKey;
 import consulo.localize.LocalizeValue;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.function.Supplier;
 
 /**
  * Upstream message keys are served by the generated {@link DartLocalize}
@@ -19,8 +18,12 @@ public final class DartBundle {
     return messageValue(key, params).get();
   }
 
-  public static @NotNull Supplier<String> messagePointer(@NotNull String key, Object @NotNull ... params) {
-    return () -> message(key, params);
+  /**
+   * Consulo: {@link LocalizeValue} is a {@code Supplier<String>}, so it is accepted where upstream passes the pointer
+   * and also where Consulo APIs want a {@link LocalizeValue}.
+   */
+  public static @NotNull LocalizeValue messagePointer(@NotNull String key, Object @NotNull ... params) {
+    return messageValue(key, params);
   }
 
   public static @NotNull LocalizeValue messageValue(@NotNull String key, Object @NotNull ... params) {

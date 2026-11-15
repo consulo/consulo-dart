@@ -31,7 +31,7 @@ import static com.jetbrains.lang.dart.util.DartUrlResolver.PACKAGES_FOLDER_NAME;
 import static com.jetbrains.lang.dart.util.PubspecYamlUtil.PUBSPEC_YAML;
 
 @ExtensionImpl
-final class DartTreeStructureProvider implements TreeStructureProvider, DumbAware {
+public final class DartTreeStructureProvider implements TreeStructureProvider, DumbAware {
   @Override
   public @NotNull Collection<AbstractTreeNode<?>> modify(final @NotNull AbstractTreeNode<?> parentNode,
                                                          final @NotNull Collection<AbstractTreeNode<?>> children,

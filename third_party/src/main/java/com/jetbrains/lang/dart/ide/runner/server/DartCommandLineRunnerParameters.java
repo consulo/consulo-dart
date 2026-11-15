@@ -10,7 +10,6 @@ import consulo.util.lang.StringUtil;
 import consulo.virtualFileSystem.LocalFileSystem;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.util.xml.serializer.annotation.OptionTag;
-import com.intellij.util.xmlb.annotations.XMap;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartFileType;
 import com.jetbrains.lang.dart.sdk.DartConfigurable;
@@ -95,8 +94,8 @@ public class DartCommandLineRunnerParameters implements Cloneable {
     myWorkingDirectory = workingDirectory;
   }
 
+  // Consulo: no @XMap, maps are serialized by default; persisted state is DartCommandLineRunConfigurationOptions
   @OptionTag
-  @XMap
   public @NotNull Map<String, String> getEnvs() {
     return myEnvs;
   }

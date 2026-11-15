@@ -1,6 +1,7 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.projectWizard;
 
+import com.jetbrains.lang.dart.ide.runner.server.webdev.DartWebdevParameters;
 import consulo.dart.compat.RunManagerCompat;
 import consulo.execution.RunManager;
 import consulo.execution.RunnerAndConfigurationSettings;
@@ -100,7 +101,10 @@ public abstract class DartProjectTemplate {
       final RunnerAndConfigurationSettings settings = RunManagerCompat.createConfiguration(runManager, "", DartWebdevConfigurationType.class);
 
       DartWebdevConfiguration runConfiguration = (DartWebdevConfiguration)settings.getConfiguration();
-      runConfiguration.getParameters().setHtmlFilePath(htmlFile.getPath());
+      // Consulo: getParameters() is a snapshot of the options
+      final DartWebdevParameters webdevParameters = runConfiguration.getParameters();
+      webdevParameters.setHtmlFilePath(htmlFile.getPath());
+      runConfiguration.setParameters(webdevParameters);
       settings.setName(runConfiguration.suggestedName());
 
       runManager.addConfiguration(settings);

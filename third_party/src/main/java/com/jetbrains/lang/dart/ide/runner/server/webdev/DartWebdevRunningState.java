@@ -7,9 +7,9 @@ import consulo.process.cmd.GeneralCommandLine;
 import consulo.execution.configuration.RuntimeConfigurationError;
 import consulo.execution.ui.console.TextConsoleBuilder;
 import consulo.ide.impl.idea.execution.filters.TextConsoleBuilderImpl;
-import com.intellij.execution.process.ColoredProcessHandler;
-import consulo.process.internal.OSProcessHandler;
 import consulo.process.ProcessHandler;
+import consulo.process.ProcessHandlerBuilder;
+import com.jetbrains.lang.dart.pubServer.DartWebdev;
 import consulo.execution.process.ProcessTerminatedListener;
 import consulo.execution.runner.ExecutionEnvironment;
 import consulo.project.Project;
@@ -61,7 +61,7 @@ public class DartWebdevRunningState extends CommandLineState {
 
     final GeneralCommandLine commandLine = createCommandLine();
 
-    final OSProcessHandler processHandler = new ColoredProcessHandler(commandLine);
+    final ProcessHandler processHandler = ProcessHandlerBuilder.create(commandLine).colored().build();
 
     ProcessTerminatedListener.attach(processHandler, getEnvironment().getProject());
     return processHandler;

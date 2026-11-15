@@ -1,9 +1,10 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.errorTreeView;
 
+import consulo.ui.ex.awtUnsafe.TargetAWT;
 import consulo.application.AllIcons;
 import consulo.util.lang.StringUtil;
-import com.intellij.util.concurrency.ThreadingAssertions;
+import consulo.dart.compat.ThreadingAssertions;
 import consulo.ui.ex.awt.ColumnInfo;
 import consulo.ui.ex.awt.table.ListTableModel;
 import com.jetbrains.lang.dart.DartBundle;
@@ -37,11 +38,11 @@ class DartProblemsTableModel extends ListTableModel<DartProblem> {
                                                      null));
 
       String severity = problem.getSeverity();
-      setIcon(AnalysisErrorSeverity.ERROR.equals(severity)
+      setIcon(TargetAWT.to(AnalysisErrorSeverity.ERROR.equals(severity)
               ? AllIcons.General.Error
               : AnalysisErrorSeverity.WARNING.equals(severity)
                 ? AllIcons.General.Warning
-                : AllIcons.General.Information);
+                : AllIcons.General.Information));
 
       return label;
     }

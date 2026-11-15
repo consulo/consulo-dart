@@ -15,7 +15,7 @@ import consulo.application.util.SystemInfo;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.ui.ex.awt.util.Alarm;
 import consulo.application.util.Semaphore;
-import com.intellij.util.concurrency.ThreadingAssertions;
+import consulo.dart.compat.ThreadingAssertions;
 import consulo.execution.debug.XDebugSession;
 import consulo.execution.debug.XSourcePosition;
 import consulo.execution.debug.breakpoint.XBreakpointProperties;

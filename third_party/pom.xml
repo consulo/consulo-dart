@@ -17,6 +17,8 @@
     <properties>
         <!-- TODO: drop after maven-consulo-plugin release with psiImplUtil type fixes -->
         <maven.consulo.plugin>3.37-SNAPSHOT</maven.consulo.plugin>
+        <!-- TODO: drop after consulo-compiler-apt release with nested class bindings -->
+        <compiler.apt.version>4.10-SNAPSHOT</compiler.apt.version>
     </properties>
 
     <repositories>
@@ -243,6 +245,7 @@
                         <include>com/jetbrains/lang/dart/lexer/DartLexer.java</include>
                         <include>com/jetbrains/lang/dart/lexer/_*.java</include>
                         <include>com/jetbrains/lang/dart/logging/PluginLogger.java</include>
+                        <include>com/jetbrains/lang/dart/pubServer/DartWebdev.java</include>
                         <include>com/jetbrains/lang/dart/ide/toolingDaemon/*.java</include>
                         <include>com/jetbrains/lang/dart/websocket/*.java</include>
                         <include>com/jetbrains/lang/dart/ide/actions/DartPubActionBase.java</include>

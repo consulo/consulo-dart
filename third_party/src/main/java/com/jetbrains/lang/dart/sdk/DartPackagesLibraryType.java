@@ -29,7 +29,7 @@ public final class DartPackagesLibraryType extends LibraryType<DartPackagesLibra
       }
     };
 
-  private DartPackagesLibraryType() {
+  public DartPackagesLibraryType() {
     super(LIBRARY_KIND);
   }
 

@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 @ExtensionImpl
 public final class DartLineBreakpointType extends XLineBreakpointTypeBase {
 
-  private DartLineBreakpointType() {
+  public DartLineBreakpointType() {
     super("Dart", DartBundle.message("dart.line.breakpoints.title"), new DartDebuggerEditorsProvider());
   }
 

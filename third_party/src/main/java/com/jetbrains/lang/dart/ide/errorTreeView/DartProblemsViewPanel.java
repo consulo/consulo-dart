@@ -1,6 +1,14 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.errorTreeView;
 
+import consulo.navigation.OpenFileDescriptorFactory;
+import consulo.platform.base.icon.PlatformIconGroup;
+import consulo.localize.LocalizeValue;
+import consulo.ui.image.OverlayPosition;
+import consulo.ui.image.ImageEffects;
+import consulo.ui.image.Image;
+import consulo.dataContext.DataSink;
+import consulo.dataContext.DataContext;
 import consulo.ui.ex.action.AnActionWithSyncUpdate;
 import com.google.common.annotations.VisibleForTesting;
 import consulo.application.AllIcons;
@@ -73,17 +81,13 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
   public static final String OPEN_DOCUMENTATION_ACTION_ID = ID_PREFIX + ".openDocumentation";
   public static final String OPEN_SERVER_SETTINGS_ACTION_ID = ID_PREFIX + ".openServerSettings";
 
-  private static final LayeredIcon DART_ERRORS_ICON;
-  private static final LayeredIcon DART_WARNINGS_ICON;
+  private static final Image DART_ERRORS_ICON;
+  private static final Image DART_WARNINGS_ICON;
 
   static {
-    DART_ERRORS_ICON = new LayeredIcon(2);
-    DART_ERRORS_ICON.setIcon(DartIcons.Dart_13, 0);
-    DART_ERRORS_ICON.setIcon(AllIcons.Ide.ErrorPoint, 1, SwingConstants.SOUTH_WEST);
-
-    DART_WARNINGS_ICON = new LayeredIcon(2);
-    DART_WARNINGS_ICON.setIcon(DartIcons.Dart_13, 0);
-    DART_WARNINGS_ICON.setIcon(DartIcons.Warning_point, 1, SwingConstants.SOUTH_WEST);
+    // Consulo: LayeredIcon is replaced by ImageEffects.overlay
+    DART_ERRORS_ICON = ImageEffects.overlay(DartIcons.Dart_13, AllIcons.Ide.ErrorPoint, OverlayPosition.BOTTOM_LEFT);
+    DART_WARNINGS_ICON = ImageEffects.overlay(DartIcons.Dart_13, DartIcons.Warning_point, OverlayPosition.BOTTOM_LEFT);
   }
 
   private final @NotNull Project myProject;
@@ -107,7 +111,7 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
     TableView<DartProblem> table = new TableView<>(new DartProblemsTableModel(myPresentationHelper));
 
     EditSourceOnDoubleClickHandler.install(table);
-    EditSourceOnEnterKeyHandler.install(table);
+    EditSourceOnEnterKeyHandler.install(table, null);
 
     table.addMouseListener(new PopupHandler() {
       @Override
@@ -125,7 +129,7 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
       ((DartProblemsTableModel)myTable.getModel()).setSortKey(sortKeys.getFirst());
     });
 
-    TableSpeedSearch.installOn(table, object -> object instanceof DartProblem
+    new TableSpeedSearch(table, object -> object instanceof DartProblem
                                           ? ((DartProblem)object).getErrorMessage() + " " + ((DartProblem)object).getPresentableLocation()
                                           : "");
 
@@ -199,7 +203,7 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
 
     group.addSeparator();
     // Reference the icon for "Jump to Source", higher in this menu group, to indicate that the action will have the same behavior
-    Icon jumpToSourceIcon = ActionManager.getInstance().getAction(IdeActions.ACTION_EDIT_SOURCE).getTemplatePresentation().getIcon();
+    Image jumpToSourceIcon = ActionManager.getInstance().getAction(IdeActions.ACTION_EDIT_SOURCE).getTemplatePresentation().getIcon();
     for (DiagnosticMessage diagnosticMessage : diagnosticMessages) {
       // Reference the message, trim, non-nullize, and remove a trailing period, if one exists
       String message = StringUtil.notNullize(diagnosticMessage.getMessage());
@@ -213,7 +217,7 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
 
       // Create the action for this DiagnosticMessage
       if (StringUtil.isNotEmpty(message) && vFile != null) {
-        group.add(new DumbAwareAction(message, null, jumpToSourceIcon) {
+        group.add(new DumbAwareAction(LocalizeValue.of(message), LocalizeValue.empty(), jumpToSourceIcon) {
 
           @Override
           public void actionPerformed(@NotNull AnActionEvent e) {
@@ -232,7 +236,7 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
     group.addSeparator();
     group.add(new DumbAwareAction(DartBundle.messagePointer("action.DartProblemsViewPanel.open.documentation.text"),
                                   DartBundle.messagePointer("action.DartProblemsViewPanel.open.documentation.description"),
-                                  AllIcons.Ide.External_link_arrow) {
+                                  PlatformIconGroup.ideExternallink()) {
 
       @Override
       public void actionPerformed(@NotNull AnActionEvent e) {
@@ -398,9 +402,8 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
     if (problem != null) {
       VirtualFile file = LocalFileSystem.getInstance().findFileByPath(problem.getSystemIndependentPath());
       if (file != null) {
-        OpenFileDescriptor navigable = new OpenFileDescriptor(myProject, file, problem.getOffset());
-        navigable.setScrollType(ScrollType.MAKE_VISIBLE);
-        return navigable;
+        // Consulo: no scroll type in OpenFileDescriptor, navigation scrolls to make the offset visible
+        return OpenFileDescriptorFactory.getInstance(myProject).newBuilder(file).offset(problem.getOffset()).build();
       }
     }
 

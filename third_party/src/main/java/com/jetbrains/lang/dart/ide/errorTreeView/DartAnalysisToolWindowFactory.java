@@ -14,7 +14,7 @@ import consulo.ui.ex.content.ContentFactory;
 import org.jetbrains.annotations.NotNull;
 
 @ExtensionImpl
-final class DartAnalysisToolWindowFactory implements ToolWindowFactory, DumbAware {
+public final class DartAnalysisToolWindowFactory implements ToolWindowFactory, DumbAware {
   private static final String TOOL_WINDOW_VISIBLE_PROPERTY = "dart.analysis.tool.window.visible";
 
   @Override

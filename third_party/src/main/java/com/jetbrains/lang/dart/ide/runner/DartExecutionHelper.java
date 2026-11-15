@@ -2,6 +2,7 @@
 package com.jetbrains.lang.dart.ide.runner;
 
 import com.google.common.annotations.VisibleForTesting;
+import consulo.ui.image.Image;
 import consulo.virtualFileSystem.fileType.FileTypeRegistry;
 import consulo.module.Module;
 import consulo.project.Project;
@@ -25,7 +26,7 @@ public final class DartExecutionHelper {
   public static void displayIssues(final @NotNull Project project,
                                    @NotNull VirtualFile launchFile,
                                    @NotNull String message,
-                                   @Nullable Icon icon) {
+                                   @Nullable Image icon) {
     clearIssueNotifications(project);
 
     GlobalSearchScope scope = getScopeOfFilesThatMayAffectExecution(project, launchFile);
@@ -66,7 +67,7 @@ public final class DartExecutionHelper {
     }
 
     // no pubspec.yaml => return module content scope
-    return module.getModuleContentScope();
+    return GlobalSearchScope.moduleContentScope(module);
   }
 
   private static @NotNull GlobalSearchScope getScopeForContextSubdir(@NotNull Module module,

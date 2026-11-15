@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.runner.server;
 
+import consulo.localize.LocalizeValue;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.execution.configuration.ConfigurationFactory;
 import consulo.execution.configuration.ConfigurationTypeBase;
@@ -8,7 +9,6 @@ import consulo.execution.configuration.ConfigurationTypeUtil;
 import consulo.execution.configuration.RunConfiguration;
 import consulo.application.dumb.DumbAware;
 import consulo.project.Project;
-import consulo.application.util.NotNullLazyValue;
 import consulo.language.psi.search.FileTypeIndex;
 import consulo.language.psi.scope.GlobalSearchScope;
 import com.jetbrains.lang.dart.DartBundle;
@@ -24,13 +24,13 @@ public final class DartCommandLineRunConfigurationType extends ConfigurationType
 
   public DartCommandLineRunConfigurationType() {
     super("DartCommandLineRunConfigurationType",
-          DartBundle.message("runner.command.line.configuration.name"),
-          DartBundle.message("runner.command.line.configuration.description"),
-          NotNullLazyValue.createValue(() -> DartIcons.Dart_16));
+          DartBundle.messageValue("runner.command.line.configuration.name"),
+          DartBundle.messageValue("runner.command.line.configuration.description"),
+          DartIcons.Dart_16);
     addFactory(new ConfigurationFactory(this) {
       @Override
-      public @NotNull String getName() {
-        return DartBundle.message("runner.command.line.configuration.name");
+      public @NotNull LocalizeValue getDisplayName() {
+        return DartBundle.messageValue("runner.command.line.configuration.name");
       }
 
       @Override

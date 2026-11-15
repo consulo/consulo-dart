@@ -8,7 +8,6 @@ import consulo.execution.configuration.ConfigurationTypeUtil;
 import consulo.execution.configuration.RunConfiguration;
 import consulo.application.dumb.DumbAware;
 import consulo.project.Project;
-import consulo.application.util.NotNullLazyValue;
 import consulo.language.psi.search.FileTypeIndex;
 import consulo.language.psi.scope.GlobalSearchScope;
 import com.jetbrains.lang.dart.DartBundle;
@@ -24,9 +23,9 @@ public final class DartRemoteDebugConfigurationType extends ConfigurationTypeBas
 
   public DartRemoteDebugConfigurationType() {
     super("DartRemoteDebugConfigurationType",
-          DartBundle.message("remote.debug.configuration.name"),
-          DartBundle.message("remote.debug.configuration.description"),
-          NotNullLazyValue.createValue(() -> DartIcons.Dart_remote));
+          DartBundle.messageValue("remote.debug.configuration.name"),
+          DartBundle.messageValue("remote.debug.configuration.description"),
+          DartIcons.Dart_remote);
     addFactory(new ConfigurationFactory(this) {
       @Override
       public @NotNull RunConfiguration createTemplateConfiguration(@NotNull Project project) {

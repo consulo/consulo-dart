@@ -9,7 +9,6 @@ import consulo.execution.configuration.RunConfiguration;
 import consulo.html.language.HtmlFileType;
 import consulo.application.dumb.DumbAware;
 import consulo.project.Project;
-import consulo.application.util.NotNullLazyValue;
 import consulo.language.psi.search.FileTypeIndex;
 import consulo.language.psi.scope.GlobalSearchScope;
 import com.jetbrains.lang.dart.DartBundle;
@@ -25,9 +24,9 @@ public final class DartWebdevConfigurationType extends ConfigurationTypeBase imp
 
   public DartWebdevConfigurationType() {
     super("DartWebdevConfigurationType",
-          DartBundle.message("webdev.debug.configuration.name"),
-          DartBundle.message("webdev.debug.configuration.description"),
-          NotNullLazyValue.createValue(() -> DartIcons.DartWeb));
+          DartBundle.messageValue("webdev.debug.configuration.name"),
+          DartBundle.messageValue("webdev.debug.configuration.description"),
+          DartIcons.DartWeb);
     addFactory(new ConfigurationFactory(this) {
       @Override
       public @NotNull RunConfiguration createTemplateConfiguration(final @NotNull Project project) {

@@ -41,7 +41,10 @@ public final class DartWebdevConfigurationProducer extends LazyRunConfigurationP
       return false;
     }
 
-    configuration.getParameters().setHtmlFilePath(htmlFile.getPath());
+    // Consulo: getParameters() is a snapshot of the options
+    final DartWebdevParameters webdevParameters = configuration.getParameters();
+    webdevParameters.setHtmlFilePath(htmlFile.getPath());
+    configuration.setParameters(webdevParameters);
     configuration.setGeneratedName();
     sourceElement.set(sourceElement.isNull() ? null : sourceElement.get().getContainingFile());
     return true;

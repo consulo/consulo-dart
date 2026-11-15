@@ -36,7 +36,7 @@ import static consulo.language.pattern.PlatformPatterns.psiFile;
 import static consulo.language.pattern.StandardPatterns.or;
 
 @ExtensionImpl
-class DartReferenceContributor extends PsiReferenceContributor {
+public class DartReferenceContributor extends PsiReferenceContributor {
   @Override
   public @NotNull Language getLanguage() {
     return DartLanguage.INSTANCE;

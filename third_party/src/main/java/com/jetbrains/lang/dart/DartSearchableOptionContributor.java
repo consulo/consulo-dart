@@ -8,7 +8,7 @@ import consulo.configurable.search.SearchableOptionProcessor;
 import org.jetbrains.annotations.NotNull;
 
 @ExtensionImpl
-final class DartSearchableOptionContributor extends SearchableOptionContributor {
+public final class DartSearchableOptionContributor extends SearchableOptionContributor {
   @Override
   public void processOptions(@NotNull SearchableOptionProcessor processor) {
     processor.addOptions("dart " + DartBundle.message("dialog.paste.on.import.title"), null,

@@ -8,7 +8,6 @@ import consulo.execution.configuration.ConfigurationTypeUtil;
 import consulo.execution.configuration.RunConfiguration;
 import consulo.application.dumb.DumbAware;
 import consulo.project.Project;
-import consulo.application.util.NotNullLazyValue;
 import consulo.language.psi.search.FileTypeIndex;
 import consulo.language.psi.scope.GlobalSearchScope;
 import com.jetbrains.lang.dart.DartBundle;
@@ -19,8 +18,8 @@ import org.jetbrains.annotations.NotNull;
 @ExtensionImpl
 public final class DartTestRunConfigurationType extends ConfigurationTypeBase implements DumbAware {
   public DartTestRunConfigurationType() {
-    super("DartTestRunConfigurationType", DartBundle.message("runner.test.configuration.name"),
-          DartBundle.message("runner.test.configuration.description"), NotNullLazyValue.createValue(() -> DartIcons.Dart_test));
+    super("DartTestRunConfigurationType", DartBundle.messageValue("runner.test.configuration.name"),
+          DartBundle.messageValue("runner.test.configuration.description"), DartIcons.Dart_test);
     addFactory(new DartTestConfigurationFactory(this));
   }
 

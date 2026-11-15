@@ -361,7 +361,8 @@ public final class DartTestEventsConverter extends OutputToGeneralTestEventsConv
     myGroupData.clear();
     mySuiteData.clear();
 
-    return doProcessServiceMessages(ServiceMessageBuilder.testsStarted().toString());
+    // Consulo: ServiceMessageBuilder.testsStarted() is new ServiceMessageBuilder("enteredTheMatrix") in IntelliJ
+    return doProcessServiceMessages(new ServiceMessageBuilder("enteredTheMatrix").toString());
   }
 
   private boolean handleDone(JsonObject obj) {

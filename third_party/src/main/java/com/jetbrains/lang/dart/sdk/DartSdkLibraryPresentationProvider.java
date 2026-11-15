@@ -19,7 +19,7 @@ public final class DartSdkLibraryPresentationProvider extends LibraryPresentatio
 
   private static final LibraryKind KIND = LibraryKind.create("dart");
 
-  private DartSdkLibraryPresentationProvider() {
+  public DartSdkLibraryPresentationProvider() {
     super(KIND);
   }
 

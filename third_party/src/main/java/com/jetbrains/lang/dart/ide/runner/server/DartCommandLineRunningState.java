@@ -12,8 +12,7 @@ import consulo.execution.debug.DefaultDebugExecutor;
 import consulo.execution.ui.console.TextConsoleBuilder;
 import consulo.ide.impl.idea.execution.filters.TextConsoleBuilderImpl;
 import consulo.execution.ui.console.UrlFilter;
-import com.intellij.execution.process.*;
-import consulo.process.internal.OSProcessHandler;
+import consulo.process.ProcessHandlerBuilder;
 import consulo.process.event.ProcessEvent;
 import consulo.process.ProcessHandler;
 import consulo.process.event.ProcessListener;
@@ -21,7 +20,7 @@ import consulo.execution.process.ProcessTerminatedListener;
 import consulo.execution.runner.ExecutionEnvironment;
 import consulo.execution.ui.console.ConsoleView;
 import consulo.ui.ex.action.AnAction;
-import consulo.ui.Separator;
+import consulo.ui.ex.action.AnSeparator;
 import consulo.project.Project;
 import consulo.util.dataholder.Key;
 import consulo.util.io.FileUtil;
@@ -89,7 +88,7 @@ public class DartCommandLineRunningState extends CommandLineState {
   }
 
   protected void addObservatoryActions(List<AnAction> actions, final ProcessHandler processHandler) {
-    actions.add(new Separator());
+    actions.add(AnSeparator.getInstance());
 
     final OpenDartObservatoryUrlAction openObservatoryAction =
       new OpenDartObservatoryUrlAction(null, () -> !processHandler.isProcessTerminated());
@@ -102,16 +101,9 @@ public class DartCommandLineRunningState extends CommandLineState {
   protected @NotNull ProcessHandler startProcess() throws ExecutionException {
     final GeneralCommandLine commandLine = createCommandLine();
 
-    // Workaround for "Observatory listening on ..." message that is concatenated (without line break) with the message following it
-    final OSProcessHandler processHandler = new ColoredProcessHandler(commandLine) {
-      @Override
-      public void coloredTextAvailable(@NotNull String text, @NotNull Key attributes) {
-        if (text.startsWith(DartConsoleFilter.OBSERVATORY_LISTENING_ON) || text.startsWith(DartConsoleFilter.DART_VM_LISTENING_ON)) {
-          text += "\n";
-        }
-        super.coloredTextAvailable(text, attributes);
-      }
-    };
+    // Consulo: upstream subclasses ColoredProcessHandler to add a line break after the "Observatory listening on ..." message
+    // (it is concatenated with the message following it); Consulo creates colored process handlers only by ProcessHandlerBuilder
+    final ProcessHandler processHandler = ProcessHandlerBuilder.create(commandLine).colored().build();
 
     processHandler.addProcessListener(new ProcessListener() {
       @Override

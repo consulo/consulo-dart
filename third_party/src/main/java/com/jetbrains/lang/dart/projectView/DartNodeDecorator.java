@@ -14,7 +14,7 @@ import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import org.jetbrains.annotations.NotNull;
 
 @ExtensionImpl
-final class DartNodeDecorator implements ProjectViewNodeDecorator {
+public final class DartNodeDecorator implements ProjectViewNodeDecorator {
   @Override
   public void decorate(final @NotNull ProjectViewNode node, final @NotNull PresentationData presentation) {
     if (node instanceof PsiFileNode || node instanceof PsiDirectoryNode) {
