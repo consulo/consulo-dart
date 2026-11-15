@@ -1,6 +1,10 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.actions;
 
+import consulo.annotation.component.ActionRefAnchor;
+import consulo.annotation.component.ActionRef;
+import consulo.annotation.component.ActionParentRef;
+import consulo.annotation.component.ActionImpl;
 import consulo.dart.compat.ReadonlyStatusHandlerCompat;
 import consulo.application.CommonBundle;
 import consulo.application.ApplicationManager;
@@ -31,7 +35,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@ActionImpl(id = "Dart.DartSortMembers", parents = @ActionParentRef(value = @ActionRef(id = "CodeFormatGroup"), anchor = ActionRefAnchor.AFTER, relatedToAction = @ActionRef(id = "Dart.DartStyle")))
 public class DartSortMembersAction extends AbstractDartFileProcessingAction {
+  public DartSortMembersAction() {
+    // Consulo: text, description and icon of upstream plugin.xml <action>
+    getTemplatePresentation().setText(DartBundle.messageValue("action.Dart.DartSortMembers.text"));
+    getTemplatePresentation().setDescription(DartBundle.messageValue("action.Dart.DartSortMembers.description"));
+  }
+
   private static final Logger LOG = PluginLogger.INSTANCE.createLogger(DartSortMembersAction.class);
 
   @Override

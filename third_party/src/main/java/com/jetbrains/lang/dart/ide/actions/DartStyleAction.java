@@ -1,6 +1,10 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.actions;
 
+import consulo.annotation.component.ActionRefAnchor;
+import consulo.annotation.component.ActionRef;
+import consulo.annotation.component.ActionParentRef;
+import consulo.annotation.component.ActionImpl;
 import consulo.dart.compat.ReadonlyStatusHandlerCompat;
 import consulo.application.CommonBundle;
 import consulo.language.codeStyle.CodeStyle;
@@ -40,7 +44,18 @@ import java.util.Map;
 
 import static consulo.util.lang.StringUtil.isWhiteSpace;
 
+@ActionImpl(id = "Dart.DartStyle", parents = {
+  @ActionParentRef(@ActionRef(id = "CodeFormatGroup")),
+  @ActionParentRef(value = @ActionRef(id = "EditorPopupMenu"), anchor = ActionRefAnchor.AFTER, relatedToAction = @ActionRef(id = "EditorPopupMenu1")),
+  @ActionParentRef(value = @ActionRef(id = "ProjectViewPopupMenuModifyGroup"), anchor = ActionRefAnchor.BEFORE, relatedToAction = @ActionRef(id = "$Delete"))
+})
 public class DartStyleAction extends AbstractDartFileProcessingAction {
+  public DartStyleAction() {
+    // Consulo: text, description and icon of upstream plugin.xml <action>
+    getTemplatePresentation().setText(DartBundle.messageValue("action.Dart.DartStyle.text"));
+    getTemplatePresentation().setDescription(DartBundle.messageValue("action.Dart.DartStyle.description"));
+  }
+
   private static final Logger LOG = PluginLogger.INSTANCE.createLogger(DartStyleAction.class);
 
   @Override

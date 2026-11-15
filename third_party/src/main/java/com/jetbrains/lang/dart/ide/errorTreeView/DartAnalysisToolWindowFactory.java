@@ -1,7 +1,10 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.errorTreeView;
 
+import consulo.annotation.component.ComponentScope;
 import consulo.annotation.component.ExtensionImpl;
+import consulo.annotation.component.TopicImpl;
+import jakarta.inject.Inject;
 import consulo.project.ProjectPropertiesComponent;
 import consulo.application.dumb.DumbAware;
 import consulo.project.Project;
@@ -76,9 +79,11 @@ public final class DartAnalysisToolWindowFactory implements ToolWindowFactory, D
    * Helps to initialize Dart Analysis tool window with the same visibility state as it was when the project was previously closed.
    * Standard tool window layout serialization in ToolWindowManager doesn't work because Dart Analysis tool window is not available by default.
    */
+  @TopicImpl(ComponentScope.PROJECT)
   public static class DartToolWindowManagerListener implements ToolWindowManagerListener {
     private final @NotNull Project myProject;
 
+    @Inject
     public DartToolWindowManagerListener(@NotNull Project project) {
       myProject = project;
     }

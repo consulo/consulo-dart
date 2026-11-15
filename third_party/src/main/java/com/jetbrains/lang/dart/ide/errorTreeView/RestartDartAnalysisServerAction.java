@@ -1,6 +1,9 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.errorTreeView;
 
+import consulo.platform.base.icon.PlatformIconGroup;
+import com.jetbrains.lang.dart.DartBundle;
+import consulo.annotation.component.ActionImpl;
 import consulo.ui.ex.action.AnActionWithSyncUpdate;
 import consulo.ui.ex.action.AnActionEvent;
 import consulo.ui.ex.action.DumbAwareAction;
@@ -10,7 +13,15 @@ import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+@ActionImpl(id = "Dart.Restart.Analysis.Server")
 public class RestartDartAnalysisServerAction extends DumbAwareAction implements AnActionWithSyncUpdate {
+  public RestartDartAnalysisServerAction() {
+    // Consulo: text, description and icon of upstream plugin.xml <action>
+    getTemplatePresentation().setText(DartBundle.messageValue("action.Dart.Restart.Analysis.Server.text"));
+    getTemplatePresentation().setDescription(DartBundle.messageValue("action.Dart.Restart.Analysis.Server.description"));
+    getTemplatePresentation().setIcon(PlatformIconGroup.actionsForcerefresh());
+  }
+
 
 
   @Override
