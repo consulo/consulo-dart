@@ -114,9 +114,11 @@ public abstract class DartProjectTemplate {
       final RunnerAndConfigurationSettings settings = RunManagerCompat.createConfiguration(runManager, "", DartCommandLineRunConfigurationType.class);
 
       final DartCommandLineRunConfiguration runConfiguration = (DartCommandLineRunConfiguration)settings.getConfiguration();
-      runConfiguration.getRunnerParameters().setFilePath(mainDartFile.getPath());
-      runConfiguration.getRunnerParameters()
-        .setWorkingDirectory(DartCommandLineRunnerParameters.suggestDartWorkingDir(module.getProject(), mainDartFile));
+      // Consulo: getRunnerParameters() is a snapshot of the options
+      final DartCommandLineRunnerParameters parameters = runConfiguration.getRunnerParameters();
+      parameters.setFilePath(mainDartFile.getPath());
+      parameters.setWorkingDirectory(DartCommandLineRunnerParameters.suggestDartWorkingDir(module.getProject(), mainDartFile));
+      runConfiguration.setRunnerParameters(parameters);
 
       settings.setName(runConfiguration.suggestedName());
 
@@ -131,8 +133,11 @@ public abstract class DartProjectTemplate {
       final RunnerAndConfigurationSettings settings = RunManagerCompat.createConfiguration(runManager, "", DartTestRunConfigurationType.class);
 
       final DartTestRunConfiguration runConfiguration = (DartTestRunConfiguration)settings.getConfiguration();
-      runConfiguration.getRunnerParameters().setScope(DartTestRunnerParameters.Scope.FOLDER);
-      runConfiguration.getRunnerParameters().setFilePath(baseDirPath);
+      // Consulo: getRunnerParameters() is a snapshot of the options
+      final DartTestRunnerParameters parameters = runConfiguration.getRunnerParameters();
+      parameters.setScope(DartTestRunnerParameters.Scope.FOLDER);
+      parameters.setFilePath(baseDirPath);
+      runConfiguration.setRunnerParameters(parameters);
 
       settings.setName(runConfiguration.suggestedName());
 

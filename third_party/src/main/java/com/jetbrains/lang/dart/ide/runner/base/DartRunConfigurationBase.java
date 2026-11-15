@@ -1,62 +1,123 @@
-// Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.runner.base;
 
-import consulo.execution.configuration.ConfigurationFactory;
-import consulo.execution.configuration.LocatableConfigurationBase;
-import consulo.language.editor.refactoring.event.RefactoringListenerProvider;
+import com.jetbrains.lang.dart.ide.runner.server.DartCommandLineRunConfigurationLegacyState;
+import com.jetbrains.lang.dart.ide.runner.server.DartCommandLineRunConfigurationOptions;
+import com.jetbrains.lang.dart.ide.runner.server.DartCommandLineRunnerParameters;
+import consulo.execution.CommonProgramRunConfigurationParameters;
 import consulo.execution.RuntimeConfigurationException;
-import consulo.project.Project;
-import consulo.util.xml.serializer.InvalidDataException;
-import consulo.util.xml.serializer.WriteExternalException;
-import consulo.virtualFileSystem.VirtualFile;
+import consulo.execution.configuration.ConfigurationFactory;
+import consulo.execution.configuration.LegacyRunConfigurationConverter;
+import consulo.execution.configuration.LocatableConfigurationBase;
+import consulo.execution.configuration.fragment.EnvironmentFragmentState;
+import consulo.execution.configuration.fragment.ProgramParametersFragmentState;
+import consulo.execution.configuration.fragment.WorkingDirectoryFragmentState;
+import consulo.language.editor.refactoring.event.RefactoringElementListener;
+import consulo.language.editor.refactoring.event.RefactoringListenerProvider;
+import consulo.language.editor.refactoring.event.UndoRefactoringElementAdapter;
 import consulo.language.psi.PsiDirectory;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
 import consulo.language.psi.PsiFileSystemItem;
-import consulo.language.editor.refactoring.event.RefactoringElementListener;
-import consulo.language.editor.refactoring.event.UndoRefactoringElementAdapter;
+import consulo.project.Project;
 import consulo.util.io.PathUtil;
-import consulo.util.xml.serializer.SkipDefaultValuesSerializationFilters;
-import consulo.util.xml.serializer.XmlSerializer;
-import com.jetbrains.lang.dart.ide.runner.server.DartCommandLineRunnerParameters;
-import org.jdom.Element;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
+import consulo.virtualFileSystem.VirtualFile;
 
-public abstract class DartRunConfigurationBase extends LocatableConfigurationBase
-  implements RefactoringListenerProvider, DartRunConfiguration {
+import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
+
+public abstract class DartRunConfigurationBase extends LocatableConfigurationBase implements CommonProgramRunConfigurationParameters,
+  RefactoringListenerProvider, DartRunConfiguration {
 
   protected DartRunConfigurationBase(final Project project, final ConfigurationFactory factory, final String name) {
     super(project, factory, name);
   }
 
   @Override
-  public abstract @NotNull DartCommandLineRunnerParameters getRunnerParameters();
+  public DartCommandLineRunConfigurationOptions getOptions() {
+    return (DartCommandLineRunConfigurationOptions)super.getOptions();
+  }
+
+  /**
+   * A snapshot of the settings for running; changes to it are kept only through {@link #setRunnerParameters}.
+   */
+  @Nonnull
+  public abstract DartCommandLineRunnerParameters getRunnerParameters();
+
+  public void setRunnerParameters(@Nonnull DartCommandLineRunnerParameters parameters) {
+    setFilePath(parameters.getFilePath());
+    setVmOptions(parameters.getVMOptions());
+    setAssertsEnabled(parameters.areAssertsEnabled());
+    setProgramParameters(parameters.getArguments());
+    setWorkingDirectory(parameters.getWorkingDirectory());
+    setEnvs(parameters.getEnvs());
+    setPassParentEnvs(parameters.isIncludeParentEnvs());
+  }
+
+  protected void fillRunnerParameters(@Nonnull DartCommandLineRunnerParameters parameters) {
+    parameters.setFilePath(getFilePath());
+    parameters.setVMOptions(getVmOptions());
+    parameters.setAssertsEnabled(isAssertsEnabled());
+    parameters.setArguments(getProgramParameters());
+    parameters.setWorkingDirectory(getWorkingDirectory());
+    parameters.setEnvs(getEnvs());
+    parameters.setIncludeParentEnvs(isPassParentEnvs());
+  }
+
+  protected static void convertLegacyCommandLineState(@Nonnull LegacyRunConfigurationConverter converter,
+                                                      @Nonnull DartCommandLineRunConfigurationLegacyState old,
+                                                      @Nonnull DartCommandLineRunConfigurationOptions options) {
+    options.setFilePath(old.getFilePath());
+    options.setVmOptions(old.getVMOptions());
+    converter.setOptions(options);
+
+    converter.addFragment(new ProgramParametersFragmentState(old.getArguments()));
+    converter.addFragment(new WorkingDirectoryFragmentState(old.getWorkingDirectory()));
+    converter.addFragment(new EnvironmentFragmentState(old.getEnvs(), old.isIncludeParentEnvs()));
+  }
+
+  @Nullable
+  public String getFilePath() {
+    return getOptions().getFilePath();
+  }
+
+  public void setFilePath(@Nullable String filePath) {
+    getOptions().setFilePath(filePath);
+  }
+
+  @Nullable
+  public String getVmOptions() {
+    return getOptions().getVmOptions();
+  }
+
+  public void setVmOptions(@Nullable String vmOptions) {
+    getOptions().setVmOptions(vmOptions);
+  }
+
+  public boolean isAssertsEnabled() {
+    return getOptions().isAssertsEnabled();
+  }
+
+  public void setAssertsEnabled(boolean assertsEnabled) {
+    getOptions().setAssertsEnabled(assertsEnabled);
+  }
 
   @Override
   public void checkConfiguration() throws RuntimeConfigurationException {
     getRunnerParameters().check(getProject());
   }
 
+  @Nullable
   @Override
-  public void writeExternal(final @NotNull Element element) throws WriteExternalException {
-    super.writeExternal(element);
-    XmlSerializer.serializeInto(getRunnerParameters(), element, new SkipDefaultValuesSerializationFilters());
-  }
+  public RefactoringElementListener getRefactoringElementListener(final PsiElement element) {
+    if (!(element instanceof PsiFileSystemItem)) {
+      return null;
+    }
 
-  @Override
-  public void readExternal(final @NotNull Element element) throws InvalidDataException {
-    super.readExternal(element);
-    XmlSerializer.deserializeInto(getRunnerParameters(), element);
-  }
-
-  @Override
-  public @Nullable RefactoringElementListener getRefactoringElementListener(final PsiElement element) {
-    if (!(element instanceof PsiFileSystemItem)) return null;
-
-    final String filePath = getRunnerParameters().getFilePath();
+    final String filePath = getFilePath();
     final VirtualFile file = filePath == null ? null : ((PsiFileSystemItem)element).getVirtualFile();
-    if (file == null) return null;
+    if (file == null) {
+      return null;
+    }
 
     final String affectedPath = file.getPath();
     if (element instanceof PsiFile) {
@@ -73,15 +134,17 @@ public abstract class DartRunConfigurationBase extends LocatableConfigurationBas
     return null;
   }
 
-  private final class RenameRefactoringListener extends UndoRefactoringElementAdapter {
-    private @NotNull String myAffectedPath;
+  private class RenameRefactoringListener extends UndoRefactoringElementAdapter {
+    private
+    @Nonnull
+    String myAffectedPath;
 
-    private RenameRefactoringListener(final @NotNull String affectedPath) {
+    private RenameRefactoringListener(final @Nonnull String affectedPath) {
       myAffectedPath = affectedPath;
     }
 
-    private String getNewPathAndUpdateAffectedPath(final @NotNull PsiElement newElement) {
-      final String oldPath = getRunnerParameters().getFilePath();
+    private String getNewPathAndUpdateAffectedPath(final @Nonnull PsiElement newElement) {
+      final String oldPath = getFilePath();
 
       final VirtualFile newFile = newElement instanceof PsiFileSystemItem ? ((PsiFileSystemItem)newElement).getVirtualFile() : null;
       if (newFile != null && oldPath != null && oldPath.startsWith(myAffectedPath)) {
@@ -94,17 +157,16 @@ public abstract class DartRunConfigurationBase extends LocatableConfigurationBas
     }
 
     @Override
-    protected void refactored(final @NotNull PsiElement element, final @Nullable String oldQualifiedName) {
+    protected void refactored(@Nonnull final PsiElement element, @Nullable final String oldQualifiedName) {
       final boolean generatedName = getName().equals(suggestedName());
-      final String filePath = getRunnerParameters().getFilePath();
-      final boolean updateWorkingDir = filePath != null &&
-                                       PathUtil.getParentPath(filePath).equals(getRunnerParameters().getWorkingDirectory());
+      final String filePath = getFilePath();
+      final boolean updateWorkingDir = filePath != null && PathUtil.getParentPath(filePath).equals(getWorkingDirectory());
 
       final String newPath = getNewPathAndUpdateAffectedPath(element);
-      getRunnerParameters().setFilePath(newPath);
+      setFilePath(newPath);
 
       if (updateWorkingDir) {
-        getRunnerParameters().setWorkingDirectory(PathUtil.getParentPath(newPath));
+        setWorkingDirectory(PathUtil.getParentPath(newPath));
       }
 
       if (generatedName) {

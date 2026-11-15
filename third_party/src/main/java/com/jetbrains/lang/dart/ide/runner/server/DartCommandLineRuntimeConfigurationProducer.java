@@ -35,9 +35,11 @@ public final class DartCommandLineRuntimeConfigurationProducer extends LazyRunCo
       return false;
     }
 
-    configuration.getRunnerParameters().setFilePath(dartFile.getPath());
-    configuration.getRunnerParameters()
-      .setWorkingDirectory(DartCommandLineRunnerParameters.suggestDartWorkingDir(context.getProject(), dartFile));
+    // Consulo: getRunnerParameters() is a snapshot of the options
+    final DartCommandLineRunnerParameters parameters = configuration.getRunnerParameters();
+    parameters.setFilePath(dartFile.getPath());
+    parameters.setWorkingDirectory(DartCommandLineRunnerParameters.suggestDartWorkingDir(context.getProject(), dartFile));
+    configuration.setRunnerParameters(parameters);
 
     configuration.setGeneratedName();
     sourceElement.set(sourceElement.isNull() ? null : sourceElement.get().getContainingFile());
