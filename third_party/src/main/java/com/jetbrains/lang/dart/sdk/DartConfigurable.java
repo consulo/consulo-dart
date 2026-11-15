@@ -41,6 +41,11 @@ public final class DartConfigurable {
     return ProjectPropertiesComponent.getInstance(project).getInt(WEBDEV_PORT_PROPERTY_NAME, WEBDEV_PORT_DEFAULT);
   }
 
+  // Consulo: public, used by consulo.dart.settings.DartSettingsConfigurable
+  public static void setWebdevPort(@NotNull Project project, int port) {
+    ProjectPropertiesComponent.getInstance(project).setValue(WEBDEV_PORT_PROPERTY_NAME, port, WEBDEV_PORT_DEFAULT);
+  }
+
   public static boolean isExperimentalLspFeaturesEnabled(@NotNull Project project) {
     return false;
   }

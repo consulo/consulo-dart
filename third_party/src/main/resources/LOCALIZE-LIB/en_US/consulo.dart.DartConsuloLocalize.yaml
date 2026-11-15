@@ -15,3 +15,5 @@ run.configuration.fragment.vm.options:
     text: VM options
 run.configuration.test.file.label:
     text: 'Test &file:'
+settings.analysis.server.enabled:
+    text: Use Dart Analysis Server (completion, navigation, refactorings and problems from the server)
