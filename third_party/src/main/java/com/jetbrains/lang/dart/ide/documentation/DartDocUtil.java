@@ -190,7 +190,7 @@ public final class DartDocUtil {
     if (docText != null) {
       List<String> lines = StringUtil.split(docText, "\n", true, false);
       docText = handleInlineCodeBlocks(String.join("\n", lines));
-      builder.append(convertMarkdownToHtml(docText));
+      builder.append(convertMarkdownToHtml(docText, project)); // Consulo: highlighted code fences
     }
     // done
     return builder.toString().trim();

@@ -26,8 +26,17 @@ import consulo.content.base.SourcesOrderRootType;
 import consulo.content.bundle.Sdk;
 import consulo.content.bundle.SdkModificator;
 import consulo.content.bundle.SdkType;
+import consulo.platform.Platform;
+import consulo.util.io.FileUtil;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.virtualFileSystem.VirtualFileManager;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashSet;
+import java.util.List;
 import icons.DartIcons;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,6 +61,85 @@ public class DartSdkType extends SdkType {
   public DartSdkType() {
     // id is kept from the old Consulo Dart plugin, so existing SDK definitions stay valid
     super("Dart SDK", DartBundle.messageValue("dart.title"), DartIcons.Dart_16);
+  }
+
+  @Override
+  public boolean canCreatePredefinedSdks() {
+    return true;
+  }
+
+  /**
+   * Detection of installed SDKs: the {@code dart} executable in {@code PATH}, and the usual
+   * install locations (archive, package managers, Flutter's bundled SDK).
+   */
+  @Override
+  public Collection<String> suggestHomePaths() {
+    Platform platform = Platform.current();
+    Set<String> paths = new LinkedHashSet<>();
+
+    Path dartExecutable = platform.findExecutableInPath("dart");
+    if (dartExecutable != null) {
+      try {
+        // <sdk>/bin/dart, possibly a symlink (/usr/bin/dart, flutter/bin/dart is a script next to cache/dart-sdk)
+        Path real = dartExecutable.toRealPath();
+        addIfSdk(paths, real.getParent() == null ? null : real.getParent().getParent());
+        addIfSdk(paths, dartExecutable.getParent().resolve("cache").resolve("dart-sdk"));
+      }
+      catch (IOException ignored) {
+      }
+    }
+
+    Path home = platform.user().homePath();
+    List<Path> candidates = new ArrayList<>();
+    if (platform.os().isWindows()) {
+      candidates.add(Path.of("C:\\tools\\dart-sdk"));
+      String localAppData = platform.os().getEnvironmentVariable("LOCALAPPDATA");
+      if (localAppData != null) {
+        candidates.add(Path.of(localAppData, "dart-sdk"));
+      }
+      candidates.add(home.resolve("flutter").resolve("bin").resolve("cache").resolve("dart-sdk"));
+    }
+    else {
+      if (platform.os().isMac()) {
+        candidates.add(Path.of("/opt/homebrew/opt/dart/libexec"));
+        candidates.add(Path.of("/usr/local/opt/dart/libexec"));
+      }
+      candidates.add(Path.of("/usr/lib/dart"));
+      candidates.add(Path.of("/opt/dart-sdk"));
+      candidates.add(Path.of("/opt/flutter/bin/cache/dart-sdk"));
+      candidates.add(home.resolve("dart-sdk"));
+      candidates.add(home.resolve("flutter").resolve("bin").resolve("cache").resolve("dart-sdk"));
+      candidates.add(home.resolve("snap").resolve("flutter").resolve("common").resolve("flutter").resolve("bin").resolve("cache").resolve("dart-sdk"));
+    }
+    for (Path candidate : candidates) {
+      addIfSdk(paths, candidate);
+    }
+    return paths;
+  }
+
+  @Override
+  public Set<String> getEnvironmentVariables(Platform platform) {
+    return Set.of("DART_SDK");
+  }
+
+  /**
+   * Accepts the folder above the SDK and a Flutter SDK, which bundles the Dart SDK.
+   */
+  @Override
+  public String adjustSelectedSdkHome(String homePath) {
+    for (String relative : List.of("dart-sdk", "bin/cache/dart-sdk")) {
+      String candidate = homePath + "/" + relative;
+      if (DartSdkUtil.isDartSdkHome(candidate)) {
+        return candidate;
+      }
+    }
+    return homePath;
+  }
+
+  private static void addIfSdk(Set<String> paths, @Nullable Path path) {
+    if (path != null && DartSdkUtil.isDartSdkHome(path.toString())) {
+      paths.add(FileUtil.toSystemIndependentName(path.toString()));
+    }
   }
 
   @Override

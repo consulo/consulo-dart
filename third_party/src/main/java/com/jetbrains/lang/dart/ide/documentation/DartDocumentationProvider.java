@@ -46,7 +46,8 @@ public final class DartDocumentationProvider implements LanguageDocumentationPro
     if (isFromCompletion) {
       return DartDocUtil.generateDoc(element);
     }
-    return null;
+    // Consulo: upstream shows the editor hover through LSP; without LSP the PSI based doc of the pre-LSP provider is used
+    return DartDocUtil.generateDoc(element);
   }
 
   @Override
@@ -56,7 +57,8 @@ public final class DartDocumentationProvider implements LanguageDocumentationPro
 
   @Override
   public String getQuickNavigateInfo(final PsiElement element, final PsiElement originalElement) {
-    return null;
+    // Consulo: see generateDoc
+    return DartDocUtil.getSignature(element);
   }
 
   @Override

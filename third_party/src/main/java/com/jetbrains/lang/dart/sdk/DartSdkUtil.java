@@ -26,6 +26,9 @@ import consulo.platform.Platform;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ui.BasicComboBoxWithBrowseButton;
 import org.jetbrains.annotations.Contract;
+import consulo.content.bundle.Sdk;
+import consulo.content.bundle.SdkTable;
+import consulo.dart.sdk.DartSdkType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -136,6 +139,12 @@ public final class DartSdkUtil {
     List<String> knownPaths = PropertiesComponentCompat.getList(ApplicationPropertiesComponent.getInstance(), DART_SDK_KNOWN_PATHS);
     if (knownPaths != null && !knownPaths.isEmpty() && isDartSdkHome(knownPaths.getFirst())) {
       return knownPaths.getFirst();
+    }
+    // Consulo: Dart SDKs registered in the SDK table, including the ones detected by consulo.dart.sdk.DartSdkType
+    for (Sdk sdk : SdkTable.getInstance().getSdksOfType(DartSdkType.getInstance())) {
+      if (isDartSdkHome(sdk.getHomePath())) {
+        return sdk.getHomePath();
+      }
     }
     return null;
   }

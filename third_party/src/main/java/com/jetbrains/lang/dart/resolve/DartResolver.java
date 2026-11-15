@@ -21,6 +21,7 @@ import com.jetbrains.lang.dart.analyzer.DartServerData.DartNavigationTarget;
 import com.jetbrains.lang.dart.psi.*;
 import com.jetbrains.lang.dart.DartTokenTypes;
 import com.jetbrains.lang.dart.util.DartResolveUtil;
+import consulo.dart.resolve.DartPsiResolver;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -31,6 +32,7 @@ public class DartResolver implements ResolveCache.AbstractResolver<DartReference
 
   @Override
   public @Nullable List<? extends PsiElement> resolve(@NotNull DartReference reference, boolean incompleteCode) {
+    final DartReference originalReference = reference;
     reference = replaceQualifiedReferenceWithLast(reference);
     final PsiFile refPsiFile = reference.getContainingFile();
     int refOffset = reference.getTextRange().getStartOffset();
@@ -78,7 +80,8 @@ public class DartResolver implements ResolveCache.AbstractResolver<DartReference
       }
     }
 
-    return region != null ? getTargetElements(reference.getProject(), region) : null;
+    // Consulo: the analysis server is optional, without a navigation region the PSI resolve (removed upstream in 2017) is used
+    return region != null ? getTargetElements(reference.getProject(), region) : DartPsiResolver.resolve(originalReference);
   }
 
   public static @NotNull List<? extends PsiElement> getTargetElements(final @NotNull Project project, final @NotNull DartNavigationRegion region) {

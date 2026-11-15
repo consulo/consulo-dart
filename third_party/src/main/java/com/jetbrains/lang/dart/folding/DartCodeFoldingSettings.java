@@ -12,7 +12,7 @@ import consulo.component.persist.Storage;
 import consulo.util.xml.serializer.XmlSerializerUtil;
 import org.jetbrains.annotations.NotNull;
 
-@State(name = "DartCodeFoldingSettings", storages = @Storage("editor.xml"))
+@State(name = "DartCodeFoldingSettings", storages = @Storage("editor"))
 @ServiceAPI(ComponentScope.APPLICATION)
 @ServiceImpl
 @Singleton

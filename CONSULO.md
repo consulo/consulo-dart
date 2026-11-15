@@ -24,6 +24,10 @@ ported to Consulo. Upstream history is kept, upstream files stay at their origin
 - Dart SDK is a Consulo SDK (`DartSdkType`), Dart support is enabled per module by `DartModuleExtension`.
   Upstream `DartSdk` / `DartSdkLibUtil` keep their public methods but are implemented on top of that.
 - The classic analysis server protocol is kept; the plugin's own PSI based features are the main path.
+  `consulo.dart.resolve.DartPsiResolver` restores the PSI resolve upstream removed in 2017: `DartResolver` uses it when the
+  server gives no navigation region. Quick documentation uses the PSI based `DartDocUtil` (upstream shows hovers through LSP).
+- Dart SDKs are detected (`DartSdkType`: `dart` in `PATH`, `DART_SDK`, usual install and Flutter locations) and offered by the
+  "Enable Dart support" editor notification.
 - `org.jetbrains.annotations` nullability annotations of upstream are kept as is.
 - Internal Consulo APIs (`*.internal.*` packages) are not used.
 
