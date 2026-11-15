@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.structure;
 
+import consulo.localize.LocalizeValue;
 import consulo.fileEditor.structureView.StructureViewModel;
 import consulo.fileEditor.structureView.StructureViewTreeElement;
 import consulo.language.editor.structureView.TextEditorBasedStructureViewModel;
@@ -108,8 +109,8 @@ class DartStructureViewModel extends TextEditorBasedStructureViewModel implement
     DartStructureViewRootElement(PsiFile file) {super(file);}
 
     @Override
-    public @Nullable String getPresentableText() {
-      return null;
+    public @NotNull LocalizeValue getPresentableText() {
+      return LocalizeValue.empty();
     }
 
     @Override

@@ -1,7 +1,10 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.structure;
 
+import consulo.platform.base.icon.PlatformIconGroup;
+import consulo.localize.LocalizeValue;
 import static consulo.application.AllIcons.Nodes.*;
+import consulo.ui.image.Image;
 import consulo.application.AllIcons;
 import consulo.fileEditor.structureView.StructureViewTreeElement;
 import consulo.language.editor.structureView.PsiTreeElementBase;
@@ -13,7 +16,7 @@ import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
 import consulo.language.psi.PsiWhiteSpace;
 import consulo.language.psi.util.PsiTreeUtil;
-import com.intellij.ui.LayeredIcon;
+import consulo.ui.image.ImageEffects;
 import consulo.util.collection.ContainerUtil;
 import com.jetbrains.lang.dart.DartComponentType;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
@@ -31,19 +34,17 @@ import java.util.Collections;
 
 
 final class DartStructureViewElement extends PsiTreeElementBase<PsiElement> {
-  private static final LayeredIcon STATIC_FINAL_FIELD_ICON = LayeredIcon.layeredIcon(() -> new Icon[]{
-      AllIcons.Nodes.Field,
+  private static final Image STATIC_FINAL_FIELD_ICON = ImageEffects.layered(AllIcons.Nodes.Field,
       AllIcons.Nodes.StaticMark,
-      AllIcons.Nodes.FinalMark
-  });
-  private static final LayeredIcon FINAL_FIELD_ICON = LayeredIcon.layeredIcon(() -> new Icon[]{Field, AllIcons.Nodes.FinalMark});
-  private static final LayeredIcon STATIC_FIELD_ICON = LayeredIcon.layeredIcon(() -> new Icon[]{Field,  AllIcons.Nodes.StaticMark});
-  private static final LayeredIcon STATIC_METHOD_ICON = LayeredIcon.layeredIcon(() -> new Icon[]{Method,  AllIcons.Nodes.StaticMark});
-  private static final LayeredIcon TOP_LEVEL_FUNCTION_ICON = LayeredIcon.layeredIcon(() -> new Icon[]{Lambda,  AllIcons.Nodes.StaticMark});
-  private static final LayeredIcon TOP_LEVEL_VAR_ICON = LayeredIcon.layeredIcon(() -> new Icon[]{Variable,  AllIcons.Nodes.StaticMark});
-  private static final LayeredIcon CONSTRUCTOR_INVOCATION_ICON = LayeredIcon.layeredIcon(() -> new Icon[]{com.intellij.util.PlatformIcons.CLASS_ICON, TabPin});
-  private static final LayeredIcon FUNCTION_INVOCATION_ICON = LayeredIcon.layeredIcon(() -> new Icon[]{Method, TabPin});
-  private static final LayeredIcon TOP_LEVEL_CONST_ICON = LayeredIcon.layeredIcon(() -> new Icon[]{Variable, AllIcons.Nodes.StaticMark, AllIcons.Nodes.FinalMark});
+      AllIcons.Nodes.FinalMark);
+  private static final Image FINAL_FIELD_ICON = ImageEffects.layered(Field, AllIcons.Nodes.FinalMark);
+  private static final Image STATIC_FIELD_ICON = ImageEffects.layered(Field,  AllIcons.Nodes.StaticMark);
+  private static final Image STATIC_METHOD_ICON = ImageEffects.layered(Method,  AllIcons.Nodes.StaticMark);
+  private static final Image TOP_LEVEL_FUNCTION_ICON = ImageEffects.layered(Lambda,  AllIcons.Nodes.StaticMark);
+  private static final Image TOP_LEVEL_VAR_ICON = ImageEffects.layered(Variable,  AllIcons.Nodes.StaticMark);
+  private static final Image CONSTRUCTOR_INVOCATION_ICON = ImageEffects.layered(AllIcons.Nodes.Class, TabPin);
+  private static final Image FUNCTION_INVOCATION_ICON = ImageEffects.layered(Method, TabPin);
+  private static final Image TOP_LEVEL_CONST_ICON = ImageEffects.layered(Variable, AllIcons.Nodes.StaticMark, AllIcons.Nodes.FinalMark);
 
   private final @NotNull PsiFile myPsiFile;
   private final @NotNull Outline myOutline;
@@ -70,8 +71,8 @@ final class DartStructureViewElement extends PsiTreeElementBase<PsiElement> {
   }
 
   @Override
-  public @NotNull String getPresentableText() {
-    return myPresentableText;
+  public @NotNull LocalizeValue getPresentableText() {
+    return LocalizeValue.of(myPresentableText);
   }
 
   private static @NotNull String getPresentableText(final @NotNull Outline outline) {
@@ -94,13 +95,14 @@ final class DartStructureViewElement extends PsiTreeElementBase<PsiElement> {
   }
 
   @Override
-  public @Nullable Icon getIcon(boolean unused) {
+  public @Nullable Image getIcon(boolean unused) {
     final Element element = myOutline.getElement();
     final boolean finalOrConst = element.isConst() || element.isFinal();
 
     return switch (element.getKind()) {
       case ElementKind.CLASS -> element.isAbstract() ? AbstractClass : AllIcons.Nodes.Class;
-      case ElementKind.EXTENSION -> Include;
+      // Consulo: no Include node icon
+      case ElementKind.EXTENSION -> AllIcons.Nodes.Trait;
       case ElementKind.MIXIN -> AbstractClass;
       case ElementKind.CONSTRUCTOR -> Method;
       case ElementKind.CONSTRUCTOR_INVOCATION -> CONSTRUCTOR_INVOCATION_ICON;
@@ -122,7 +124,7 @@ final class DartStructureViewElement extends PsiTreeElementBase<PsiElement> {
       }
       case ElementKind.SETTER -> element.isTopLevelOrStatic() ? PropertyWriteStatic : PropertyWrite;
       case ElementKind.TOP_LEVEL_VARIABLE -> finalOrConst ? TOP_LEVEL_CONST_ICON : TOP_LEVEL_VAR_ICON;
-      case ElementKind.UNIT_TEST_GROUP -> TestSourceFolder;
+      case ElementKind.UNIT_TEST_GROUP -> PlatformIconGroup.modulesTestroot();
       case ElementKind.UNIT_TEST_TEST -> AllIcons.RunConfigurations.Junit;
       case ElementKind.CLASS_TYPE_ALIAS, ElementKind.COMPILATION_UNIT, ElementKind.FILE, ElementKind.LABEL, ElementKind.LIBRARY,
         ElementKind.LOCAL_VARIABLE, ElementKind.PARAMETER, ElementKind.PREFIX, ElementKind.TYPE_PARAMETER, ElementKind.UNKNOWN ->
