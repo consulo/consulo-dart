@@ -4,7 +4,8 @@ package com.jetbrains.lang.dart.ide.refactoring;
 import consulo.ide.impl.find.PsiElement2UsageTargetAdapter;
 import consulo.application.ApplicationManager;
 import consulo.codeEditor.Editor;
-import com.intellij.openapi.fileTypes.FileTypes;
+import consulo.language.plain.PlainTextFileType;
+import consulo.localize.LocalizeValue;
 import consulo.configurable.ConfigurationException;
 import consulo.project.Project;
 import consulo.util.lang.Comparing;
@@ -58,7 +59,7 @@ final class DartRenameDialog extends ServerRefactoringDialog<ServerRenameRefacto
   @Override
   protected void canRun() throws ConfigurationException {
     if (Comparing.strEqual(getNewName(), myRefactoring.getOldName())) {
-      throw new ConfigurationException(null);
+      throw new ConfigurationException(LocalizeValue.empty());
     }
     super.canRun();
   }
@@ -103,7 +104,7 @@ final class DartRenameDialog extends ServerRefactoringDialog<ServerRenameRefacto
 
   private void createNewNameComponent() {
     String[] suggestedNames = getSuggestedNames();
-    myNameSuggestionsField = new NameSuggestionsField(suggestedNames, myProject, FileTypes.PLAIN_TEXT, myEditor) {
+    myNameSuggestionsField = new NameSuggestionsField(suggestedNames, myProject, PlainTextFileType.INSTANCE, myEditor) {
       @Override
       protected boolean shouldSelectAll() {
         return myEditor == null || myEditor.getSettings().isPreselectRename();
@@ -168,9 +169,9 @@ final class DartRenameDialog extends ServerRefactoringDialog<ServerRenameRefacto
     assert sourceChange != null;
 
     usageView.addPerformOperationAction(createRefactoringRunnable(usageView, usageToEditIdMap),
-                                        sourceChange.getMessage(),
-                                        DartBundle.message("rename.need.reRun"),
-                                        RefactoringBundle.message("usageView.doAction"), false);
+                                        LocalizeValue.of(sourceChange.getMessage()),
+                                        DartBundle.messageValue("rename.need.reRun"),
+                                        LocalizeValue.of(RefactoringBundle.message("usageView.doAction")), false);
   }
 
   private void fillTargetsAndUsageToEditIdMap(final @NotNull List<UsageTarget> usageTargets,
@@ -194,7 +195,7 @@ final class DartRenameDialog extends ServerRefactoringDialog<ServerRenameRefacto
         final PsiElement usageElement = DartServerFindUsagesHandler.getUsagePsiElement(psiFile, range);
         if (usageElement != null) {
           if (DartComponentType.typeOf(usageElement) != null) {
-            usageTargets.add(new PsiElement2UsageTargetAdapter(usageElement, true));
+            usageTargets.add(new PsiElement2UsageTargetAdapter(usageElement));
           }
           else {
             final UsageInfo usageInfo = DartServerFindUsagesHandler.getUsageInfo(usageElement, range, potentialUsage);

@@ -10,7 +10,6 @@ import consulo.configurable.ConfigurationException;
 import consulo.project.Project;
 import consulo.ui.ex.awt.DialogWrapper;
 import consulo.ui.ex.awt.Messages;
-import consulo.util.lang.function.Condition;
 
 import consulo.language.editor.refactoring.ui.RefactoringDialog;
 import com.jetbrains.lang.dart.assists.AssistUtils;
@@ -18,10 +17,12 @@ import com.jetbrains.lang.dart.assists.DartSourceEditException;
 import com.jetbrains.lang.dart.ide.refactoring.status.RefactoringStatus;
 import com.jetbrains.lang.dart.logging.PluginLogger;
 import org.dartlang.analysis.server.protocol.SourceChange;
+import consulo.localize.LocalizeValue;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Set;
+import java.util.function.BooleanSupplier;
 
 public abstract class ServerRefactoringDialog<T extends ServerRefactoring> extends RefactoringDialog {
   protected final @Nullable Editor myEditor;
@@ -42,9 +43,9 @@ public abstract class ServerRefactoringDialog<T extends ServerRefactoring> exten
         validateButtons();
       };
 
-      final ModalityState modalityState = ModalityState.stateForComponent(getWindow());
+      final ModalityState modalityState = ApplicationManager.getApplication().getModalityStateForComponent(getWindow());
 
-      final Condition<?> expired = o -> !isShowing();
+      final BooleanSupplier expired = () -> !isShowing();
 
       ApplicationManager.getApplication().invokeLater(runnable, modalityState, expired);
     });
@@ -54,7 +55,7 @@ public abstract class ServerRefactoringDialog<T extends ServerRefactoring> exten
   protected void canRun() throws ConfigurationException {
     // has pending requests
     if (myHasPendingRequests || myOptionsStatus == null) {
-      throw new ConfigurationException(null);
+      throw new ConfigurationException(LocalizeValue.empty());
     }
     // has a fatal error
     if (myOptionsStatus.hasFatalError()) {

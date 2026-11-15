@@ -2,7 +2,7 @@
 package com.jetbrains.lang.dart.test;
 
 import consulo.annotation.component.ExtensionImpl;
-import com.intellij.openapi.project.BaseProjectDirectories;
+import consulo.module.content.ProjectRootManager;
 import consulo.project.Project;
 import consulo.project.content.TestSourcesFilter;
 import consulo.virtualFileSystem.VirtualFile;
@@ -15,7 +15,8 @@ public final class DartTestSourcesFilter extends TestSourcesFilter {
   public boolean isTestSource(final @NotNull VirtualFile file, final @NotNull Project project) {
     if (!file.isInLocalFileSystem()) return false;
 
-    VirtualFile baseDir = BaseProjectDirectories.getInstance(project).getBaseDirectoryFor(file);
+    // Consulo: no BaseProjectDirectories, the content root of the file is used
+    VirtualFile baseDir = ProjectRootManager.getInstance(project).getFileIndex().getContentRootForFile(file);
     if (baseDir == null) return false;
 
     if (DartIconProvider.isFolderNearPubspecYaml(file, "test")) return true;

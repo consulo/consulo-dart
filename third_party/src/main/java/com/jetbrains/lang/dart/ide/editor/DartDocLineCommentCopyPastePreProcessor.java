@@ -68,7 +68,7 @@ public final class DartDocLineCommentCopyPastePreProcessor implements CopyPasteP
         return text.replace(platformReplacement, docReplacement);
     }
 
-    @Override
+    // Consulo: CopyPastePreProcessor has no requiresAllDocumentsToBeCommitted()
     public boolean requiresAllDocumentsToBeCommitted(@NotNull Editor editor, @NotNull Project project) {
         return false;
     }

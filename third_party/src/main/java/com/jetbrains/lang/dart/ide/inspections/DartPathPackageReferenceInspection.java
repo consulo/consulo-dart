@@ -21,6 +21,10 @@ import com.jetbrains.lang.dart.sdk.DartSdk;
 import com.jetbrains.lang.dart.sdk.DartSdkLibUtil;
 import com.jetbrains.lang.dart.util.DartResolveUtil;
 import com.jetbrains.lang.dart.util.PubspecYamlUtil;
+import consulo.language.Language;
+import org.jetbrains.yaml.YAMLLanguage;
+import consulo.localize.LocalizeValue;
+import consulo.language.editor.rawHighlight.HighlightDisplayLevel;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.jetbrains.yaml.psi.YAMLKeyValue;
@@ -28,6 +32,27 @@ import org.jetbrains.yaml.psi.YAMLValue;
 
 @ExtensionImpl
 public final class DartPathPackageReferenceInspection extends LocalInspectionTool {
+  // Consulo: registration attributes from upstream dart-yaml.xml <localInspection>
+  @Override
+  public @Nullable Language getLanguage() {
+    return YAMLLanguage.INSTANCE;
+  }
+
+  @Override
+  public @NotNull LocalizeValue getDisplayName() {
+    return DartBundle.messageValue("path.package.reference.inspection.name");
+  }
+
+  @Override
+  public @NotNull LocalizeValue getGroupDisplayName() {
+    return DartBundle.messageValue("inspections.group.name");
+  }
+
+  @Override
+  public @NotNull HighlightDisplayLevel getDefaultLevel() {
+    return HighlightDisplayLevel.ERROR;
+  }
+
   @Override
   public @NotNull PsiElementVisitor buildVisitor(final @NotNull ProblemsHolder holder, final boolean isOnTheFly) {
     if (!PubspecYamlUtil.PUBSPEC_YAML.equals(holder.getFile().getName())) return super.buildVisitor(holder, isOnTheFly);
@@ -77,7 +102,7 @@ public final class DartPathPackageReferenceInspection extends LocalInspectionToo
       if (reference instanceof FileReference && !reference.isSoft()) {
         final PsiFileSystemItem resolve = ((FileReference)reference).resolve();
         if (resolve == null) {
-          holder.registerProblem(reference.getElement(), ((FileReference)reference).getUnresolvedMessagePattern(),
+          holder.registerProblem(reference.getElement(), ((FileReference)reference).buildUnresolvedMessage(reference.getCanonicalText()).get(),
                                  ProblemHighlightType.GENERIC_ERROR, reference.getRangeInElement());
           return null;
         }

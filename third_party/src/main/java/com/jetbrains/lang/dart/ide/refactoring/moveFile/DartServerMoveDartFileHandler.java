@@ -104,7 +104,7 @@ public final class DartServerMoveDartFileHandler extends MoveFileHandler {
   }
 
   @Override
-  public void retargetUsages(@NotNull List<? extends UsageInfo> usageInfos, @NotNull Map<PsiElement, PsiElement> oldToNewMap) {
+  public void retargetUsages(@NotNull List<UsageInfo> usageInfos, @NotNull Map<PsiElement, PsiElement> oldToNewMap) {
   }
 
   @Override

@@ -16,6 +16,7 @@ import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
 import consulo.language.editor.refactoring.RefactoringBundle;
 import consulo.language.editor.refactoring.inline.InlineOptionsDialog;
+import consulo.localize.LocalizeValue;
 import consulo.language.editor.refactoring.util.CommonRefactoringUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartLanguage;
@@ -195,18 +196,24 @@ class InlineMethodDialog extends InlineOptionsDialog {
   }
 
   @Override
-  protected String getInlineAllText() {
-    return DartBundle.message("radio.inline.all.references.remove.method");
+  protected @NotNull LocalizeValue getInlineAllText() {
+    return DartBundle.messageValue("radio.inline.all.references.remove.method");
   }
 
   @Override
-  protected String getInlineThisText() {
-    return DartBundle.message("radio.inline.this.reference.leave.method");
+  protected @NotNull LocalizeValue getInlineThisText() {
+    return DartBundle.messageValue("radio.inline.this.reference.leave.method");
   }
 
   @Override
-  protected String getNameLabelText() {
-    return DartBundle.message("label.method.0", refactoring.getFullName());
+  protected @NotNull LocalizeValue getNameLabelText() {
+    return DartBundle.messageValue("label.method.0", refactoring.getFullName());
+  }
+
+  // Consulo: InlineOptionsDialog still has an abstract border title
+  @Override
+  protected @NotNull LocalizeValue getBorderTitle() {
+    return LocalizeValue.empty();
   }
 
   @Override

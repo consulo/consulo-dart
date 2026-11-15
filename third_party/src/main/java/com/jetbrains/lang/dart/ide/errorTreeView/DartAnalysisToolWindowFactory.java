@@ -11,11 +11,47 @@ import consulo.project.ui.wm.ToolWindowManager;
 import consulo.project.ui.wm.ToolWindowManagerListener;
 import consulo.ui.ex.content.Content;
 import consulo.ui.ex.content.ContentFactory;
+import com.jetbrains.lang.dart.DartBundle;
+import consulo.localize.LocalizeValue;
+import consulo.ui.ex.toolWindow.ToolWindowAnchor;
+import consulo.ui.image.Image;
+import icons.DartIcons;
 import org.jetbrains.annotations.NotNull;
 
 @ExtensionImpl
 public final class DartAnalysisToolWindowFactory implements ToolWindowFactory, DumbAware {
   private static final String TOOL_WINDOW_VISIBLE_PROPERTY = "dart.analysis.tool.window.visible";
+
+  // Consulo: id, anchor, icon and flags from upstream plugin.xml <toolWindow>
+  @Override
+  public @NotNull String getId() {
+    return DartProblemsView.TOOLWINDOW_ID;
+  }
+
+  @Override
+  public @NotNull ToolWindowAnchor getAnchor() {
+    return ToolWindowAnchor.BOTTOM;
+  }
+
+  @Override
+  public @NotNull Image getIcon() {
+    return DartIcons.Dart_13;
+  }
+
+  @Override
+  public @NotNull LocalizeValue getDisplayName() {
+    return DartBundle.messageValue("toolwindow.stripe.Dart_Analysis");
+  }
+
+  @Override
+  public boolean isDoNotActivateOnStart() {
+    return true;
+  }
+
+  @Override
+  public boolean canCloseContents() {
+    return false;
+  }
 
   @Override
   public boolean shouldBeAvailable(@NotNull Project project) {

@@ -12,7 +12,7 @@ import consulo.language.codeStyle.AbstractBlock;
 import consulo.language.impl.ast.CompositeElement;
 import consulo.language.ast.IElementType;
 import consulo.language.ast.TokenSet;
-import consulo.util.collection.impl.list.SortedList;
+import consulo.dart.compat.SortedList;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 

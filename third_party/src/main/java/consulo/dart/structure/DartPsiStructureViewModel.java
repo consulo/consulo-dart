@@ -60,7 +60,7 @@ public class DartPsiStructureViewModel extends StructureViewModelBase implements
       final PsiElement element = ((DartPsiStructureViewElement)treeNode).getRealElement();
 
       DartComponentType type = DartComponentType.typeOf(element);
-      if (type == DartComponentType.FIELD || type == DartComponentType.VARIABLE) {
+      if (type == DartComponentType.FIELD || type == DartComponentType.GLOBAL_VARIABLE) {
         return false;
       }
 

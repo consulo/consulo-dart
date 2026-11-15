@@ -2,30 +2,30 @@
 package com.jetbrains.lang.dart;
 
 import consulo.annotation.component.ExtensionImpl;
-import com.intellij.application.options.CodeCompletionConfigurable;
 import consulo.configurable.search.SearchableOptionContributor;
 import consulo.configurable.search.SearchableOptionProcessor;
+import consulo.localize.LocalizeValue;
 import org.jetbrains.annotations.NotNull;
 
 @ExtensionImpl
+// Consulo: configurable ids of Consulo pages, configurable names are not known here
 public final class DartSearchableOptionContributor extends SearchableOptionContributor {
   @Override
   public void processOptions(@NotNull SearchableOptionProcessor processor) {
-    processor.addOptions("dart " + DartBundle.message("dialog.paste.on.import.title"), null,
-                         "Dart: " + DartBundle.message("dialog.paste.on.import.title"), "editor.preferences.import", null, false);
-    processor.addOptions(DartBundle.message("checkbox.collapse.parts"), null,
-                         "Code Folding: collapse Dart parts by default", "editor.preferences.folding", null, false);
-    processor.addOptions(DartBundle.message("checkbox.collapse.generic.parameters"), null,
-                         "Code Folding: collapse Dart generic parameters by default", "editor.preferences.folding", null, false);
-    processor.addOptions("dart " + DartBundle.message("dart.smartKeys.insertDefaultArgValues.text"), null,
-                         "Dart: " + DartBundle.message("dart.smartKeys.insertDefaultArgValues.text"), CodeCompletionConfigurable.ID, null,
-                         false);
+    processor.addOption(LocalizeValue.of("dart " + DartBundle.message("dialog.paste.on.import.title")),
+                        LocalizeValue.of("Dart: " + DartBundle.message("dialog.paste.on.import.title")), "editor.preferences.import.dart", LocalizeValue.empty());
+    processor.addOption(LocalizeValue.of(DartBundle.message("checkbox.collapse.parts")),
+                        LocalizeValue.of("Code Folding: collapse Dart parts by default"), "editor.preferences.folding.dart", LocalizeValue.empty());
+    processor.addOption(LocalizeValue.of(DartBundle.message("checkbox.collapse.generic.parameters")),
+                        LocalizeValue.of("Code Folding: collapse Dart generic parameters by default"), "editor.preferences.folding.dart", LocalizeValue.empty());
+    processor.addOption(LocalizeValue.of("dart " + DartBundle.message("dart.smartKeys.insertDefaultArgValues.text")),
+                        LocalizeValue.of("Dart: " + DartBundle.message("dart.smartKeys.insertDefaultArgValues.text")), "editor.preferences.completion.dart", LocalizeValue.empty());
 
-    processor.addOptions("Dart SDK path", null,
-                         "Dart SDK path", "dart.settings", null, false);
-    processor.addOptions("Dart pub webdev server port", null,
-                         "Dart webdev server port", "dart.settings", null, false);
-    processor.addOptions(DartBundle.message("code.style.settings.label.line.length"), null,
-                         DartBundle.message("code.style.settings.label.line.length"), "preferences.sourceCode.Dart", null, false);
+    processor.addOption(LocalizeValue.of("Dart SDK path"),
+                        LocalizeValue.of("Dart SDK path"), "dart.settings", LocalizeValue.empty());
+    processor.addOption(LocalizeValue.of("Dart pub webdev server port"),
+                        LocalizeValue.of("Dart webdev server port"), "dart.settings", LocalizeValue.empty());
+    processor.addOption(LocalizeValue.of(DartBundle.message("code.style.settings.label.line.length")),
+                        LocalizeValue.of(DartBundle.message("code.style.settings.label.line.length")), "preferences.sourceCode.Dart", LocalizeValue.empty());
   }
 }

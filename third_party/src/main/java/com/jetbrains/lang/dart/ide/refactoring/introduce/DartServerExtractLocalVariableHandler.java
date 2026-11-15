@@ -7,7 +7,7 @@ import consulo.application.ApplicationManager;
 import consulo.codeEditor.Editor;
 import consulo.codeEditor.SelectionModel;
 import consulo.project.Project;
-import consulo.language.editor.Pass;
+import java.util.function.Consumer;
 import consulo.util.lang.StringUtil;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiFile;
@@ -98,9 +98,9 @@ class ExtractLocalVariableProcessor {
       performOnExpression(expressions.getFirst());
     }
     else if (expressions.size() > 1) {
-      IntroduceTargetChooser.showChooser(editor, expressions, new Pass<>() {
+      IntroduceTargetChooser.showChooser(editor, expressions, new Consumer<DartExpression>() {
         @Override
-        public void pass(DartExpression expression) {
+        public void accept(DartExpression expression) {
           performOnExpression(expression);
         }
       }, PsiElement::getText);
@@ -181,9 +181,9 @@ class ExtractLocalVariableProcessor {
       occurrences = getDartExpressions(occurrencesOffsets, occurrencesLengths);
     }
     // handle occurrences
-    OccurrencesChooser.<DartExpression>simpleChooser(editor).showChooser(expression, occurrences, new Pass<>() {
+    OccurrencesChooser.<DartExpression>simpleChooser(editor).showChooser(expression, occurrences, new Consumer<OccurrencesChooser.ReplaceChoice>() {
       @Override
-      public void pass(OccurrencesChooser.ReplaceChoice replaceChoice) {
+      public void accept(OccurrencesChooser.ReplaceChoice replaceChoice) {
         refactoring.setExtractAll(replaceChoice == OccurrencesChooser.ReplaceChoice.ALL);
         performOnElementOccurrences();
       }

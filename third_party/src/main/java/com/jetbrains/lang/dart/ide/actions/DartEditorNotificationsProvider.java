@@ -4,10 +4,7 @@ package com.jetbrains.lang.dart.ide.actions;
 import consulo.dart.notification.DartNotificationGroups;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.webBrowser.BrowserUtil;
-import consulo.project.ui.notification.NotificationAction;
-import consulo.project.ui.notification.NotificationType;
 import consulo.application.ApplicationManager;
-import consulo.codeEditor.EditorColors;
 import consulo.fileEditor.FileEditor;
 import consulo.virtualFileSystem.fileType.FileTypeRegistry;
 import consulo.module.Module;
@@ -17,8 +14,12 @@ import consulo.project.Project;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.language.psi.PsiFile;
 import consulo.language.psi.PsiManager;
-import consulo.ide.impl.idea.ui.EditorNotificationPanel;
+import consulo.annotation.access.RequiredReadAction;
+import consulo.fileEditor.EditorNotificationBuilder;
 import consulo.fileEditor.EditorNotificationProvider;
+import consulo.localize.LocalizeValue;
+import consulo.project.ui.notification.NotificationService;
+import jakarta.inject.Inject;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartFileType;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
@@ -29,14 +30,29 @@ import icons.DartIcons;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
-import java.util.function.Function;
+import java.util.function.Supplier;
+
 
 @ExtensionImpl
 public final class DartEditorNotificationsProvider implements EditorNotificationProvider {
+  private final @NotNull Project project;
+
+  @Inject
+  public DartEditorNotificationsProvider(@NotNull Project project) {
+    this.project = project;
+  }
+
   @Override
-  public @Nullable Function<? super @NotNull FileEditor, ? extends @Nullable JComponent> collectNotificationData(@NotNull Project project,
-                                                                                                                 @NotNull VirtualFile file) {
+  public @NotNull String getId() {
+    return "dart.editor.notifications";
+  }
+
+  // Consulo: EditorNotificationProvider fills an EditorNotificationBuilder instead of returning a panel factory
+  @RequiredReadAction
+  @Override
+  public @Nullable EditorNotificationBuilder buildNotification(@NotNull VirtualFile file,
+                                                               @NotNull FileEditor fileEditor,
+                                                               @NotNull Supplier<EditorNotificationBuilder> builderFactory) {
     if (!file.isInLocalFileSystem()) {
       return null;
     }
@@ -52,7 +68,7 @@ public final class DartEditorNotificationsProvider implements EditorNotification
 
       final DartSdk sdk = DartSdk.getDartSdk(project);
       if (sdk != null && DartSdkLibUtil.isDartSdkEnabled(module)) {
-        return fileEditor -> new PubActionsPanel(fileEditor);
+        return createPubActionsPanel(builderFactory.get());
       }
     }
 
@@ -69,61 +85,57 @@ public final class DartEditorNotificationsProvider implements EditorNotification
       if (sdk == null) {
         final String sdkPath = DartSdkUtil.getFirstKnownDartSdkPath();
         if (DartSdkUtil.isDartSdkHome(sdkPath)) {
-          return fileEditor -> createNotificationToEnableDartSupport(fileEditor, module);
+          return createNotificationToEnableDartSupport(builderFactory.get(), module);
         }
         else {
-          return fileEditor -> createNoDartSdkPanel(fileEditor, project, DartBundle.message("dart.sdk.is.not.configured"));
+          return createNoDartSdkPanel(builderFactory.get(), project, DartBundle.message("dart.sdk.is.not.configured"));
         }
       }
 
       // SDK not enabled for this module
       if (!DartSdkLibUtil.isDartSdkEnabled(module)) {
-        return fileEditor -> createNotificationToEnableDartSupport(fileEditor, module);
+        return createNotificationToEnableDartSupport(builderFactory.get(), module);
       }
 
       if (!DartAnalysisServerService.isDartSdkVersionSufficient(sdk)) {
         String message = DartBundle.message("old.dart.sdk.configured", DartAnalysisServerService.MIN_SDK_VERSION, sdk.getVersion());
-        return fileEditor -> createNoDartSdkPanel(fileEditor, project, message);
+        return createNoDartSdkPanel(builderFactory.get(), project, message);
       }
     }
 
     return null;
   }
 
-  public @NotNull EditorNotificationPanel createNoDartSdkPanel(@NotNull FileEditor fileEditor,
-                                                               @NotNull Project project,
-                                                               String message) {
+  public @NotNull EditorNotificationBuilder createNoDartSdkPanel(@NotNull EditorNotificationBuilder panel,
+                                                                 @NotNull Project project,
+                                                                 String message) {
     final String downloadUrl = DartSdkUpdateChecker.SDK_STABLE_DOWNLOAD_URL;
 
-    final EditorNotificationPanel panel =
-      new EditorNotificationPanel(fileEditor, EditorNotificationPanel.Status.Warning).icon(DartIcons.Dart_16).text(message);
-    panel.createActionLabel(DartBundle.message("download.dart.sdk"), new OpenWebPageRunnable(downloadUrl));
-    panel.createActionLabel(DartBundle.message("open.dart.settings"), new OpenDartSettingsRunnable(project));
+    panel.asWarning().withIcon(DartIcons.Dart_16).withText(LocalizeValue.of(message));
+    panel.withAction(DartBundle.messageValue("download.dart.sdk"), e -> new OpenWebPageRunnable(downloadUrl).run());
+    panel.withAction(DartBundle.messageValue("open.dart.settings"), e -> new OpenDartSettingsRunnable(project).run());
     return panel;
   }
 
-  private static @NotNull EditorNotificationPanel createNotificationToEnableDartSupport(@NotNull FileEditor fileEditor,
-                                                                                        @NotNull Module module) {
+  private static @NotNull EditorNotificationBuilder createNotificationToEnableDartSupport(@NotNull EditorNotificationBuilder panel,
+                                                                                          @NotNull Module module) {
     final String message = DartSdkLibUtil.isIdeWithMultipleModuleSupport()
                            ? DartBundle.message("dart.support.is.not.enabled.for.module.0", module.getName())
                            : DartBundle.message("dart.support.is.not.enabled.for.project");
-    final EditorNotificationPanel panel =
-      new EditorNotificationPanel(fileEditor, EditorNotificationPanel.Status.Warning).icon(DartIcons.Dart_16).text(message);
-    panel.createActionLabel(DartBundle.message("enable.dart.support"), new EnableDartSupportForModule(module));
-    panel.createActionLabel(DartBundle.message("open.dart.settings"), new OpenDartSettingsRunnable(module.getProject()));
+    panel.asWarning().withIcon(DartIcons.Dart_16).withText(LocalizeValue.of(message));
+    panel.withAction(DartBundle.messageValue("enable.dart.support"), e -> new EnableDartSupportForModule(module).run());
+    panel.withAction(DartBundle.messageValue("open.dart.settings"), e -> new OpenDartSettingsRunnable(module.getProject()).run());
     return panel;
   }
 
-  private static final class PubActionsPanel extends EditorNotificationPanel {
-    private PubActionsPanel(@NotNull FileEditor fileEditor) {
-      super(fileEditor, null, EditorColors.GUTTER_BACKGROUND, Status.Info);
-      createActionLabel(DartBundle.message("pub.get"), "Dart.pub.get");
-      createActionLabel(DartBundle.message("pub.upgrade"), "Dart.pub.upgrade");
-      createActionLabel(DartBundle.message("pub.outdated"), "Dart.pub.outdated");
-
-      myLinksPanel.add(new JSeparator(SwingConstants.VERTICAL));
-      createActionLabel(DartBundle.message("webdev.build"), "Dart.build");
-    }
+  // Consulo: no separator between the pub and webdev actions
+  private static @NotNull EditorNotificationBuilder createPubActionsPanel(@NotNull EditorNotificationBuilder panel) {
+    panel.asInfo();
+    panel.withAction(DartBundle.messageValue("pub.get"), "Dart.pub.get");
+    panel.withAction(DartBundle.messageValue("pub.upgrade"), "Dart.pub.upgrade");
+    panel.withAction(DartBundle.messageValue("pub.outdated"), "Dart.pub.outdated");
+    panel.withAction(DartBundle.messageValue("webdev.build"), "Dart.build");
+    return panel;
   }
 
   private static class EnableDartSupportForModule implements Runnable {
@@ -160,11 +172,13 @@ public final class DartEditorNotificationsProvider implements EditorNotification
                              : DartBundle.message("dart.support.enabled");
         final String message = DartBundle.message("dart.sdk.0.open.dart.settings", sdk.getVersion());
 
-        DartNotificationGroups.get("Dart Support")
-          .createNotification(title, message, NotificationType.INFORMATION)
-          .addAction(NotificationAction.createSimple(DartBundle.message("open.dart.settings"), ()-> {
+        NotificationService.getInstance()
+          .newInfo(DartNotificationGroups.DART_SUPPORT)
+          .title(LocalizeValue.of(title))
+          .content(LocalizeValue.of(message))
+          .addAction(DartBundle.messageValue("open.dart.settings"), () -> {
             DartConfigurable.openDartSettings(project);
-          }))
+          })
           .notify(project);
       }
     }

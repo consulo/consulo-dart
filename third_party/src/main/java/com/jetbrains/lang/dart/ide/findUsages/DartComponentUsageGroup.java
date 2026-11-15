@@ -18,21 +18,23 @@ import consulo.usage.UsageGroup;
 import consulo.usage.UsageView;
 import com.jetbrains.lang.dart.psi.DartComponent;
 import com.jetbrains.lang.dart.psi.DartComponentName;
+import consulo.language.icon.IconDescriptorUpdaters;
+import consulo.ui.image.Image;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
 
 class DartComponentUsageGroup implements UsageGroup, UiDataProvider {
   private final VirtualFile myFile;
   private final SmartPsiElementPointer<DartComponent> myElementPointer;
   private final String myText;
-  private final Icon myIcon;
+  private final Image myIcon;
 
   DartComponentUsageGroup(@NotNull DartComponent element) {
     myFile = element.getContainingFile().getVirtualFile();
     myText = StringUtil.notNullize(element.getName());
     myElementPointer = SmartPointerManager.getInstance(element.getProject()).createSmartPsiElementPointer(element);
-    myIcon = element.getIcon(Iconable.ICON_FLAG_VISIBILITY | Iconable.ICON_FLAG_READ_STATUS);
+    myIcon = IconDescriptorUpdaters.getIcon(element, Iconable.ICON_FLAG_VISIBILITY | Iconable.ICON_FLAG_READ_STATUS);
   }
 
   @Override
@@ -47,7 +49,7 @@ class DartComponentUsageGroup implements UsageGroup, UiDataProvider {
 
   @Override
   public int compareTo(@NotNull UsageGroup usageGroup) {
-    return getPresentableGroupText().compareToIgnoreCase(usageGroup.getPresentableGroupText());
+    return getText(null).compareToIgnoreCase(usageGroup.getText(null));
   }
 
   @Override
@@ -73,13 +75,22 @@ class DartComponentUsageGroup implements UsageGroup, UiDataProvider {
   }
 
   @Override
-  public Icon getIcon() {
+  public Image getIcon() {
     return myIcon;
   }
 
-  @Override
   public @NotNull String getPresentableGroupText() {
     return myText;
+  }
+
+  // Consulo: UsageGroup has getText(UsageView) and update() instead of getPresentableGroupText()
+  @Override
+  public @NotNull String getText(@Nullable UsageView view) {
+    return getPresentableGroupText();
+  }
+
+  @Override
+  public void update() {
   }
 
   @Override

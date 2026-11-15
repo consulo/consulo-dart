@@ -6,8 +6,6 @@ import consulo.ui.image.Image;
 import consulo.ui.ex.tree.PresentationData;
 import consulo.project.ui.view.tree.TreeStructureProvider;
 import consulo.project.ui.view.tree.ViewSettings;
-import consulo.ide.impl.idea.ide.projectView.impl.nodes.ExternalLibrariesNode;
-import consulo.project.ui.view.internal.node.NamedLibraryElement;
 import consulo.ide.impl.idea.ide.projectView.impl.nodes.NamedLibraryElementNode;
 import consulo.project.ui.view.tree.PsiDirectoryNode;
 import consulo.project.ui.view.tree.AbstractTreeNode;
@@ -17,7 +15,6 @@ import consulo.util.io.FileUtil;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.language.psi.PsiDirectory;
 import consulo.util.collection.ContainerUtil;
-import com.jetbrains.lang.dart.sdk.DartConfigurable;
 import com.jetbrains.lang.dart.sdk.DartPackagesLibraryType;
 import com.jetbrains.lang.dart.sdk.DartSdk;
 import com.jetbrains.lang.dart.util.DartUrlResolver;
@@ -34,38 +31,11 @@ import static com.jetbrains.lang.dart.util.PubspecYamlUtil.PUBSPEC_YAML;
 @ExtensionImpl
 public final class DartTreeStructureProvider implements TreeStructureProvider, DumbAware {
   @Override
-  public @NotNull Collection<AbstractTreeNode<?>> modify(final @NotNull AbstractTreeNode<?> parentNode,
-                                                         final @NotNull Collection<AbstractTreeNode<?>> children,
-                                                         final ViewSettings settings) {
-    if (parentNode instanceof ExternalLibrariesNode) {
-      return ContainerUtil.map(children, node -> {
-        if (node instanceof NamedLibraryElementNode &&
-            (DartPackagesLibraryType.DART_PACKAGES_LIBRARY_NAME.equals(node.getName()) ||
-             DartSdk.DART_SDK_LIB_NAME.equals(node.getName()))) {
-          final boolean isSdkRoot = DartSdk.DART_SDK_LIB_NAME.equals(node.getName());
-
-          NamedLibraryElement value = ((NamedLibraryElementNode)node).getValue();
-          if (value != null) {
-            return new NamedLibraryElementNode(node.getProject(), value, settings) {
-              @Override
-              public boolean canNavigate() {
-                return isSdkRoot; // no sense to navigate anywhere in case of "Dart Packages" library
-              }
-
-              @Override
-              public void navigate(boolean requestFocus) {
-                final Project project = getProject();
-                if (project != null) {
-                  DartConfigurable.openDartSettings(project);
-                }
-              }
-            };
-          }
-        }
-
-        return node;
-      });
-    }
+  public @NotNull Collection<AbstractTreeNode> modify(final @NotNull AbstractTreeNode parentNode,
+                                                      final @NotNull Collection<AbstractTreeNode> children,
+                                                      final ViewSettings settings) {
+    // Consulo: the upstream branch for ExternalLibrariesNode children (navigation from the 'Dart SDK' library node to Dart settings)
+    // is dropped - the Dart SDK is a Consulo SDK, not a library, and NamedLibraryElement is internal.
 
     if (parentNode instanceof NamedLibraryElementNode &&
         (DartPackagesLibraryType.DART_PACKAGES_LIBRARY_NAME.equals(parentNode.getName()) ||
@@ -96,7 +66,7 @@ public final class DartTreeStructureProvider implements TreeStructureProvider, D
                                         : null;
 
     if (pubspecYamlFile != null && !pubspecYamlFile.isDirectory()) {
-      final ArrayList<AbstractTreeNode<?>> modifiedChildren = new ArrayList<>(children);
+      final ArrayList<AbstractTreeNode> modifiedChildren = new ArrayList<>(children);
 
       final DartUrlResolver resolver = DartUrlResolver.getInstance(project, pubspecYamlFile);
       resolver.processLivePackages((packageName, packageDir) -> {
@@ -118,7 +88,7 @@ public final class DartTreeStructureProvider implements TreeStructureProvider, D
     return children;
   }
 
-  private static @Nullable AbstractTreeNode getFolderNode(final @NotNull Collection<AbstractTreeNode<?>> nodes, final @NotNull VirtualFile folder) {
+  private static @Nullable AbstractTreeNode getFolderNode(final @NotNull Collection<AbstractTreeNode> nodes, final @NotNull VirtualFile folder) {
     for (AbstractTreeNode node : nodes) {
       if (node instanceof PsiDirectoryNode && folder.equals(((PsiDirectoryNode)node).getVirtualFile())) {
         return node;

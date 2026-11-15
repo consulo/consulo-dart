@@ -19,6 +19,7 @@ ported to Consulo. Upstream history is kept, upstream files stay at their origin
 - Java only: upstream Kotlin files are converted to Java, keeping the API Kotlin generates
   (`XxxKt` classes for top-level functions, `INSTANCE` for objects, `getX()` for properties).
 - LSP is not supported: LSP sources are renamed to `.java_` / `.kt_` (kept for merges), `DartConfigurable` LSP checks return false.
+  The `hints` inlay providers and `DartClosingLabelManager` only work with LSP and are disabled the same way.
 - Analytics is dropped; the analysis server is started with `--suppress-analytics`.
 - Dart SDK is a Consulo SDK (`DartSdkType`), Dart support is enabled per module by `DartModuleExtension`.
   Upstream `DartSdk` / `DartSdkLibUtil` keep their public methods but are implemented on top of that.

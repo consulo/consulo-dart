@@ -16,9 +16,8 @@ import consulo.language.util.ModuleUtilCore;
 import consulo.project.Project;
 import consulo.module.content.ProjectFileIndex;
 import consulo.ui.ex.awt.DialogWrapper;
-import com.intellij.openapi.ui.DoNotAskOption;
 import consulo.ui.ex.awt.MessageDialogBuilder;
-import consulo.util.lang.ref.Ref;
+import consulo.util.lang.ref.SimpleReference;
 import consulo.virtualFileSystem.VirtualFile;
 import consulo.language.psi.PsiFile;
 import consulo.util.collection.SmartList;
@@ -96,8 +95,8 @@ public final class DartCopyPasteProcessor extends CopyPastePostProcessor<DartCop
                                       final @NotNull Editor editor,
                                       final @NotNull RangeMarker bounds,
                                       final int caretOffset,
-                                      final @NotNull Ref<? super Boolean> indented,
-                                      final @NotNull List<? extends DartImportsTransferableData> values) {
+                                      final @NotNull SimpleReference<Boolean> indented,
+                                      final @NotNull List<DartImportsTransferableData> values) {
     final DartImportsTransferableData data = ContainerUtil.getFirstItem(values);
     if (data == null) return;
 
@@ -115,7 +114,7 @@ public final class DartCopyPasteProcessor extends CopyPastePostProcessor<DartCop
         final String message = DartBundle.message("dialog.paste.on.import.text");
         final String title = DartBundle.message("dialog.paste.on.import.title");
 
-        final DoNotAskOption doNotAskOption = new DoNotAskOption.Adapter() {
+        final DialogWrapper.DoNotAskOption doNotAskOption = new DialogWrapper.DoNotAskOption.Adapter() {
           @Override
           public boolean shouldSaveOptionsOnCancel() {
             return true;
@@ -157,6 +156,22 @@ public final class DartCopyPasteProcessor extends CopyPastePostProcessor<DartCop
     @Override
     public @Nullable DataFlavor getFlavor() {
       return FLAVOR;
+    }
+
+    // Consulo: no default implementations in TextBlockTransferableData, these are the IntelliJ defaults
+    @Override
+    public int getOffsetCount() {
+      return 0;
+    }
+
+    @Override
+    public int getOffsets(int[] offsets, int index) {
+      return index;
+    }
+
+    @Override
+    public int setOffsets(int[] offsets, int index) {
+      return index;
     }
   }
 }

@@ -68,7 +68,7 @@ public final class DartMethodLineMarkerProvider implements LineMarkerProvider {
                 anchor.getTextRange(),
                 Image.empty(Image.DEFAULT_ICON_SIZE),
                 Pass.LINE_MARKERS,
-                element -> null,
+                __ -> null,
                 null,
                 GutterIconRenderer.Alignment.RIGHT);
         EditorColorsScheme scheme = EditorColorsManager.getInstance().getGlobalScheme();

@@ -19,14 +19,15 @@ import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartLanguage;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.ide.refactoring.status.RefactoringStatus;
+import consulo.localize.LocalizeValue;
 import org.jetbrains.annotations.NotNull;
 
 // todo implement ContextAwareActionHandler?
 @ExtensionImpl
 public final class DartServerRenameHandler implements RenameHandler, TitledHandler {
   @Override
-  public String getActionTitle() {
-    return DartBundle.message("action.title.dart.rename.refactoring");
+  public @NotNull LocalizeValue getActionTitleValue() {
+    return DartBundle.messageValue("action.title.dart.rename.refactoring");
   }
 
   @Override

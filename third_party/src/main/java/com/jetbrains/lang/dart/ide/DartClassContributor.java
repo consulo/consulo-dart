@@ -51,6 +51,6 @@ public final class DartClassContributor implements ChooseByNameContributorEx {
           .flatMap(componentGetter)
           .filter(o -> Objects.equals(name, o.getName()))
           .filterMap(DartComponent::getComponentName)
-          .processEach(processor), parameters.getSearchScope());
+          .processEach(processor::test), parameters.getSearchScope());
   }
 }

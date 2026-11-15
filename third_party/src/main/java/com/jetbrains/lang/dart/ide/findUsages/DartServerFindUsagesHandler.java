@@ -15,7 +15,7 @@ import consulo.language.psi.scope.LocalSearchScope;
 import consulo.language.psi.scope.PsiSearchScopeUtil;
 import consulo.content.scope.SearchScope;
 import consulo.usage.UsageInfo;
-import consulo.application.util.function.Processor;
+import java.util.function.Predicate;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.analyzer.DartFileInfo;
 import com.jetbrains.lang.dart.analyzer.DartFileInfoKt;
@@ -41,7 +41,7 @@ public class DartServerFindUsagesHandler extends FindUsagesHandler {
 
   @Override
   public boolean processElementUsages(final @NotNull PsiElement elementToSearch,
-                                      final @NotNull Processor<? super UsageInfo> processor,
+                                      final @NotNull Predicate<UsageInfo> processor,
                                       final @NotNull FindUsagesOptions options) {
     final SearchScope scope = options.searchScope;
     final Project project = ReadAction.compute(this::getProject);
@@ -74,7 +74,7 @@ public class DartServerFindUsagesHandler extends FindUsagesHandler {
         if (usageInfo != null &&
             usageInfo.getElement() != null &&
             (!(scope instanceof LocalSearchScope) || PsiSearchScopeUtil.isInScope((LocalSearchScope)scope, usageInfo.getElement()))) {
-          processor.process(usageInfo);
+          processor.test(usageInfo);
         }
       }
     };

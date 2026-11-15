@@ -21,7 +21,7 @@ import java.util.function.Consumer;
 
 public abstract class ReadActionConsumer<T> implements Consumer<T> {
   @Override
-  public void consume(final T t) {
+  public void accept(final T t) {
     ApplicationManager.getApplication().runReadAction(() -> consumeInReadAction(t));
   }
 

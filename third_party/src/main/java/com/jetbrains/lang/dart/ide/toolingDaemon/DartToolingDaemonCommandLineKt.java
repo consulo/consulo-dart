@@ -30,11 +30,11 @@ public final class DartToolingDaemonCommandLineKt {
   private DartToolingDaemonCommandLineKt() {
   }
 
-  static @NotNull GeneralCommandLine createDtdCommandLine(@NotNull DartSdk sdk) {
+  public static @NotNull GeneralCommandLine createDtdCommandLine(@NotNull DartSdk sdk) {
     return createDtdCommandLine(sdk, 15);
   }
 
-  static @NotNull GeneralCommandLine createDtdCommandLine(@NotNull DartSdk sdk, int pingInterval) {
+  public static @NotNull GeneralCommandLine createDtdCommandLine(@NotNull DartSdk sdk, int pingInterval) {
     GeneralCommandLine commandLine = new GeneralCommandLine().withWorkDirectory(sdk.getHomePath());
     commandLine.setExePath(FileUtil.toSystemDependentName(DartSdkUtil.getDartExePath(sdk)));
     commandLine.setCharset(StandardCharsets.UTF_8);
@@ -52,7 +52,7 @@ public final class DartToolingDaemonCommandLineKt {
     return DartSdkUpdateChecker.compareDartSdkVersions(sdkVersion, MIN_DTD_PING_INTERVAL_SDK_VERSION) >= 0;
   }
 
-  static boolean isDtdCommandLine(@NotNull String text) {
+  public static boolean isDtdCommandLine(@NotNull String text) {
     return DTD_COMMAND_LINE_PATTERN.matcher(text).matches();
   }
 }

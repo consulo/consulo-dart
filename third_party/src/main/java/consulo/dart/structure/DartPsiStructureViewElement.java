@@ -2,6 +2,7 @@ package consulo.dart.structure;
 
 import com.jetbrains.lang.dart.psi.*;
 import com.jetbrains.lang.dart.psi.impl.DartPsiCompositeElementImpl;
+import com.jetbrains.lang.dart.resolve.ComponentNameScopeProcessor;
 import com.jetbrains.lang.dart.util.DartClassResolveResult;
 import com.jetbrains.lang.dart.util.DartResolveUtil;
 import consulo.fileEditor.structureView.StructureViewTreeElement;
@@ -14,6 +15,7 @@ import consulo.navigation.NavigationItem;
 
 import jakarta.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -59,7 +61,7 @@ public class DartPsiStructureViewElement implements StructureViewTreeElement, So
   @Override
   public TreeElement[] getChildren() {
     final List<TreeElement> result = new ArrayList<TreeElement>();
-    if (myElement instanceof DartFile || myElement instanceof DartEmbeddedContent) {
+    if (myElement instanceof DartFile) {
       Set<DartComponentName> componentNames = new HashSet<DartComponentName>();
       DartPsiCompositeElementImpl
         .processDeclarationsImpl(myElement, new ComponentNameScopeProcessor(componentNames), ResolveState.initial(), null);
@@ -76,15 +78,16 @@ public class DartPsiStructureViewElement implements StructureViewTreeElement, So
       if (superClass.getDartClass() != null) {
         result.add(new DartPsiStructureViewElement(superClass.getDartClass()));
       }
-      List<DartClassResolveResult> implementsAndMixinsList =
-        DartResolveUtil.resolveClassesByTypes(DartResolveUtil.getImplementsAndMixinsList(dartClass));
-      for (DartClassResolveResult superInterface : implementsAndMixinsList) {
+      for (DartType type : DartResolveUtil.getImplementsAndMixinsList(dartClass)) {
+        DartClassResolveResult superInterface = DartResolveUtil.resolveClassByType(type);
         if (superInterface.getDartClass() == null) {
           continue;
         }
         result.add(new DartPsiStructureViewElement(superInterface.getDartClass()));
       }
-      for (DartComponent subNamedComponent : DartResolveUtil.getNamedSubComponentsInOrder(dartClass)) {
+      List<DartComponent> subNamedComponents = new ArrayList<>(DartResolveUtil.getNamedSubComponents(dartClass));
+      subNamedComponents.sort(Comparator.comparingInt(DartComponent::getTextOffset));
+      for (DartComponent subNamedComponent : subNamedComponents) {
         result.add(new DartPsiStructureViewElement(subNamedComponent));
       }
     }

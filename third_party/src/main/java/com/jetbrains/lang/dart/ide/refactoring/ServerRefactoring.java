@@ -6,7 +6,7 @@ import com.google.dart.server.GetRefactoringConsumer;
 import consulo.application.progress.ProgressIndicator;
 import consulo.application.progress.ProgressManager;
 import consulo.application.progress.Task;
-import consulo.application.internal.ProgressIndicatorUtils;
+import consulo.dart.compat.ProgressIndicatorUtils;
 import consulo.project.Project;
 
 import consulo.virtualFileSystem.VirtualFile;
