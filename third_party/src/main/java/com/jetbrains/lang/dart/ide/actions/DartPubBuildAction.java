@@ -31,7 +31,7 @@ public class DartPubBuildAction extends DartPubActionBase implements AnActionWit
   }
 
   @Override
-  protected String @Nullable [] calculatePubParameters(final @NotNull Project project, final @NotNull VirtualFile pubspecYamlFile) {
+  @Nullable protected String[] calculatePubParameters(final @NotNull Project project, final @NotNull VirtualFile pubspecYamlFile) {
     final DartPubBuildDialog dialog = new DartPubBuildDialog(project, pubspecYamlFile.getParent());
     dialog.show();
     if (dialog.getExitCode() != DialogWrapper.OK_EXIT_CODE) {

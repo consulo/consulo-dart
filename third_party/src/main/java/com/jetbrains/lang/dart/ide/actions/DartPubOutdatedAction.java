@@ -33,7 +33,7 @@ public class DartPubOutdatedAction extends DartPubActionBase implements AnAction
   }
 
   @Override
-  protected String @Nullable [] calculatePubParameters(final @NotNull Project project, final @NotNull VirtualFile pubspecYamlFile) {
+  @Nullable protected String[] calculatePubParameters(final @NotNull Project project, final @NotNull VirtualFile pubspecYamlFile) {
     return new String[]{"outdated"};
   }
 }

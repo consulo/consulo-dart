@@ -1,6 +1,7 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.projectWizard;
 
+import consulo.dart.compat.RunManagerCompat;
 import consulo.execution.RunManager;
 import consulo.execution.RunnerAndConfigurationSettings;
 import consulo.application.ApplicationManager;
@@ -96,7 +97,7 @@ public abstract class DartProjectTemplate {
   static void createWebRunConfiguration(final @NotNull Module module, final @NotNull VirtualFile htmlFile) {
     DartModuleBuilder.runWhenNonModalIfModuleNotDisposed(() -> {
       final RunManager runManager = RunManager.getInstance(module.getProject());
-      final RunnerAndConfigurationSettings settings = runManager.createConfiguration("", DartWebdevConfigurationType.class);
+      final RunnerAndConfigurationSettings settings = RunManagerCompat.createConfiguration(runManager, "", DartWebdevConfigurationType.class);
 
       DartWebdevConfiguration runConfiguration = (DartWebdevConfiguration)settings.getConfiguration();
       runConfiguration.getParameters().setHtmlFilePath(htmlFile.getPath());
@@ -110,7 +111,7 @@ public abstract class DartProjectTemplate {
   static void createCmdLineRunConfiguration(final @NotNull Module module, final @NotNull VirtualFile mainDartFile) {
     DartModuleBuilder.runWhenNonModalIfModuleNotDisposed(() -> {
       final RunManager runManager = RunManager.getInstance(module.getProject());
-      final RunnerAndConfigurationSettings settings = runManager.createConfiguration("", DartCommandLineRunConfigurationType.class);
+      final RunnerAndConfigurationSettings settings = RunManagerCompat.createConfiguration(runManager, "", DartCommandLineRunConfigurationType.class);
 
       final DartCommandLineRunConfiguration runConfiguration = (DartCommandLineRunConfiguration)settings.getConfiguration();
       runConfiguration.getRunnerParameters().setFilePath(mainDartFile.getPath());
@@ -127,7 +128,7 @@ public abstract class DartProjectTemplate {
   static void createTestRunConfiguration(@NotNull Module module, @NotNull String baseDirPath) {
     DartModuleBuilder.runWhenNonModalIfModuleNotDisposed(() -> {
       final RunManager runManager = RunManager.getInstance(module.getProject());
-      final RunnerAndConfigurationSettings settings = runManager.createConfiguration("", DartTestRunConfigurationType.class);
+      final RunnerAndConfigurationSettings settings = RunManagerCompat.createConfiguration(runManager, "", DartTestRunConfigurationType.class);
 
       final DartTestRunConfiguration runConfiguration = (DartTestRunConfiguration)settings.getConfiguration();
       runConfiguration.getRunnerParameters().setScope(DartTestRunnerParameters.Scope.FOLDER);

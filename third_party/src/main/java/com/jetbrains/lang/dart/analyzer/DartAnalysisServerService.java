@@ -293,7 +293,7 @@ public final class DartAnalysisServerService implements Disposable {
   }
 
   private static String getClientVersion() {
-    return ApplicationInfo.getInstance().getApiVersion();
+    return Application.get().getBuildNumber().asString();
   }
 
   private final @NotNull List<AnalysisServerListener> myAdditionalServerListeners = Lists.newLockFreeCopyOnWriteList();
@@ -1557,7 +1557,7 @@ public final class DartAnalysisServerService implements Disposable {
     return resultRef.get();
   }
 
-  public PostfixTemplateDescriptor @Nullable [] edit_listPostfixCompletionTemplates() {
+  @Nullable public PostfixTemplateDescriptor[] edit_listPostfixCompletionTemplates() {
     final AnalysisServer server = myServer;
     if (server == null) {
       return null;

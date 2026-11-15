@@ -134,7 +134,7 @@ public final class DartModuleBuilder {
 
     DumbService.getInstance(module.getProject()).runWhenSmart(() -> {
       if (module.isDisposed()) return;
-      if (ModalityState.current() == ModalityState.nonModal()) {
+      if (ApplicationManager.getApplication().getCurrentModalityState() == ModalityState.nonModal()) {
         runnable.run();
       }
       else {

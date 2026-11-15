@@ -7,7 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import consulo.process.ExecutionException;
 import consulo.process.cmd.GeneralCommandLine;
-import consulo.process.internal.CapturingProcessHandler;
+import consulo.process.util.CapturingProcessUtil;
 import consulo.process.util.ProcessOutput;
 import consulo.logging.Logger;
 import com.jetbrains.lang.dart.logging.PluginLogger;
@@ -67,7 +67,7 @@ public class DartCreate {
     command.addParameters(parameters);
 
 
-    return new CapturingProcessHandler(command).runProcess(timeoutInSeconds * 1000, false);
+    return CapturingProcessUtil.execAndGetOutput(command, timeoutInSeconds * 1000);
   }
 
   public void generateInto(final @NotNull String sdkRoot,

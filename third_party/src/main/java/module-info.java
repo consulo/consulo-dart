@@ -36,6 +36,7 @@ module com.jetbrains.lang.dart {
   requires consulo.localize.api;
   requires consulo.logging.api;
   requires consulo.module.api;
+  requires consulo.module.creation.api;
   requires consulo.module.content.api;
   requires consulo.module.ui.api;
   requires consulo.navigation.api;
@@ -74,6 +75,7 @@ module com.jetbrains.lang.dart {
   // TODO remove in future
   requires java.desktop;
   requires java.management;
+  requires java.net.http;
 
   // exports are added while packages are ported
 }

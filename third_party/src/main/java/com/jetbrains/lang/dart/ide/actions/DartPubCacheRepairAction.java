@@ -17,7 +17,7 @@ public class DartPubCacheRepairAction extends DartPubActionBase {
   }
 
     @Override
-    protected String @Nullable [] calculatePubParameters(final @NotNull Project project, final @NotNull VirtualFile pubspecYamlFile) {
+    @Nullable protected String[] calculatePubParameters(final @NotNull Project project, final @NotNull VirtualFile pubspecYamlFile) {
         final int choice = Messages.showOkCancelDialog(project, DartBundle.message("dart.pub.cache.repair.message"),
                 DartBundle.message("dart.pub.cache.repair.title"), CommonBundle.getYesButtonText(),
                 CommonBundle.getNoButtonText(), Messages.getWarningIcon());

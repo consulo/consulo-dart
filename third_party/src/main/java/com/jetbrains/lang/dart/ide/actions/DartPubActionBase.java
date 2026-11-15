@@ -39,7 +39,7 @@ import consulo.process.localize.ProcessLocalize;
 import consulo.project.Project;
 import consulo.project.ui.notification.NotificationService;
 import consulo.project.ui.view.MessageView;
-import consulo.project.ui.wm.ToolWindow;
+import consulo.ui.ex.toolWindow.ToolWindow;
 import consulo.project.ui.wm.ToolWindowId;
 import consulo.project.ui.wm.ToolWindowManager;
 import consulo.ui.annotation.RequiredUIAccess;
@@ -81,7 +81,7 @@ public abstract class DartPubActionBase extends AnAction implements DumbAware, A
 
   protected abstract @NotNull String getTitle(@NotNull VirtualFile pubspecYamlFile);
 
-  protected abstract String @Nullable [] calculatePubParameters(@NotNull Project project, @NotNull VirtualFile pubspecYamlFile);
+  @Nullable protected abstract String[] calculatePubParameters(@NotNull Project project, @NotNull VirtualFile pubspecYamlFile);
 
   @RequiredUIAccess
   @Override
@@ -382,7 +382,7 @@ public abstract class DartPubActionBase extends AnAction implements DumbAware, A
     // Consulo: CloseActiveTabAction is internal, the registered action is wrapped to change its presentation
     final AnAction closeContentAction = EmptyAction.wrap(actionManager.getAction(IdeActions.ACTION_CLOSE_ACTIVE_TAB));
     closeContentAction.getTemplatePresentation().setIcon(AllIcons.Actions.Cancel);
-    closeContentAction.getTemplatePresentation().setTextValue(UILocalize.tabbedPaneCloseTabActionName());
+    closeContentAction.getTemplatePresentation().setText(UILocalize.tabbedPaneCloseTabActionName());
     actionGroup.add(closeContentAction);
 
     final ActionToolbar toolbar = actionManager.createActionToolbar("DartPubAction", actionGroup, false);

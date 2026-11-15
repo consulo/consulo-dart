@@ -22,7 +22,7 @@ import consulo.module.content.layer.orderEntry.OrderEntry;
 import consulo.content.OrderRootType;
 import consulo.module.content.ProjectFileIndex;
 import consulo.module.content.ProjectRootManager;
-import consulo.content.internal.LibraryEx;
+import consulo.content.library.Library;
 import consulo.content.library.Library;
 import consulo.content.library.LibraryProperties;
 import consulo.content.library.LibraryTable;
@@ -137,7 +137,7 @@ public final class DartFileListener implements AsyncFileListener {
     final DartLibInfo libInfo = new DartLibInfo();
 
     final Collection<VirtualFile> pubspecYamlFiles =
-      FilenameIndex.getVirtualFilesByName(PUBSPEC_YAML, GlobalSearchScope.projectScope(project));
+      FilenameIndex.getVirtualFilesByName(project, PUBSPEC_YAML, GlobalSearchScope.projectScope(project));
     final ProjectFileIndex fileIndex = ProjectRootManager.getInstance(project).getFileIndex();
 
     for (VirtualFile pubspecFile : pubspecYamlFiles) {
@@ -183,11 +183,11 @@ public final class DartFileListener implements AsyncFileListener {
 
     final Collection<String> libRootUrls = libInfo.getLibRootUrls();
 
-    if ((isBrokenPackageMap(((LibraryEx)library).getProperties())) ||
+    if ((isBrokenPackageMap(library.getProperties())) ||
         existingUrls.length != libRootUrls.size() ||
         !libRootUrls.containsAll(Arrays.asList(existingUrls))) {
       ApplicationManager.getApplication().runWriteAction(() -> {
-        final LibraryEx.ModifiableModelEx model = (LibraryEx.ModifiableModelEx)library.getModifiableModel();
+        final Library.ModifiableModel model = library.getModifiableModel();
         for (String url : existingUrls) {
           model.removeRoot(url, BinariesOrderRootType.ID);
         }
