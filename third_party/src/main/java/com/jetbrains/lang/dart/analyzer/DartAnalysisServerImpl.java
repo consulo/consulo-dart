@@ -69,7 +69,7 @@ final class DartAnalysisServerImpl extends RemoteAnalysisServerImpl {
       boolean applied = false;
       try {
         applied = WriteCommandAction.writeCommandAction(project)
-          .withName(LocalizeValue.of(commandName))
+          .withName(commandName)
           .compute(() -> applyWorkspaceEdit(params.getWorkspaceEdit()));
       }
       finally {

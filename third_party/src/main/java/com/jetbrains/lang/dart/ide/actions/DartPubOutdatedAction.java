@@ -17,7 +17,7 @@ public class DartPubOutdatedAction extends DartPubActionBase {
   public void update(@NotNull AnActionEvent e) {
     super.update(e);
 
-    final Project project = e.getProject();
+    final Project project = e.getData(Project.KEY);
     DartSdk sdk = project != null ? DartSdk.getDartSdk(project) : null;
     if (sdk == null) {
       e.getPresentation().setEnabledAndVisible(false);

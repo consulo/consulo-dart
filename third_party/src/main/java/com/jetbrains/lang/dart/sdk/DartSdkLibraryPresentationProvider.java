@@ -2,6 +2,7 @@
 package com.jetbrains.lang.dart.sdk;
 
 import consulo.annotation.component.ExtensionImpl;
+import consulo.ui.image.Image;
 import consulo.content.library.DummyLibraryProperties;
 import consulo.content.library.LibraryKind;
 import consulo.content.library.LibraryPresentationProvider;
@@ -23,7 +24,7 @@ public final class DartSdkLibraryPresentationProvider extends LibraryPresentatio
   }
 
   @Override
-  public @Nullable Icon getIcon(@Nullable DummyLibraryProperties properties) {
+  public @Nullable Image getIcon() {
     return DartIcons.Dart_16;
   }
 

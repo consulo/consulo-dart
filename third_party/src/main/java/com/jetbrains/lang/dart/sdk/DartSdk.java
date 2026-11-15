@@ -95,7 +95,7 @@ public final class DartSdk {
   }
 
   public static @Nullable DartSdk getSdkByLibrary(final @NotNull Library library) {
-    final VirtualFile[] roots = library.getFiles(BinariesOrderRootType.getInstance());
+    final VirtualFile[] roots = library.getFiles(BinariesOrderRootType.ID);
     final VirtualFile dartCoreRoot = DartSdkLibraryPresentationProvider.findDartCoreRoot(Arrays.asList(roots));
     if (dartCoreRoot != null) {
       final String homePath = dartCoreRoot.getParent().getParent().getPath();

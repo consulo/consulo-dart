@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.analyzer;
 
+import consulo.language.psi.PsiManager;
 import com.jetbrains.lang.dart.logging.PluginLogger;
 
 import consulo.language.editor.DaemonCodeAnalyzer;
@@ -393,7 +394,8 @@ public final class DartServerData {
     if (file != null) {
       final Project project = myService.getProject();
       if (clearCache) {
-        ResolveCache.getInstance(project).clearCache(true);
+        // Consulo: ResolveCache has no clearCache(boolean), dropResolveCaches() clears it
+        PsiManager.getInstance(project).dropResolveCaches();
       }
 
       // It's ok to call DaemonCodeAnalyzer.restart() right in this thread, without invokeLater(),

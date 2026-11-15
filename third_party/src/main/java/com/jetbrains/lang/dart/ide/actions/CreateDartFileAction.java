@@ -4,7 +4,6 @@ package com.jetbrains.lang.dart.ide.actions;
 import consulo.ide.action.CreateFileFromTemplateAction;
 import consulo.ide.action.CreateFileFromTemplateDialog;
 import consulo.ui.ex.action.ActionManager;
-import consulo.ui.ex.action.ActionUpdateThread;
 import consulo.language.editor.CommonDataKeys;
 import consulo.dataContext.DataContext;
 import consulo.project.Project;
@@ -16,10 +15,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class CreateDartFileAction extends CreateFileFromTemplateAction {
 
-  @Override
-  public @NotNull ActionUpdateThread getActionUpdateThread() {
-    return ActionUpdateThread.BGT;
-  }
 
   @Override
   protected boolean isAvailable(@NotNull DataContext dataContext) {

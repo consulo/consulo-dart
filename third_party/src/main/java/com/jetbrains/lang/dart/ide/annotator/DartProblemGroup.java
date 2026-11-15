@@ -1,6 +1,7 @@
 // Copyright 2000-2021 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.ide.annotator;
 
+import consulo.localize.LocalizeValue;
 import consulo.language.editor.intention.IntentionAction;
 import consulo.language.editor.intention.SuppressIntentionAction;
 import consulo.language.editor.annotation.SuppressableProblemGroup;
@@ -76,12 +77,11 @@ public class DartProblemGroup implements SuppressableProblemGroup {
     }
 
     @Override
-    public @NotNull String getText() {
+    public @NotNull LocalizeValue getText() {
       String message = mySourceChange.getMessage();
-      return message;
+      return LocalizeValue.of(message);
     }
 
-    @Override
     public @NotNull String getFamilyName() {
       return DartBundle.message("intention.family.name.suppress.errors.and.warnings.in.dart.code");
     }
@@ -120,15 +120,14 @@ public class DartProblemGroup implements SuppressableProblemGroup {
 
       if (eolComment) {
         // Suppress 'unused_local' using EOL comment
-        setText(DartBundle.message("intention.text.suppress.0.using.eol.comment", errorCode));
+        setText(DartBundle.messageValue("intention.text.suppress.0.using.eol.comment", errorCode));
       }
       else {
         // Suppress 'unused_local'
-        setText(DartBundle.message("intention.text.suppress.0", errorCode));
+        setText(DartBundle.messageValue("intention.text.suppress.0", errorCode));
       }
     }
 
-    @Override
     public @NotNull String getFamilyName() {
       return DartBundle.message("intention.family.name.suppress.errors.and.warnings.in.dart.code");
     }

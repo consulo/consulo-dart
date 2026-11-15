@@ -1,6 +1,8 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.sdk;
 
+import consulo.dart.compat.PropertiesComponentCompat;
+import consulo.dart.compat.FileUtilCompat;
 import consulo.application.Application;
 import consulo.disposer.Disposable;
 import consulo.application.ApplicationPropertiesComponent;
@@ -19,7 +21,7 @@ import consulo.ui.ex.awt.JBLabel;
 import consulo.util.collection.ArrayUtil;
 import consulo.util.collection.SmartList;
 import consulo.application.util.concurrent.AppExecutorUtil;
-import com.intellij.util.system.CpuArch;
+import consulo.dart.compat.CpuArch;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ui.BasicComboBoxWithBrowseButton;
 import org.jetbrains.annotations.Contract;
@@ -53,7 +55,7 @@ public final class DartSdkUtil {
       return cachedVersion;
     }
 
-    final String version = FileUtil.loadFileOrNull(versionFile);
+    final String version = FileUtilCompat.loadFileOrNull(versionFile);
     if (version != null) {
       // The SDK's version file ends with a newline; trim it so every consumer (analytics, UI, logs) sees the bare version.
       final String trimmed = version.trim();
@@ -130,7 +132,7 @@ public final class DartSdkUtil {
   }
 
   public static @Nullable String getFirstKnownDartSdkPath() {
-    List<String> knownPaths = ApplicationPropertiesComponent.getInstance().getList(DART_SDK_KNOWN_PATHS);
+    List<String> knownPaths = PropertiesComponentCompat.getList(ApplicationPropertiesComponent.getInstance(), DART_SDK_KNOWN_PATHS);
     if (knownPaths != null && !knownPaths.isEmpty() && isDartSdkHome(knownPaths.getFirst())) {
       return knownPaths.getFirst();
     }
@@ -147,7 +149,7 @@ public final class DartSdkUtil {
       validPathsForUI.add(currentPath);
     }
 
-    List<String> knownPaths = ApplicationPropertiesComponent.getInstance().getList(propertyKey);
+    List<String> knownPaths = PropertiesComponentCompat.getList(ApplicationPropertiesComponent.getInstance(), propertyKey);
     if (knownPaths != null && !knownPaths.isEmpty()) {
       for (String path : knownPaths) {
         final String pathSD = FileUtil.toSystemDependentName(path);
@@ -164,7 +166,7 @@ public final class DartSdkUtil {
     final DartSdk oldSdk = DartSdk.getDartSdk(project);
     final List<String> knownPaths = new ArrayList<>();
 
-    List<String> oldKnownPaths = ApplicationPropertiesComponent.getInstance().getList(DART_SDK_KNOWN_PATHS);
+    List<String> oldKnownPaths = PropertiesComponentCompat.getList(ApplicationPropertiesComponent.getInstance(), DART_SDK_KNOWN_PATHS);
     if (oldKnownPaths != null) {
       knownPaths.addAll(oldKnownPaths);
     }
@@ -177,7 +179,7 @@ public final class DartSdkUtil {
     knownPaths.remove(newSdkPath);
     knownPaths.addFirst(newSdkPath);
 
-    ApplicationPropertiesComponent.getInstance().setList(DART_SDK_KNOWN_PATHS, knownPaths);
+    PropertiesComponentCompat.setList(ApplicationPropertiesComponent.getInstance(), DART_SDK_KNOWN_PATHS, knownPaths);
   }
 
   public static @Nullable String getErrorMessageIfWrongSdkRootPath(final @NotNull String sdkRootPath) {

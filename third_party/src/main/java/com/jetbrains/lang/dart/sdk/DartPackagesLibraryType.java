@@ -2,6 +2,7 @@
 package com.jetbrains.lang.dart.sdk;
 
 import consulo.annotation.component.ExtensionImpl;
+import consulo.ui.image.Image;
 import consulo.project.Project;
 import consulo.content.library.LibraryType;
 import consulo.content.library.NewLibraryConfiguration;
@@ -37,12 +38,7 @@ public final class DartPackagesLibraryType extends LibraryType<DartPackagesLibra
     return null;
   }
 
-  @Override
-  public @Nullable NewLibraryConfiguration createNewLibrary(final @NotNull JComponent parentComponent,
-                                                            final @Nullable VirtualFile contextDirectory,
-                                                            final @NotNull Project project) {
-    return null;
-  }
+  // Consulo: createNewLibrary() is asynchronous; the default fails without a roots descriptor, as upstream returns null
 
   @Override
   public @Nullable LibraryPropertiesEditor createPropertiesEditor(final @NotNull LibraryEditorComponent<DartPackagesLibraryProperties> editorComponent) {
@@ -50,7 +46,7 @@ public final class DartPackagesLibraryType extends LibraryType<DartPackagesLibra
   }
 
   @Override
-  public @Nullable Icon getIcon(DartPackagesLibraryProperties properties) {
+  public @Nullable Image getIcon() {
     return DartIcons.Dart_16;
   }
 }

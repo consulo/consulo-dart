@@ -1,6 +1,8 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.completion;
 
+import consulo.annotation.component.ComponentScope;
+import consulo.annotation.component.ExtensionAPI;
 import consulo.component.extension.ExtensionPointName;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,10 +15,11 @@ import java.util.List;
  * <p/>
  * For the DAS completion timing only, a RequestListener and ResponseListener can be attached to the analysis server already.
  */
+@ExtensionAPI(ComponentScope.APPLICATION)
 public abstract class DartCompletionTimerExtension {
 
   private static final ExtensionPointName<DartCompletionTimerExtension> EP_NAME =
-    ExtensionPointName.create("Dart.completionTimerExtension");
+    ExtensionPointName.create(DartCompletionTimerExtension.class);
 
   public static @NotNull List<DartCompletionTimerExtension> getExtensions() {
     return EP_NAME.getExtensionList();

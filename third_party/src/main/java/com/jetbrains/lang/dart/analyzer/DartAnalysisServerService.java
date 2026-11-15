@@ -1,6 +1,7 @@
 // Copyright 2000-2025 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.analyzer;
 
+import java.util.function.BooleanSupplier;
 import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
 import consulo.annotation.component.ComponentScope;
@@ -293,7 +294,7 @@ public final class DartAnalysisServerService implements Disposable {
   private final @NotNull EvictingQueue<String> myDebugLog = EvictingQueue.create(DEBUG_LOG_CAPACITY);
 
   private boolean myDisposed;
-  private final @NotNull Condition<?> myDisposedCondition = o -> myDisposed;
+  private final @NotNull BooleanSupplier myDisposedCondition = () -> myDisposed;
 
   public static String getClientId() {
     return ApplicationNamesInfo.getInstance().getFullProductName().replace(' ', '-');
@@ -1185,7 +1186,7 @@ public final class DartAnalysisServerService implements Disposable {
     stopServer();
   }
 
-  public @NotNull Condition<?> getDisposedCondition() {
+  public @NotNull BooleanSupplier getDisposedCondition() {
     return myDisposedCondition;
   }
 

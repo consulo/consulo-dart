@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.fixes;
 
+import consulo.localize.LocalizeValue;
 import consulo.application.CommonBundle;
 import consulo.language.editor.FileModificationService;
 import consulo.language.editor.inspection.FileModifier;
@@ -49,19 +50,18 @@ public final class DartQuickFix implements IntentionAction, Comparable<Intention
     myQuickFixSet = quickFixSet;
   }
 
-  @Override
   public @NotNull String getFamilyName() {
     return DartBundle.message("intention.family.name");
   }
 
   @Override
-  public @NotNull String getText() {
+  public @NotNull LocalizeValue getText() {
     myQuickFixSet.ensureInitialized();
 
-    if (mySourceChange == null) return "";
+    if (mySourceChange == null) return LocalizeValue.empty();
 
     String message = mySourceChange.getMessage();
-    return message;
+    return LocalizeValue.of(message);
   }
 
   @Override

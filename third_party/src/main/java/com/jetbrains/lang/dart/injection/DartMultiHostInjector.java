@@ -31,12 +31,12 @@ public final class DartMultiHostInjector implements MultiHostInjector {
   private static final @Nullable Language JS_REGEXP_LANG = Language.findLanguageByID("JSRegexp");
 
   @Override
-  public @NotNull List<? extends Class<? extends PsiElement>> elementsToInjectIn() {
-    return Collections.singletonList(DartStringLiteralExpression.class);
+  public @NotNull Class<? extends PsiElement> getElementClass() {
+    return DartStringLiteralExpression.class;
   }
 
   @Override
-  public void getLanguagesToInject(final @NotNull MultiHostRegistrar registrar, final @NotNull PsiElement element) {
+  public void injectLanguages(final @NotNull MultiHostRegistrar registrar, final @NotNull PsiElement element) {
     if (element instanceof DartStringLiteralExpression) {
       if (isRegExp((DartStringLiteralExpression)element)) {
         injectRegExp(registrar, (DartStringLiteralExpression)element);

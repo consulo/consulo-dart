@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart;
 
+import consulo.content.base.BinariesOrderRootType;
 import consulo.application.Application;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.application.ApplicationManager;
@@ -178,7 +179,7 @@ public final class DartFileListener implements AsyncFileListener {
                                 return lib;
                               });
 
-    final String[] existingUrls = library.getUrls(OrderRootType.CLASSES);
+    final String[] existingUrls = library.getUrls(BinariesOrderRootType.ID);
 
     final Collection<String> libRootUrls = libInfo.getLibRootUrls();
 
@@ -188,11 +189,11 @@ public final class DartFileListener implements AsyncFileListener {
       ApplicationManager.getApplication().runWriteAction(() -> {
         final LibraryEx.ModifiableModelEx model = (LibraryEx.ModifiableModelEx)library.getModifiableModel();
         for (String url : existingUrls) {
-          model.removeRoot(url, OrderRootType.CLASSES);
+          model.removeRoot(url, BinariesOrderRootType.ID);
         }
 
         for (String url : libRootUrls) {
-          model.addRoot(url, OrderRootType.CLASSES);
+          model.addRoot(url, BinariesOrderRootType.ID);
         }
 
         final DartPackagesLibraryProperties libraryProperties = new DartPackagesLibraryProperties();

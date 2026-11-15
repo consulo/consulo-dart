@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.analyzer;
 
+import consulo.content.base.ExcludedContentFolderTypeProvider;
 import consulo.application.Application;
 import consulo.ui.ModalityState;
 import consulo.application.ReadAction;
@@ -91,7 +92,7 @@ public class DartServerRootsHandler {
         final String contentEntryUrl = contentEntry.getUrl();
         if (contentEntryUrl.startsWith(URLUtil.FILE_PROTOCOL + URLUtil.SCHEME_SEPARATOR)) {
           newIncludedRootPaths.add(VirtualFileUtil.urlToPath(contentEntryUrl));
-          for (String excludedUrl : contentEntry.getExcludeFolderUrls()) {
+          for (String excludedUrl : contentEntry.getFolderUrls(ExcludedContentFolderTypeProvider.getInstance()::equals)) {
             // Analysis Server knows about special 'packages' folders, IDE doesn't need to explicitly list them as excluded.
             if (excludedUrl.startsWith(contentEntryUrl) && !excludedUrl.endsWith("/packages")) {
               newExcludedRootPaths.add(VirtualFileUtil.urlToPath(excludedUrl));

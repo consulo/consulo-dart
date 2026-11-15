@@ -4,7 +4,6 @@ package com.jetbrains.lang.dart.ide.actions;
 import consulo.language.editor.hint.HintManager;
 import consulo.ide.impl.idea.codeInsight.hint.HintManagerImpl;
 import consulo.language.editor.ui.awt.HintUtil;
-import consulo.ui.ex.action.ActionUpdateThread;
 import consulo.ui.ex.action.AnAction;
 import consulo.ui.ex.action.AnActionEvent;
 import consulo.language.editor.CommonDataKeys;
@@ -45,14 +44,10 @@ import java.util.List;
  */
 public abstract class AbstractDartFileProcessingAction extends AnAction implements DumbAware {
 
-  @Override
-  public @NotNull ActionUpdateThread getActionUpdateThread() {
-    return ActionUpdateThread.BGT;
-  }
 
   @Override
   public void actionPerformed(final @NotNull AnActionEvent event) {
-    final Project project = event.getProject();
+    final Project project = event.getData(Project.KEY);
     if (project == null) return;
 
     final DartSdk sdk = DartSdk.getDartSdk(project);
@@ -89,7 +84,7 @@ public abstract class AbstractDartFileProcessingAction extends AnAction implemen
   @Override
   public void update(final @NotNull AnActionEvent event) {
     final Presentation presentation = event.getPresentation();
-    final Project project = event.getProject();
+    final Project project = event.getData(Project.KEY);
     if (project == null) {
       presentation.setEnabledAndVisible(false);
       return;

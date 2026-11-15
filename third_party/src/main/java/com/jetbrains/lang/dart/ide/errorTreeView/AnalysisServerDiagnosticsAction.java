@@ -7,7 +7,6 @@ import consulo.project.ui.notification.Notification;
 import consulo.project.ui.notification.NotificationType;
 import com.intellij.notification.Notifications;
 import consulo.ui.ex.action.ActionManager;
-import consulo.ui.ex.action.ActionUpdateThread;
 import consulo.ui.ex.action.AnActionEvent;
 import consulo.ui.ex.action.DumbAwareAction;
 import consulo.project.Project;
@@ -32,7 +31,7 @@ public class AnalysisServerDiagnosticsAction extends DumbAwareAction {
 
   @Override
   public void update(@NotNull AnActionEvent e) {
-    final Project project = e.getProject();
+    final Project project = e.getData(Project.KEY);
     if (project == null || project.isDisposed()) {
       e.getPresentation().setEnabledAndVisible(false);
       return;
@@ -41,14 +40,10 @@ public class AnalysisServerDiagnosticsAction extends DumbAwareAction {
     e.getPresentation().setEnabledAndVisible(isRunning);
   }
 
-  @Override
-  public @NotNull ActionUpdateThread getActionUpdateThread() {
-    return ActionUpdateThread.BGT;
-  }
 
   @Override
   public void actionPerformed(@NotNull AnActionEvent e) {
-    final Project project = e.getProject();
+    final Project project = e.getData(Project.KEY);
     if (project == null) return;
 
     run(project, e);

@@ -1,14 +1,17 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.assists;
 
+import consulo.application.AllIcons;
 import consulo.language.editor.FileModificationService;
+import consulo.ui.image.Image;
 import consulo.language.editor.completion.lookup.LookupElement;
 import consulo.language.editor.completion.lookup.LookupElementBuilder;
 import consulo.language.editor.completion.lookup.LookupElementPresentation;
 import consulo.language.editor.completion.lookup.LookupElementRenderer;
 import consulo.language.editor.template.TemplateBuilderFactory;
-import consulo.language.editor.impl.internal.template.TemplateBuilderImpl;
-import consulo.language.editor.template.ConstantNode;
+import consulo.language.editor.template.TemplateBuilder;
+import consulo.navigation.OpenFileDescriptorFactory;
+import consulo.dart.compat.ConstantNode;
 import consulo.undoRedo.CommandProcessor;
 import consulo.document.Document;
 import consulo.codeEditor.Editor;
@@ -27,7 +30,6 @@ import consulo.virtualFileSystem.VirtualFile;
 import consulo.language.psi.PsiDocumentManager;
 import consulo.language.psi.PsiFile;
 import consulo.language.psi.PsiManager;
-import consulo.ide.impl.idea.util.PlatformIcons;
 import consulo.util.collection.ContainerUtil;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
@@ -262,8 +264,8 @@ public final class AssistUtils {
   }
 
   public static @Nullable Editor navigate(final @NotNull Project project, final @NotNull VirtualFile file, final int offset) {
-    final OpenFileDescriptor descriptor = new OpenFileDescriptor(project, file, offset);
-    descriptor.setScrollType(ScrollType.MAKE_VISIBLE);
+    // Consulo: no scroll type in OpenFileDescriptor, navigation scrolls to make the offset visible
+    final OpenFileDescriptor descriptor = OpenFileDescriptorFactory.getInstance(project).newBuilder(file).offset(offset).build();
     descriptor.navigate(true);
 
     final FileEditor fileEditor = FileEditorManager.getInstance(project).getSelectedEditor(file);
@@ -282,7 +284,7 @@ public final class AssistUtils {
 
     // Commit changes, otherwise TemplateBuilderImpl#buildTemplate() sees the old psiFile text.
     PsiDocumentManager.getInstance(project).commitDocument(editor.getDocument());
-    final TemplateBuilderImpl builder = (TemplateBuilderImpl)TemplateBuilderFactory.getInstance().createTemplateBuilder(target.psiFile);
+    final TemplateBuilder builder = TemplateBuilderFactory.getInstance().createTemplateBuilder(target.psiFile);
     boolean hasTextRanges = false;
 
     // fill the builder with ranges
@@ -305,11 +307,12 @@ public final class AssistUtils {
             final String text = editor.getDocument().getText(range);
             ConstantNode expression =
               new ConstantNode(text).withLookupItems(ContainerUtil.map(group.getSuggestions(), AssistUtils::createLookupElement));
-            builder.replaceRange(range, mainVar, expression, true);
+            // Consulo: TemplateBuilderImpl.replaceRange(range, var, expression, alwaysStopAt) is internal, the file is the container element
+            builder.replaceElement(target.psiFile, range, mainVar, expression, true);
           }
           else {
             final String positionVar = mainVar + "_" + offset;
-            builder.replaceElement(range, positionVar, mainVar, false);
+            builder.replaceElement(target.psiFile, range, positionVar, mainVar, false);
           }
         }
       }
@@ -348,25 +351,25 @@ public final class AssistUtils {
     return LookupElementBuilder.create(value).withRenderer(new LookupElementRenderer<>() {
       @Override
       public void renderElement(final LookupElement element, final LookupElementPresentation presentation) {
-        final Icon icon = getIcon(suggestion.getKind());
+        final Image icon = getIcon(suggestion.getKind());
         presentation.setIcon(icon);
         presentation.setItemText(value);
       }
     });
   }
 
-  private static Icon getIcon(String suggestionKind) {
+  private static Image getIcon(String suggestionKind) {
     if (LinkedEditSuggestionKind.METHOD.equals(suggestionKind)) {
-      return PlatformIcons.METHOD_ICON;
+      return AllIcons.Nodes.Method;
     }
     if (LinkedEditSuggestionKind.PARAMETER.equals(suggestionKind)) {
-      return PlatformIcons.PARAMETER_ICON;
+      return AllIcons.Nodes.Parameter;
     }
     if (LinkedEditSuggestionKind.TYPE.equals(suggestionKind)) {
-      return PlatformIcons.CLASS_ICON;
+      return AllIcons.Nodes.Class;
     }
     if (LinkedEditSuggestionKind.VARIABLE.equals(suggestionKind)) {
-      return PlatformIcons.VARIABLE_ICON;
+      return AllIcons.Nodes.Variable;
     }
     return null;
   }

@@ -22,12 +22,12 @@ public final class StringCollectionExternalizer<C extends Collection<String>> im
   public StringCollectionExternalizer(@NotNull IntFunction<? extends C> generator) {myGenerator = generator;}
 
   @Override
-  public int getHashCode(C value) {
+  public int hashCode(C value) {
     return value.hashCode();
   }
 
   @Override
-  public boolean isEqual(C val1, C val2) {
+  public boolean equals(C val1, C val2) {
     return val1.equals(val2);
   }
 

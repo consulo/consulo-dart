@@ -5,7 +5,6 @@ import consulo.webBrowser.BrowserFamily;
 import consulo.webBrowser.BrowserLauncher;
 import consulo.webBrowser.WebBrowser;
 import consulo.webBrowser.WebBrowserManager;
-import consulo.ui.ex.action.ActionUpdateThread;
 import consulo.ui.ex.action.AnActionEvent;
 import consulo.ui.ex.action.DumbAwareAction;
 import consulo.project.Project;
@@ -38,10 +37,6 @@ public class OpenDartObservatoryUrlAction extends DumbAwareAction {
     myUrl = url;
   }
 
-  @Override
-  public @NotNull ActionUpdateThread getActionUpdateThread() {
-    return ActionUpdateThread.BGT;
-  }
 
   @Override
   public void update(final @NotNull AnActionEvent e) {
@@ -50,7 +45,7 @@ public class OpenDartObservatoryUrlAction extends DumbAwareAction {
 
   @Override
   public void actionPerformed(@NotNull AnActionEvent e) {
-    Project project = e.getProject();
+    Project project = e.getData(Project.KEY);
     if (project == null || myUrl == null) return;
 
     String urlToOpen;
@@ -76,7 +71,7 @@ public class OpenDartObservatoryUrlAction extends DumbAwareAction {
 
   private static void openInAnyChromeFamilyBrowser(final @NotNull String url) {
     final List<WebBrowser> chromeBrowsers = WebBrowserManager.getInstance().getBrowsers(
-      browser -> browser.getFamily() == BrowserFamily.CHROME, true);
+      browser -> browser.getFamily() == BrowserFamily.CHROME);
 
     BrowserLauncher.getInstance().browse(url, chromeBrowsers.isEmpty() ? null : chromeBrowsers.getFirst());
   }

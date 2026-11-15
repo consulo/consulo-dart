@@ -6,7 +6,6 @@ import consulo.execution.configuration.RunConfigurationBase;
 import consulo.execution.configuration.RunProfileState;
 import consulo.execution.runner.ExecutionEnvironment;
 import consulo.execution.test.action.AbstractRerunFailedTestsAction;
-import consulo.ui.ex.action.ActionUpdateThread;
 import consulo.module.Module;
 import consulo.ui.ex.ComponentContainer;
 import com.jetbrains.lang.dart.ide.runner.base.DartRunConfiguration;
@@ -19,10 +18,6 @@ class DartTestRerunnerAction extends AbstractRerunFailedTestsAction {
     super(componentContainer);
   }
 
-  @Override
-  public @NotNull ActionUpdateThread getActionUpdateThread() {
-    return ActionUpdateThread.BGT;
-  }
 
   @Override
   protected MyRunProfile getRunProfile(@NotNull ExecutionEnvironment environment) {

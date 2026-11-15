@@ -1,6 +1,8 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.completion;
 
+import consulo.annotation.component.ComponentScope;
+import consulo.annotation.component.ExtensionAPI;
 import consulo.language.editor.completion.lookup.LookupElementBuilder;
 import consulo.component.extension.ExtensionPointName;
 import consulo.project.Project;
@@ -14,8 +16,9 @@ import java.util.List;
  * @deprecated Coupled to legacy DAS {@link CompletionSuggestion}; not invoked when LSP code completion is active.
  */
 @Deprecated
+@ExtensionAPI(ComponentScope.APPLICATION)
 public class DartCompletionExtension {
-  private static final ExtensionPointName<DartCompletionExtension> EP_NAME = ExtensionPointName.create("Dart.completionExtension");
+  private static final ExtensionPointName<DartCompletionExtension> EP_NAME = ExtensionPointName.create(DartCompletionExtension.class);
 
   static @NotNull List<DartCompletionExtension> getExtensions() {
     return EP_NAME.getExtensionList();

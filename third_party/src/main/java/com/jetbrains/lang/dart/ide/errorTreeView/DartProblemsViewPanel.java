@@ -10,7 +10,6 @@ import consulo.ui.ex.action.ActionManager;
 import consulo.ui.ex.action.ActionPlaces;
 import consulo.ui.ex.action.ActionPopupMenu;
 import consulo.ui.ex.action.ActionToolbar;
-import consulo.ui.ex.action.ActionUpdateThread;
 import consulo.ui.ex.action.AnAction;
 import consulo.ui.ex.action.AnActionEvent;
 import consulo.language.editor.CommonDataKeys;
@@ -179,10 +178,6 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
       if (sourceChangeFix == null) continue;
       String fixMessage = sourceChangeFix.getMessage();
       group.add(new AnAction(fixMessage, null, AllIcons.Actions.QuickfixBulb) {
-        @Override
-        public @NotNull ActionUpdateThread getActionUpdateThread() {
-          return ActionUpdateThread.BGT;
-        }
 
         @Override
         public void actionPerformed(@NotNull AnActionEvent event) {
@@ -218,10 +213,6 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
       // Create the action for this DiagnosticMessage
       if (StringUtil.isNotEmpty(message) && vFile != null) {
         group.add(new DumbAwareAction(message, null, jumpToSourceIcon) {
-          @Override
-          public @NotNull ActionUpdateThread getActionUpdateThread() {
-            return ActionUpdateThread.BGT;
-          }
 
           @Override
           public void actionPerformed(@NotNull AnActionEvent e) {
@@ -241,10 +232,6 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
     group.add(new DumbAwareAction(DartBundle.messagePointer("action.DartProblemsViewPanel.open.documentation.text"),
                                   DartBundle.messagePointer("action.DartProblemsViewPanel.open.documentation.description"),
                                   AllIcons.Ide.External_link_arrow) {
-      @Override
-      public @NotNull ActionUpdateThread getActionUpdateThread() {
-        return ActionUpdateThread.BGT;
-      }
 
       @Override
       public void actionPerformed(@NotNull AnActionEvent e) {
@@ -311,10 +298,6 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
     AnAction action = new DumbAwareToggleAction(DartBundle.message("group.by.severity"),
                                                 DartBundle.message("group.by.severity.description"),
                                                 AllIcons.Nodes.SortBySeverity) {
-      @Override
-      public @NotNull ActionUpdateThread getActionUpdateThread() {
-        return ActionUpdateThread.BGT;
-      }
 
       @Override
       public boolean isSelected(@NotNull AnActionEvent e) {
@@ -376,10 +359,6 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
       .createPopup().show(RelativePoint.fromScreen(tableTopLeft));
   }
 
-  @Override
-  public @NotNull ActionUpdateThread getActionUpdateThread() {
-    return ActionUpdateThread.EDT;
-  }
 
   @Override
   public boolean isCopyVisible(@NotNull DataContext dataContext) {
@@ -457,10 +436,6 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
             AllIcons.General.Filter);
     }
 
-    @Override
-    public @NotNull ActionUpdateThread getActionUpdateThread() {
-      return ActionUpdateThread.BGT;
-    }
 
     @Override
     public void update(@NotNull AnActionEvent e) {
@@ -482,10 +457,6 @@ public class DartProblemsViewPanel extends SimpleToolWindowPanel implements Copy
             AllIcons.General.GearPlain);
     }
 
-    @Override
-    public @NotNull ActionUpdateThread getActionUpdateThread() {
-      return ActionUpdateThread.BGT;
-    }
 
     @Override
     public void update(@NotNull AnActionEvent e) {

@@ -22,6 +22,8 @@ module com.jetbrains.lang.dart {
   requires consulo.file.editor.api;
   requires consulo.file.template.api;
   requires consulo.ide.api;
+  // see CONSULO.md, "ide-impl usages"
+  requires consulo.ide.impl;
   requires consulo.index.io;
   requires consulo.language.api;
   requires consulo.language.code.style.api;

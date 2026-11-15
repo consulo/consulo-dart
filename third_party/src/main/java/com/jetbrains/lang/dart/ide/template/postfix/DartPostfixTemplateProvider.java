@@ -2,6 +2,8 @@
 package com.jetbrains.lang.dart.ide.template.postfix;
 
 import consulo.annotation.component.ExtensionImpl;
+import com.jetbrains.lang.dart.DartLanguage;
+import consulo.language.Language;
 import consulo.language.editor.postfixTemplate.PostfixTemplate;
 import consulo.language.editor.postfixTemplate.PostfixTemplateProvider;
 import consulo.logging.Logger;
@@ -19,7 +21,7 @@ import java.util.Map;
 import java.util.Set;
 
 @ExtensionImpl
-public final class DartPostfixTemplateProvider implements PostfixTemplateProvider {
+public final class DartPostfixTemplateProvider extends PostfixTemplateProvider {
   private static final Logger LOG = PluginLogger.INSTANCE.createLogger(DartPostfixTemplateProvider.class);
 
   private static final String UNINITIALIZED_KEY = "none";
@@ -56,12 +58,17 @@ public final class DartPostfixTemplateProvider implements PostfixTemplateProvide
   }
 
   @Override
+  public @NotNull Language getLanguage() {
+    return DartLanguage.INSTANCE;
+  }
+
   public @NotNull String getId() {
     return "builtin.dart";
   }
 
+  // Consulo: PostfixTemplateProvider.getTemplates() is final and computed once (see CONSULO.md, missing APIs)
   @Override
-  public @NotNull Set<PostfixTemplate> getTemplates() {
+  protected @NotNull Set<PostfixTemplate> buildTemplates() {
     // Find the largest initialized set. This may return templates that are not recognized
     // by the analysis server actually used for expansion, but at least the user will see
     // all possible templates.

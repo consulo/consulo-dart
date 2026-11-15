@@ -1,7 +1,6 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.errorTreeView;
 
-import consulo.ui.ex.action.ActionUpdateThread;
 import consulo.ui.ex.action.AnAction;
 import consulo.ui.ex.action.AnActionEvent;
 import consulo.application.dumb.DumbAware;
@@ -13,14 +12,10 @@ import org.jetbrains.annotations.Nullable;
 
 public class ReanalyzeDartSourcesAction extends AnAction implements DumbAware {
 
-  @Override
-  public @NotNull ActionUpdateThread getActionUpdateThread() {
-    return ActionUpdateThread.BGT;
-  }
 
   @Override
   public void actionPerformed(final @NotNull AnActionEvent e) {
-    final Project project = e.getProject();
+    final Project project = e.getData(Project.KEY);
     if (isApplicable(project)) {
       DartAnalysisServerService das = DartAnalysisServerService.getInstance(project);
       if (das.isServerProcessActive()) {
@@ -36,7 +31,7 @@ public class ReanalyzeDartSourcesAction extends AnAction implements DumbAware {
 
   @Override
   public void update(final @NotNull AnActionEvent e) {
-    e.getPresentation().setEnabledAndVisible(isApplicable(e.getProject()));
+    e.getPresentation().setEnabledAndVisible(isApplicable(e.getData(Project.KEY)));
   }
 
   private static boolean isApplicable(final @Nullable Project project) {

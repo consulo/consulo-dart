@@ -1,6 +1,8 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.info;
 
+import consulo.language.editor.parameterInfo.ParameterInfoContext;
+import consulo.language.editor.completion.lookup.LookupElement;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.language.editor.CodeInsightBundle;
 import consulo.language.editor.parameterInfo.CreateParameterInfoContext;
@@ -22,6 +24,16 @@ import org.jetbrains.annotations.TestOnly;
 @ExtensionImpl
 public final class DartParameterInfoHandler implements ParameterInfoHandler<PsiElement, DartFunctionDescription> {
   private String myParametersListPresentableText = "";
+
+  @Override
+  public boolean couldShowInLookup() {
+    return false;
+  }
+
+  @Override
+  public Object[] getParametersForLookup(LookupElement item, ParameterInfoContext context) {
+    return null;
+  }
 
   @Override
   public @Nullable PsiElement findElementForParameterInfo(@NotNull CreateParameterInfoContext context) {

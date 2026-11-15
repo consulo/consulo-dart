@@ -1,6 +1,7 @@
 // Copyright 2000-2020 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
 package com.jetbrains.lang.dart.assists;
 
+import consulo.localize.LocalizeValue;
 import consulo.application.CommonBundle;
 import consulo.language.editor.inspection.FileModifier;
 import consulo.language.editor.intention.IntentionAction;
@@ -38,17 +39,16 @@ public class DartQuickAssistIntention implements IntentionAction, Comparable<Int
     return 0;
   }
 
-  @Override
   public @NotNull String getFamilyName() {
     return DartBundle.message("dart.quick.assist.family.name");
   }
 
   @Override
-  public @NotNull String getText() {
-    if (sourceChange == null) return "";
+  public @NotNull LocalizeValue getText() {
+    if (sourceChange == null) return LocalizeValue.empty();
 
     String message = sourceChange.getMessage();
-    return message;
+    return LocalizeValue.of(message);
   }
 
   @Override

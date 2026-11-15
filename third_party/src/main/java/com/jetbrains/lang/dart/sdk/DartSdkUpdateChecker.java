@@ -1,6 +1,9 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.sdk;
 
+import consulo.project.ui.notification.NotificationService;
+import consulo.localize.LocalizeValue;
+import consulo.dart.notification.DartNotificationGroups;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import consulo.webBrowser.BrowserUtil;
@@ -11,7 +14,6 @@ import consulo.project.ui.notification.NotificationAction;
 import consulo.application.ApplicationManager;
 import consulo.ui.ModalityState;
 import consulo.project.Project;
-import com.intellij.openapi.updateSettings.impl.UpdateChecker;
 import consulo.util.lang.Couple;
 import consulo.application.util.registry.Registry;
 import consulo.util.lang.StringUtil;
@@ -138,19 +140,15 @@ public final class DartSdkUpdateChecker {
     final String title = DartBundle.message("dart.sdk.update.title");
     final String message = DartBundle.message("new.dart.sdk.available.for.download..notification", availableSdkVersion, currentSdkVersion);
 
-    final Notification notification = UpdateChecker.getNotificationGroup().createNotification(title, message, NotificationType.INFORMATION)
-      .setDisplayId("dart.sdk.update.available");
-
-    notification.addAction(NotificationAction.createSimple(DartBundle.message("download.dart.sdk"),()-> {
-      notification.expire();
-      BrowserUtil.browse(downloadUrl);
-    }));
-
-    notification.addAction(NotificationAction.createSimple(DartBundle.message("open.dart.settings"), ()-> {
-      notification.expire();
-      DartConfigurable.openDartSettings(project);
-    }));
-    notification.notify(project);
+    // Consulo: no IDE update checker notification group, the Dart Support group is used
+    NotificationService.getInstance()
+      .newInfo(DartNotificationGroups.DART_SUPPORT)
+      .title(LocalizeValue.of(title))
+      .content(LocalizeValue.of(message))
+      .displayId("dart.sdk.update.available")
+      .addClosingAction(DartBundle.messageValue("download.dart.sdk"), () -> BrowserUtil.browse(downloadUrl))
+      .addClosingAction(DartBundle.messageValue("open.dart.settings"), () -> DartConfigurable.openDartSettings(project))
+      .notify(project);
   }
 
   private static @Nullable SdkUpdateInfo getSdkUpdateInfo(final @NotNull String updateCheckUrl, final @NotNull String sdkDownloadUrl) {

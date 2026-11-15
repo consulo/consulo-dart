@@ -4,7 +4,6 @@ package com.jetbrains.lang.dart.ide.runner.actions;
 
 import consulo.application.AllIcons;
 import consulo.ui.ex.action.ActionPlaces;
-import consulo.ui.ex.action.ActionUpdateThread;
 import consulo.ui.ex.action.AnAction;
 import consulo.ui.ex.action.AnActionEvent;
 import consulo.ui.ex.action.Presentation;
@@ -33,10 +32,6 @@ public class DartPopFrameAction extends AnAction implements DumbAware {
     }
   }
 
-  @Override
-  public @NotNull ActionUpdateThread getActionUpdateThread() {
-    return ActionUpdateThread.BGT;
-  }
 
   @Override
   public void update(@NotNull AnActionEvent e) {

@@ -243,6 +243,7 @@
                         <include>com/jetbrains/lang/dart/lexer/DartLexer.java</include>
                         <include>com/jetbrains/lang/dart/lexer/_*.java</include>
                         <include>com/jetbrains/lang/dart/logging/PluginLogger.java</include>
+                        <include>com/jetbrains/lang/dart/ide/devtools/DartDevToolsService.java</include>
                         <include>com/jetbrains/lang/dart/psi/**/*.java</include>
                         <include>com/jetbrains/lang/dart/psi/DartClass.java</include>
                         <include>com/jetbrains/lang/dart/psi/DartClassResolveCache.java</include>
@@ -466,6 +467,13 @@
         <dependency>
             <groupId>consulo</groupId>
             <artifactId>consulo-http-api</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- ide-impl: see CONSULO.md, "ide-impl usages" -->
+        <dependency>
+            <groupId>consulo</groupId>
+            <artifactId>consulo-ide-impl</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
