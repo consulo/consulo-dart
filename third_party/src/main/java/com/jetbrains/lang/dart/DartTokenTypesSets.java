@@ -7,7 +7,6 @@ import consulo.language.parser.PsiBuilderFactory;
 import consulo.util.lang.Pair;
 import consulo.language.psi.PsiElement;
 import consulo.language.ast.TokenType;
-import consulo.language.impl.internal.psi.diff.BlockSupport;
 import consulo.language.ast.IElementType;
 import consulo.language.ast.ILazyParseableElementType;
 import consulo.language.ast.IReparseableElementType;
@@ -242,7 +241,7 @@ public interface DartTokenTypesSets {
 
     @Override
     protected ASTNode doParseContents(@NotNull ASTNode lazyParseableBlock, @NotNull PsiElement psi) {
-      PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(psi.getProject(), lazyParseableBlock);
+      PsiBuilder builder = PsiBuilderFactory.getInstance().createBuilder(psi.getProject(), lazyParseableBlock, DartLanguage.INSTANCE.getVersions()[0]);
 
       if (isSyncOrAsync(lazyParseableBlock)) {
         builder.putUserData(DartGeneratedParserUtilBase.INSIDE_SYNC_OR_ASYNC_FUNCTION, true);
@@ -256,7 +255,8 @@ public interface DartTokenTypesSets {
     }
 
     private static boolean isSyncOrAsync(final @NotNull ASTNode newBlock) {
-      final ASTNode oldBlock = Pair.getFirst(newBlock.getUserData(BlockSupport.TREE_TO_BE_REPARSED));
+      // TODO consulo-api: BlockSupport.TREE_TO_BE_REPARSED is not exported by consulo.language.impl
+      final ASTNode oldBlock = null;
       final IElementType type = (oldBlock != null ? oldBlock : newBlock).getTreeParent().getFirstChildNode().getElementType();
       return type == SYNC || type == ASYNC;
     }

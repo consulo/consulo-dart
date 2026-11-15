@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
-# Converts upstream message bundles into the Consulo localize file, so DartBundle keys stay valid.
-# Run after merging upstream changes to third_party/src/main/resources/messages.
-import json, os
+# Converts upstream resources into the Consulo layout:
+#  - messages/*.properties -> LOCALIZE-LIB (DartLocalize), so DartBundle keys stay valid
+#  - icons/*.svg -> ICON-LIB (DartIconGroup), used by icons.DartIcons
+# Run after merging upstream changes to third_party/src/main/resources.
+import json, os, shutil
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', 'third_party', 'src', 'main', 'resources')
 BUNDLES = ['messages/DartBundle.properties', 'messages/DartDeprecatedMessageBundle.properties']
 OUT = 'LOCALIZE-LIB/en_US/consulo.dart.DartLocalize.yaml'
+ICONS = 'icons'
+ICON_LIB = 'ICON-LIB/{theme}/consulo.dart.DartIconGroup'
 
 
 def read_properties(path):
@@ -58,6 +62,23 @@ def unescape(s):
     return out
 
 
+def sync_icons():
+    src = os.path.join(ROOT, ICONS)
+    for theme in ('light', 'dark'):
+        out = os.path.join(ROOT, ICON_LIB.format(theme=theme))
+        shutil.rmtree(out, ignore_errors=True)
+        os.makedirs(out)
+    count = 0
+    for name in sorted(os.listdir(src)):
+        if not name.endswith('.svg'):
+            continue
+        dark = name.endswith('_dark.svg')
+        target = name[:-len('_dark.svg')] + '.svg' if dark else name
+        shutil.copyfile(os.path.join(src, name), os.path.join(ROOT, ICON_LIB.format(theme='dark' if dark else 'light'), target))
+        count += 1
+    print(f'{count} icons -> {ICON_LIB}')
+
+
 def main():
     messages = {}
     for bundle in BUNDLES:
@@ -70,6 +91,7 @@ def main():
         for key in sorted(messages):
             f.write(f'{key}:\n    text: {json.dumps(messages[key], ensure_ascii=False)}\n')
     print(f'{len(messages)} messages -> {OUT}')
+    sync_icons()
 
 
 if __name__ == '__main__':

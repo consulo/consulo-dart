@@ -2,6 +2,7 @@
 package com.jetbrains.lang.dart;
 
 import consulo.application.AllIcons;
+import consulo.ui.image.Image;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.util.PsiTreeUtil;
 import com.jetbrains.lang.dart.psi.*;
@@ -15,7 +16,7 @@ import java.util.function.Supplier;
 public enum DartComponentType {
   CLASS(AllIcons.Nodes.Class, DartBundle.messagePointer("find.usages.type.class")) {
     @Override
-    public Icon getIcon(@NotNull DartComponent component) {
+    public Image getIcon(@NotNull DartComponent component) {
       return component instanceof DartEnumDefinition ? AllIcons.Nodes.Enum
                                                      : component.isAbstract() ? AllIcons.Nodes.AbstractClass
                                                                               : getIcon();
@@ -23,7 +24,7 @@ public enum DartComponentType {
   },
   FUNCTION(AllIcons.Nodes.Lambda, DartBundle.messagePointer("find.usages.type.function")) {
     @Override
-    public Icon getIcon(@NotNull DartComponent component) {
+    public Image getIcon(@NotNull DartComponent component) {
       if (component.isGetter()) {
         return AllIcons.Nodes.PropertyReadStatic;
       }
@@ -35,7 +36,7 @@ public enum DartComponentType {
   },
   METHOD(AllIcons.Nodes.Method, DartBundle.messagePointer("find.usages.type.method")) {
     @Override
-    public Icon getIcon(@NotNull DartComponent component) {
+    public Image getIcon(@NotNull DartComponent component) {
       if (component.isGetter()) {
         return component.isStatic() ? AllIcons.Nodes.PropertyReadStatic : AllIcons.Nodes.PropertyRead;
       }
@@ -54,10 +55,10 @@ public enum DartComponentType {
   OPERATOR(AllIcons.Nodes.ClassInitializer, DartBundle.messagePointer("find.usages.type.operator")),
   LABEL(AllIcons.Nodes.Variable, DartBundle.messagePointer("find.usages.type.label"));
 
-  private final Icon myIcon;
+  private final Image myIcon;
   private final Supplier<String> myUsageTypeSupplier;
 
-  DartComponentType(final Icon icon, Supplier<String> supplier) {
+  DartComponentType(final Image icon, Supplier<String> supplier) {
     myIcon = icon;
     myUsageTypeSupplier = supplier;
   }
@@ -66,11 +67,11 @@ public enum DartComponentType {
     return ordinal();
   }
 
-  public Icon getIcon() {
+  public Image getIcon() {
     return myIcon;
   }
 
-  public Icon getIcon(@NotNull DartComponent component) {
+  public Image getIcon(@NotNull DartComponent component) {
     // Overridden in appropriate subclasses
     return getIcon();
   }

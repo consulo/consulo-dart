@@ -2,10 +2,10 @@
 package com.jetbrains.lang.dart;
 
 import consulo.language.file.LanguageFileType;
+import consulo.localize.LocalizeValue;
+import consulo.ui.image.Image;
 import icons.DartIcons;
 import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
 
 public final class DartFileType extends LanguageFileType {
   public static final LanguageFileType INSTANCE = new DartFileType();
@@ -16,13 +16,13 @@ public final class DartFileType extends LanguageFileType {
   }
 
   @Override
-  public @NotNull String getName() {
+  public @NotNull String getId() {
     return "Dart";
   }
 
   @Override
-  public @NotNull String getDescription() {
-    return DartBundle.message("filetype.dart.description");
+  public @NotNull LocalizeValue getDescription() {
+    return DartBundle.messageValue("filetype.dart.description");
   }
 
   @Override
@@ -31,7 +31,7 @@ public final class DartFileType extends LanguageFileType {
   }
 
   @Override
-  public Icon getIcon() {
+  public Image getIcon() {
     return DartIcons.Dart_file;
   }
 }

@@ -2,28 +2,26 @@
 package com.jetbrains.lang.dart.psi.impl;
 
 import consulo.application.AllIcons;
+import consulo.ui.image.Image;
 import consulo.language.ast.ASTNode;
 import consulo.navigation.ItemPresentation;
 import consulo.navigation.NavigationItem;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.util.PsiTreeUtil;
-import com.intellij.ui.IconManager;
-import com.intellij.ui.icons.RowIcon;
-import consulo.ide.impl.idea.util.PlatformIcons;
+import consulo.localize.LocalizeValue;
+import consulo.ui.image.ImageEffects;
 import com.jetbrains.lang.dart.psi.*;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
-
 public abstract class DartFunctionExpressionBase extends DartExpressionImpl {
-  private static final RowIcon ICON = IconManager.getInstance().createRowIcon(AllIcons.Nodes.Lambda, PlatformIcons.PRIVATE_ICON);
+  private static final Image ICON = ImageEffects.appendRight(AllIcons.Nodes.Lambda, AllIcons.Nodes.C_private);
 
   public DartFunctionExpressionBase(ASTNode node) {
     super(node);
   }
 
-  @Override
-  public Icon getIcon(int flags) {
+  // Consulo: not an override, used by consulo.dart.DartIconDescriptorUpdater
+  public Image getIcon(int flags) {
     return ICON;
   }
 
@@ -39,9 +37,9 @@ public abstract class DartFunctionExpressionBase extends DartExpressionImpl {
     if (parent != null) {
       return new ItemPresentation() {
         @Override
-        public @Nullable String getPresentableText() {
+        public LocalizeValue getPresentableText() {
           ItemPresentation container = ((NavigationItem)parent).getPresentation();
-          return container == null ? null : "() in " + container.getPresentableText();
+          return container == null ? LocalizeValue.empty() : LocalizeValue.join(LocalizeValue.of("() in "), container.getPresentableText());
         }
 
         @Override
@@ -51,7 +49,7 @@ public abstract class DartFunctionExpressionBase extends DartExpressionImpl {
         }
 
         @Override
-        public @Nullable Icon getIcon(boolean unused) {
+        public @Nullable Image getIcon(boolean unused) {
           return DartFunctionExpressionBase.this.getIcon(0);
         }
       };

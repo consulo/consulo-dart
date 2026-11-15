@@ -2,6 +2,7 @@
 package com.jetbrains.lang.dart.psi.impl;
 
 import consulo.language.ast.ASTNode;
+import consulo.ui.image.Image;
 import consulo.navigation.ItemPresentation;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.PsiNameIdentifierOwner;
@@ -10,12 +11,11 @@ import consulo.language.util.IncorrectOperationException;
 import com.jetbrains.lang.dart.psi.DartId;
 import com.jetbrains.lang.dart.psi.DartLibraryNameElement;
 import com.jetbrains.lang.dart.util.DartElementGenerator;
+import consulo.localize.LocalizeValue;
 import icons.DartIcons;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.swing.*;
 
 public abstract class DartLibraryNameElementBase extends DartPsiCompositeElementImpl implements PsiNameIdentifierOwner {
   public DartLibraryNameElementBase(@NotNull ASTNode node) {
@@ -50,19 +50,24 @@ public abstract class DartLibraryNameElementBase extends DartPsiCompositeElement
   public @Nullable ItemPresentation getPresentation() {
     return new ItemPresentation() {
       @Override
-      public String getPresentableText() {
-        return getName();
+      public LocalizeValue getPresentableText() {
+        return LocalizeValue.of(getName());
       }
 
       @Override
-      public Icon getIcon(boolean open) {
+      public @Nullable String getLocationString() {
+        return null;
+      }
+
+      @Override
+      public Image getIcon(boolean open) {
         return DartLibraryNameElementBase.this.getIcon(0);
       }
     };
   }
 
-  @Override
-  public Icon getIcon(int flags) {
+  // Consulo: not an override, used by consulo.dart.DartIconDescriptorUpdater
+  public Image getIcon(int flags) {
     return DartIcons.Dart_file; // todo better icon?
   }
 

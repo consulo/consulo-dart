@@ -308,6 +308,7 @@
                         <include>consulo/dart/**/*.java</include>
                         <include>consulo/dart/notification/DartNotificationGroups.java</include>
                         <include>module-info.java</include>
+                        <include>icons/*.java</include>
                         <include>org/dartlang/analysis/server/protocol/AddContentOverlay.java</include>
                         <include>org/dartlang/analysis/server/protocol/AnalysisError.java</include>
                         <include>org/dartlang/analysis/server/protocol/AnalysisErrorFixes.java</include>

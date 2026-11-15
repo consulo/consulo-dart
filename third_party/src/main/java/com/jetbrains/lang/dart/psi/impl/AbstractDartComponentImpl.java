@@ -2,14 +2,15 @@
 package com.jetbrains.lang.dart.psi.impl;
 
 import consulo.application.AllIcons;
+import consulo.ui.image.Image;
 import consulo.language.ast.ASTNode;
 import consulo.navigation.ItemPresentation;
 import consulo.util.lang.StringUtil;
 import consulo.language.psi.PsiElement;
 import consulo.language.psi.util.PsiTreeUtil;
-import com.intellij.ui.IconManager;
+import consulo.localize.LocalizeValue;
+import consulo.ui.image.ImageEffects;
 import consulo.language.util.IncorrectOperationException;
-import consulo.ide.impl.idea.util.PlatformIcons;
 import com.jetbrains.lang.dart.DartComponentType;
 import com.jetbrains.lang.dart.DartTokenTypes;
 import com.jetbrains.lang.dart.psi.*;
@@ -17,8 +18,6 @@ import com.jetbrains.lang.dart.util.DartPresentableUtil;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-
-import javax.swing.*;
 
 public abstract class AbstractDartComponentImpl extends DartPsiCompositeElementImpl implements DartComponent {
   public AbstractDartComponentImpl(@NotNull ASTNode node) {
@@ -51,19 +50,19 @@ public abstract class AbstractDartComponentImpl extends DartPsiCompositeElementI
     return id == null ? null : id.getFirstChild();
   }
 
-  @Override
-  public Icon getIcon(int flags) {
+  // Consulo: not an override, used by consulo.dart.DartIconDescriptorUpdater
+  public Image getIcon(int flags) {
     final DartComponentType type = DartComponentType.typeOf(this);
-    Icon icon = type == null ? super.getIcon(flags) : type.getIcon(this);
+    Image icon = type == null ? null : type.getIcon(this);
 
     icon = doOverlays(icon);
 
-    return IconManager.getInstance().createRowIcon(icon, isPublic() ? PlatformIcons.PUBLIC_ICON : PlatformIcons.PRIVATE_ICON);
+    return ImageEffects.appendRight(icon, isPublic() ? AllIcons.Nodes.C_public : AllIcons.Nodes.C_private);
   }
 
-  private Icon doOverlays(Icon icon) {
+  private Image doOverlays(Image icon) {
     if (isStatic() && !isGetter() && !isSetter()) {
-      icon = IconManager.getInstance().createLayered(icon, AllIcons.Nodes.StaticMark);
+      icon = ImageEffects.layered(icon, AllIcons.Nodes.StaticMark);
     }
     if (isFinal()) {
       icon = AllIcons.Nodes.FinalMark;
@@ -149,7 +148,7 @@ public abstract class AbstractDartComponentImpl extends DartPsiCompositeElementI
   public ItemPresentation getPresentation() {
     return new ItemPresentation() {
       @Override
-      public String getPresentableText() {
+      public LocalizeValue getPresentableText() {
         final StringBuilder result = new StringBuilder();
         result.append(getComponentName());
         final DartComponentType type = DartComponentType.typeOf(AbstractDartComponentImpl.this);
@@ -175,7 +174,7 @@ public abstract class AbstractDartComponentImpl extends DartPsiCompositeElementI
             result.append(DartPresentableUtil.buildTypeText(AbstractDartComponentImpl.this, dartType, null));
           }
         }
-        return result.toString();
+        return LocalizeValue.of(result.toString());
       }
 
       private @Nullable String getComponentName() {
@@ -207,7 +206,7 @@ public abstract class AbstractDartComponentImpl extends DartPsiCompositeElementI
       }
 
       @Override
-      public Icon getIcon(boolean open) {
+      public Image getIcon(boolean open) {
         return AbstractDartComponentImpl.this.getIcon(0);
       }
     };

@@ -2,6 +2,7 @@
 package com.jetbrains.lang.dart.psi.impl;
 
 import consulo.language.ast.ASTNode;
+import consulo.ui.image.Image;
 import consulo.navigation.ItemPresentation;
 import consulo.navigation.NavigationItem;
 import consulo.language.psi.PsiElement;
@@ -14,7 +15,6 @@ import com.jetbrains.lang.dart.util.DartElementGenerator;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
 
 public abstract class DartNamedElementImpl extends DartPsiCompositeElementImpl implements DartNamedElement {
   public DartNamedElementImpl(@NotNull ASTNode node) {
@@ -48,10 +48,10 @@ public abstract class DartNamedElementImpl extends DartPsiCompositeElementImpl i
     return null;
   }
 
-  @Override
-  public Icon getIcon(int flags) {
+  // Consulo: not an override, used by consulo.dart.DartIconDescriptorUpdater
+  public Image getIcon(int flags) {
     final ItemPresentation presentation = getPresentation();
-    return presentation == null ? super.getIcon(flags) : presentation.getIcon(true);
+    return presentation == null ? null : presentation.getIcon(true);
   }
 
   @Override
