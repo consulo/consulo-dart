@@ -64,13 +64,7 @@ public final class DartInlineHandler extends InlineActionHandler {
   @Override
   public void inlineElement(final @NotNull Project project, final @Nullable Editor editor, PsiElement element) {
     if (editor == null) return;
-    if (DartConfigurable.isLspCodeActionsEnabled(project)) {
-      final PsiFile file = element != null
-                           ? element.getContainingFile()
-                           : PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
-      DartLspRefactoringHelper.performInline(project, editor, file);
-      return;
-    }
+    // Consulo: no LSP
 
     final InlineRefactoringContext context = findContext(editor);
     if (context == null) return;

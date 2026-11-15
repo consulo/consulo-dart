@@ -15,7 +15,6 @@ import consulo.ui.ex.awt.event.DocumentAdapter;
 import consulo.util.collection.ArrayUtil;
 import consulo.ui.ex.awt.JBUI;
 import com.jetbrains.lang.dart.DartBundle;
-import com.jetbrains.lang.dart.ide.refactoring.DartLspRefactoringHelper;
 import com.jetbrains.lang.dart.ide.refactoring.ServerExtractMethodRefactoring;
 import com.jetbrains.lang.dart.ide.refactoring.ServerRefactoringDialog;
 import com.jetbrains.lang.dart.ide.refactoring.status.RefactoringStatus;
@@ -34,10 +33,7 @@ public class DartServerExtractMethodHandler implements RefactoringActionHandler 
 
   @Override
   public void invoke(@NotNull Project project, Editor editor, PsiFile file, DataContext dataContext) {
-    if (DartConfigurable.isLspCodeActionsEnabled(project)) {
-      DartLspRefactoringHelper.performExtractMethod(project, editor, file);
-      return;
-    }
+    // Consulo: no LSP
 
     final SelectionModel selectionModel = editor.getSelectionModel();
 
