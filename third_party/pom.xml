@@ -74,7 +74,7 @@
                 <configuration>
                     <dependencies>
                         <dependency>com.intellij.xml</dependency>
-                        <dependency>consulo.library.flexmark</dependency>
+                        <dependency>consulo.markdown</dependency>
                         <dependency>org.jetbrains.plugins.yaml</dependency>
                     </dependencies>
                     <packaging>
@@ -496,10 +496,10 @@
         </dependency>
 
 
-        <!-- replaces IntelliJ's bundled markdown converter (DartDocUtil) -->
+        <!-- the markdown engine of the consulo.markdown plugin replaces IntelliJ's markdown-utils (DartDocUtil) -->
         <dependency>
-            <groupId>consulo.plugin.library</groupId>
-            <artifactId>consulo.library.flexmark</artifactId>
+            <groupId>consulo.plugin</groupId>
+            <artifactId>consulo.markdown.language.impl</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>

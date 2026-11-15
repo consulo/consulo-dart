@@ -73,6 +73,8 @@ Places where upstream needs a platform API Consulo does not provide publicly; wo
 - `TemplateBuilderImpl.replaceRange(range, var, expression, alwaysStopAt)` is internal; `TemplateBuilder.replaceElement(file, range, ...)` is used.
 - `FileOffsetsManager`, `ModalityUiUtil`, `ConstantNode.withLookupItems`, `PsiBuilderUtil.parseBlockLazy`, `FileBasedIndex.getSingleEntryIndexData`
   and a few utilities are ported to `consulo.dart.compat`.
+- IntelliJ `markdown-utils` (`convertMarkdownToHtml`) does not exist; `consulo.dart.compat.MarkdownToHtmlConverterKt` ports it onto the
+  markdown engine of the `consulo.markdown` plugin (as consulo-java and consulo-rust render their doc comments).
 - `XmlTypedHandlersAdditionalSupport` does not exist; `xml/DartXmlTypedHandlersAdditionalSupport` is disabled (`.java_`).
 - `EnterHandlerDelegate.invokeInsideIndent` does not exist; the no-op overrides are dropped.
 - `ColorSettingsPage.getIcon()` does not exist; the method is kept without `@Override`.

@@ -70,7 +70,7 @@ module com.jetbrains.lang.dart {
   requires com.intellij.xml.html.api;
   requires org.yaml.snakeyaml;
   requires org.jetbrains.plugins.yaml;
-  requires consulo.library.flexmark;
+  requires consulo.markdown.language.impl;
 
   requires forms.rt;
 
