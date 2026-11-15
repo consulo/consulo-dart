@@ -2,6 +2,7 @@
 package com.jetbrains.lang.dart.ide.hierarchy.method;
 
 import consulo.application.AllIcons;
+import consulo.ui.image.Image;
 import consulo.ide.IdeBundle;
 import consulo.language.editor.hierarchy.HierarchyNodeDescriptor;
 import consulo.ui.ex.tree.NodeDescriptor;
@@ -20,8 +21,8 @@ import javax.swing.*;
 
 public class DartMethodHierarchyNodeDescriptor extends HierarchyNodeDescriptor {
   private DartMethodHierarchyTreeStructure myTreeStructure;
-  private Icon myRawIcon;
-  private Icon myStateIcon;
+  private Image myRawIcon;
+  private Image myStateIcon;
   // If myIsImplementor => show '+' icon unless method is abstract, never filtered from view
   protected boolean myIsImplementor = false;
   // If myShouldImplement && !myIsImplementor => show '!' icon
@@ -62,8 +63,8 @@ public class DartMethodHierarchyNodeDescriptor extends HierarchyNodeDescriptor {
     }
 
     final ItemPresentation presentation = dartClass.getPresentation();
-    Icon baseIcon = null;
-    Icon stateIcon = null;
+    Image baseIcon = null;
+    Image stateIcon = null;
     if (presentation != null) {
       myHighlightedText.getEnding().addText(presentation.getPresentableText());
       PsiFile file = dartClass.getContainingFile();
@@ -77,7 +78,7 @@ public class DartMethodHierarchyNodeDescriptor extends HierarchyNodeDescriptor {
     if (changes || baseIcon != myRawIcon || stateIcon != myStateIcon) {
       changes = true;
 
-      Icon newIcon = myRawIcon = baseIcon;
+      Image newIcon = myRawIcon = baseIcon;
       myStateIcon = stateIcon;
       if (myIsBase) {
         newIcon = getBaseMarkerIcon(newIcon);
@@ -95,7 +96,7 @@ public class DartMethodHierarchyNodeDescriptor extends HierarchyNodeDescriptor {
     return changes;
   }
 
-  private Icon calculateStateIcon() {
+  private Image calculateStateIcon() {
     if (myIsImplementor) {
       return AllIcons.Hierarchy.MethodDefined;
     }

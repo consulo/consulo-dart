@@ -2,6 +2,7 @@
 package com.jetbrains.lang.dart.projectView;
 
 import consulo.annotation.component.ExtensionImpl;
+import consulo.ui.image.Image;
 import consulo.ui.ex.tree.PresentationData;
 import consulo.project.ui.view.tree.TreeStructureProvider;
 import consulo.project.ui.view.tree.ViewSettings;

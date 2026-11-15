@@ -2,6 +2,7 @@
 package com.jetbrains.lang.dart.highlight;
 
 import consulo.annotation.component.ExtensionImpl;
+import consulo.ui.image.Image;
 import consulo.colorScheme.TextAttributesKey;
 import consulo.language.editor.highlight.SyntaxHighlighter;
 import consulo.colorScheme.setting.AttributesDescriptor;
@@ -274,7 +275,7 @@ public final class DartColorsAndFontsPage implements ColorSettingsPage {
   }
 
   @Override
-  public Icon getIcon() {
+  public Image getIcon() {
     return DartFileType.INSTANCE.getIcon();
   }
 

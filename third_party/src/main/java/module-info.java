@@ -7,6 +7,7 @@ module com.jetbrains.lang.dart {
   requires consulo.application.content.api;
   requires consulo.application.ui.api;
   requires consulo.base.icon.library;
+  requires consulo.builtin.web.server.api;
   requires consulo.code.editor.api;
   requires consulo.color.scheme.api;
   requires consulo.component.api;

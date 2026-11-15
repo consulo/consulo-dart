@@ -1,81 +1,96 @@
 // Copyright 2000-2021 JetBrains s.r.o. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
+/*
+ * Copyright 2013-2026 consulo.io
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.jetbrains.lang.dart.pubServer;
 
-import consulo.dart.notification.DartNotificationGroups;
-import consulo.process.ExecutionException;
-import consulo.process.cmd.GeneralCommandLine;
-import consulo.execution.ui.console.TextConsoleBuilder;
-import consulo.execution.ui.console.UrlFilter;
-import consulo.process.internal.OSProcessHandler;
-import consulo.process.event.ProcessEvent;
-import consulo.process.ProcessOutputTypes;
-import com.intellij.notification.*;
-import consulo.project.ui.notification.Notification;
-import consulo.project.ui.notification.NotificationAction;
-import consulo.project.ui.notification.NotificationGroup;
-import consulo.project.ui.notification.NotificationType;
-import consulo.ui.ex.action.ActionGroup;
-import consulo.ui.ex.action.ActionManager;
-import consulo.ui.ex.action.DefaultActionGroup;
-import consulo.application.ApplicationManager;
-import consulo.ui.ModalityState;
-import consulo.logging.Logger;
-import com.jetbrains.lang.dart.logging.PluginLogger;
-import consulo.project.Project;
-import consulo.ui.ex.popup.Balloon;
-import consulo.application.util.function.Computable;
-import consulo.util.dataholder.Key;
-import consulo.util.lang.StringUtil;
-import consulo.virtualFileSystem.VirtualFile;
-import consulo.project.ui.wm.ToolWindowManager;
-import java.util.function.Consumer;
-import com.intellij.util.net.NetKt;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ide.actions.DartPubActionBase;
 import com.jetbrains.lang.dart.ide.runner.DartConsoleFilter;
 import com.jetbrains.lang.dart.ide.runner.DartRelativePathsConsoleFilter;
+import com.jetbrains.lang.dart.logging.PluginLogger;
 import com.jetbrains.lang.dart.sdk.DartConfigurable;
 import com.jetbrains.lang.dart.sdk.DartSdk;
 import com.jetbrains.lang.dart.util.ProcessAdapter;
+import consulo.application.ApplicationManager;
+import consulo.application.util.function.Computable;
+import consulo.builtinWebServer.http.HttpRequest;
+import consulo.builtinWebServer.http.HttpResponse;
+import consulo.dart.compat.ConsoleManager;
+import consulo.dart.compat.NetService;
+import consulo.dart.notification.DartNotificationGroups;
+import consulo.execution.ui.console.TextConsoleBuilder;
+import consulo.execution.ui.console.UrlFilter;
+import consulo.localize.LocalizeValue;
+import consulo.logging.Logger;
+import consulo.process.ExecutionException;
+import consulo.process.ProcessHandler;
+import consulo.process.ProcessHandlerBuilder;
+import consulo.process.ProcessOutputTypes;
+import consulo.process.cmd.GeneralCommandLine;
+import consulo.process.event.ProcessEvent;
+import consulo.project.Project;
+import consulo.project.ui.notification.Notification;
+import consulo.project.ui.notification.NotificationGroup;
+import consulo.project.ui.notification.NotificationService;
+import consulo.project.ui.notification.NotificationType;
+import consulo.project.ui.wm.ToolWindowManager;
+import consulo.ui.ModalityState;
+import consulo.ui.ex.action.ActionGroup;
+import consulo.ui.ex.action.ActionManager;
+import consulo.ui.ex.action.DefaultActionGroup;
+import consulo.ui.ex.toolWindow.ToolWindow;
+import consulo.ui.image.Image;
+import consulo.util.dataholder.Key;
+import consulo.util.lang.StringUtil;
+import consulo.virtualFileSystem.VirtualFile;
 import icons.DartIcons;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInitializer;
-import io.netty.handler.codec.http.*;
-import io.netty.util.ReferenceCounted;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.builtInWebServer.BuiltInWebServerKt;
-import org.jetbrains.builtInWebServer.ConsoleManager;
-import org.jetbrains.builtInWebServer.NetService;
-import org.jetbrains.concurrency.AsyncPromise;
-import org.jetbrains.ide.BuiltInServerManager;
-import org.jetbrains.io.ChannelExceptionHandler;
-import org.jetbrains.io.ChannelRegistrar;
-import org.jetbrains.io.Responses;
-import org.jetbrains.io.SimpleChannelInboundHandlerAdapter;
 
-import javax.swing.*;
 import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.ServerSocket;
-import java.util.Collection;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Consumer;
 
+/**
+ * Consulo: the built-in web server is not Netty based in its API. Upstream answers a request for a served file with a
+ * redirect to the {@code webdev serve} port (its Netty client channel handler is not used for that), so here
+ * {@link #sendToPubServer} answers with a deferred redirect {@link HttpResponse}.
+ */
 final class PubServerService extends NetService {
   private static final Logger LOG = PluginLogger.INSTANCE.createLogger(PubServerService.class);
 
   private static final String DART_WEBDEV = "Dart Webdev";
   private static final NotificationGroup NOTIFICATION_GROUP = DartNotificationGroups.get("Dart Webdev");
 
-  private volatile VirtualFile firstServedDir;
+  /**
+   * Same as {@code BuiltInWebServerKt.TOKEN_PARAM_NAME}.
+   */
+  private static final String TOKEN_PARAM_NAME = "_ijt";
 
-  private final ConcurrentMap<Channel, ClientInfo> serverToClientChannel = new ConcurrentHashMap<>();
-  private final ChannelRegistrar serverChannelRegistrar = new ChannelRegistrar();
+  private volatile VirtualFile firstServedDir;
 
   private final ConcurrentMap<VirtualFile, ServerInfo> servedDirToSocketAddress = new ConcurrentHashMap<>();
 
@@ -89,26 +104,8 @@ final class PubServerService extends NetService {
     }
   }
 
-  private static final class ClientInfo {
-    private final Channel channel;
-    private final HttpHeaders extraHeaders;
-
-    private ClientInfo(@NotNull Channel channel, @NotNull HttpHeaders extraHeaders) {
-      this.channel = channel;
-      this.extraHeaders = extraHeaders;
-    }
-  }
-
   PubServerService(@NotNull Project project, @NotNull ConsoleManager consoleManager) {
     super(project, consoleManager);
-
-    BuiltInServerManager.getInstance().createClientBootstrap().handler(new ChannelInitializer<>() {
-      @Override
-      protected void initChannel(Channel channel) {
-        channel.pipeline().addLast(serverChannelRegistrar, new HttpClientCodec());
-        channel.pipeline().addLast(new PubServeChannelHandler(), ChannelExceptionHandler.getInstance());
-      }
-    });
   }
 
   @Override
@@ -129,22 +126,13 @@ final class PubServerService extends NetService {
     }
   }
 
-  private @Nullable ServerInfo getServerInfo(@NotNull Channel channel) {
-    for (ServerInfo serverInstanceInfo : servedDirToSocketAddress.values()) {
-      if (channel.remoteAddress().equals(serverInstanceInfo.address)) {
-        return serverInstanceInfo;
-      }
-    }
-    return null;
-  }
-
   @Override
   protected @NotNull String getConsoleToolWindowId() {
     return DART_WEBDEV;
   }
 
   @Override
-  protected @NotNull Icon getConsoleToolWindowIcon() {
+  protected @NotNull Image getConsoleToolWindowIcon() {
     return DartIcons.PubServeToolWindow;
   }
 
@@ -172,32 +160,28 @@ final class PubServerService extends NetService {
   }
 
   public boolean isPubServerProcessAlive() {
-    OSProcessHandler processHandler = getProcessHandler().getResultIfFullFilled();
+    ProcessHandler processHandler = getProcessHandler().getResultIfFullFilled();
     return processHandler != null && !processHandler.isProcessTerminated();
   }
 
-  public void sendToPubServer(final @NotNull Channel clientChannel,
-                              final @NotNull FullHttpRequest clientRequest,
-                              @NotNull HttpHeaders extraHeaders,
-                              final @NotNull VirtualFile servedDir,
-                              final @NotNull String pathForPubServer) {
-    clientRequest.retain();
-
+  public @NotNull CompletableFuture<HttpResponse> sendToPubServer(final @NotNull HttpRequest clientRequest,
+                                                                  final @NotNull VirtualFile servedDir,
+                                                                  final @NotNull String pathForPubServer) {
     if (getProcessHandler().getResultIfFullFilled() != null) {
-      sendToServer(servedDir, clientChannel, clientRequest, extraHeaders, pathForPubServer);
+      return CompletableFuture.completedFuture(sendToServer(servedDir, clientRequest, pathForPubServer));
     }
-    else {
-      firstServedDir = servedDir;
 
-      getProcessHandler()
-        .get()
-        .onSuccess(osProcessHandler -> sendToServer(servedDir, clientChannel, clientRequest, extraHeaders, pathForPubServer))
-        .onError(throwable -> sendBadGateway(clientChannel, extraHeaders));
-    }
+    firstServedDir = servedDir;
+
+    return getProcessHandler()
+      .get()
+      .handle((processHandler, throwable) -> throwable == null
+                                             ? sendToServer(servedDir, clientRequest, pathForPubServer)
+                                             : badGateway());
   }
 
   @Override
-  protected @Nullable OSProcessHandler createProcessHandler(final @NotNull Project project, final int port) throws ExecutionException {
+  protected @Nullable ProcessHandler createProcessHandler(final @NotNull Project project, final int port) throws ExecutionException {
     final DartSdk dartSdk = DartSdk.getDartSdk(project);
     if (dartSdk == null) return null;
 
@@ -224,17 +208,16 @@ final class PubServerService extends NetService {
     commandLine.addParameter(dirName + ":" + port);
     commandLine.withEnvironment(DartPubActionBase.PUB_ENV_VAR_NAME, DartPubActionBase.getPubEnvValue() + ".webdev");
 
-
-    final OSProcessHandler processHandler = new OSProcessHandler(commandLine);
+    final ProcessHandler processHandler = ProcessHandlerBuilder.create(commandLine).build();
     processHandler.addProcessListener(new PubServeOutputListener(project, myServerReadyLock));
 
     return processHandler;
   }
 
   @Override
-  protected void connectToProcess(final @NotNull AsyncPromise<OSProcessHandler> promise,
+  protected void connectToProcess(final @NotNull CompletableFuture<ProcessHandler> promise,
                                   final int port,
-                                  final @NotNull OSProcessHandler processHandler,
+                                  final @NotNull ProcessHandler processHandler,
                                   final @NotNull Consumer<String> errorOutputConsumer) {
     synchronized (myServerReadyLock) {
       try {
@@ -246,111 +229,48 @@ final class PubServerService extends NetService {
     }
 
     if (processHandler.isProcessTerminated()) {
-      promise.cancel();
+      promise.cancel(false);
       return;
     }
 
-    InetSocketAddress firstPubServerAddress = NetKt.loopbackSocketAddress(port);
+    InetSocketAddress firstPubServerAddress = new InetSocketAddress(InetAddress.getLoopbackAddress(), port);
     ServerInfo old = servedDirToSocketAddress.put(firstServedDir, new ServerInfo(firstPubServerAddress));
     LOG.assertTrue(old == null);
 
     super.connectToProcess(promise, port, processHandler, errorOutputConsumer);
   }
 
-  static void sendBadGateway(final @NotNull Channel channel, @NotNull HttpHeaders extraHeaders) {
-    if (channel.isActive()) {
-      Responses.send(HttpResponseStatus.BAD_GATEWAY, channel, null, null, extraHeaders);
-    }
+  private static @NotNull HttpResponse badGateway() {
+    return HttpResponse.create(HttpURLConnection.HTTP_BAD_GATEWAY, null, null);
   }
 
   @Override
   protected void closeProcessConnections() {
     servedDirToSocketAddress.clear();
-
-    ClientInfo[] list;
-    try {
-      Collection<ClientInfo> clientInfos = serverToClientChannel.values();
-      list = clientInfos.toArray(new ClientInfo[0]);
-      serverToClientChannel.clear();
-    }
-    finally {
-      serverChannelRegistrar.close();
-    }
-
-    for (ClientInfo info : list) {
-      try {
-        sendBadGateway(info.channel, info.extraHeaders);
-      }
-      catch (Exception e) {
-        LOG.error(e);
-      }
-    }
   }
 
-  void sendToServer(final @NotNull VirtualFile servedDir,
-                    final @NotNull Channel clientChannel,
-                    final @NotNull FullHttpRequest clientRequest,
-                    @NotNull HttpHeaders extraHeaders,
-                    final @NotNull String pathToPubServe) {
+  @NotNull HttpResponse sendToServer(final @NotNull VirtualFile servedDir,
+                                     final @NotNull HttpRequest clientRequest,
+                                     final @NotNull String pathToPubServe) {
     ServerInfo serverInstanceInfo = servedDirToSocketAddress.get(servedDir);
+    if (serverInstanceInfo == null) return badGateway();
     final InetSocketAddress address = serverInstanceInfo.address;
 
-    // We can't use 301 (MOVED_PERMANENTLY) response status because Pub Serve port will change after restart, but browser will remember outdated redirection URL
-    final HttpResponse response = Responses.response(HttpResponseStatus.FOUND, clientRequest, null);
-    //assert serverInstanceInfo != null;
-
-    final Map<String, List<String>> parameters = new QueryStringDecoder(clientRequest.uri()).parameters();
-    parameters.remove(BuiltInWebServerKt.TOKEN_PARAM_NAME);
-
-    final QueryStringEncoder encoder =
-      new QueryStringEncoder("http://" + address.getHostString() + ":" + address.getPort() + pathToPubServe);
-    for (Map.Entry<String, List<String>> entry : parameters.entrySet()) {
+    final StringBuilder location = new StringBuilder("http://" + address.getHostString() + ":" + address.getPort() + pathToPubServe);
+    boolean first = true;
+    for (Map.Entry<String, List<String>> entry : clientRequest.getParameters().entrySet()) {
+      if (TOKEN_PARAM_NAME.equals(entry.getKey())) continue;
       for (String value : entry.getValue()) {
-        encoder.addParam(entry.getKey(), value);
+        location.append(first ? '?' : '&')
+          .append(URLEncoder.encode(entry.getKey(), StandardCharsets.UTF_8))
+          .append('=')
+          .append(URLEncoder.encode(value, StandardCharsets.UTF_8));
+        first = false;
       }
     }
 
-    response.headers().add(HttpHeaderNames.LOCATION, encoder.toString());
-    Responses.send(response, clientChannel, clientRequest, extraHeaders);
-  }
-
-  @ChannelHandler.Sharable
-  private class PubServeChannelHandler extends SimpleChannelInboundHandlerAdapter<HttpObject> {
-    PubServeChannelHandler() {
-      super(false);
-    }
-
-    @Override
-    protected void messageReceived(@NotNull ChannelHandlerContext context, @NotNull HttpObject message) {
-      Channel serverChannel = context.channel();
-      ClientInfo clientInfo = serverToClientChannel.get(serverChannel);
-      if (clientInfo == null || !clientInfo.channel.isActive()) {
-        // client abort request, so, just close server channel as well and don't try to reuse it
-        serverToClientChannel.remove(serverChannel);
-        serverChannel.close();
-
-        if (message instanceof ReferenceCounted) {
-          ((ReferenceCounted)message).release();
-        }
-      }
-      else {
-        if (message instanceof HttpResponse response) {
-          HttpUtil.setKeepAlive(response, true);
-          response.headers().add(clientInfo.extraHeaders);
-        }
-        if (message instanceof LastHttpContent) {
-          serverToClientChannel.remove(serverChannel);
-          ServerInfo serverInfo = getServerInfo(serverChannel);
-          if (serverInfo != null) {
-            // todo sometimes dart pub server stops to respond, so, we don't reuse it for now
-            //serverInfo.freeServerChannels.add(serverChannel);
-            serverChannel.close();
-          }
-        }
-
-        clientInfo.channel.writeAndFlush(message);
-      }
-    }
+    // We can't use 301 (MOVED_PERMANENTLY) response status because Pub Serve port will change after restart, but browser will remember outdated redirection URL
+    return HttpResponse.create(HttpURLConnection.HTTP_MOVED_TEMP, null, null).withHeader("Location", location.toString());
   }
 
   private static class PubServeOutputListener extends ProcessAdapter {
@@ -395,15 +315,14 @@ final class PubServerService extends NetService {
     }
 
     private void showNotificationIfNeeded(final boolean isError) {
-      if (ToolWindowManager.getInstance(myProject).getToolWindow(DART_WEBDEV).isVisible()) {
+      final ToolWindow toolWindow = ToolWindowManager.getInstance(myProject).getToolWindow(DART_WEBDEV);
+      if (toolWindow != null && toolWindow.isVisible()) {
         return;
       }
 
       if (myNotification != null && !myNotification.isExpired()) {
-        final Balloon balloon1 = myNotification.getBalloon();
-        final Balloon balloon2 = ToolWindowManager.getInstance(myProject).getToolWindowBalloon(DART_WEBDEV);
-        if ((balloon1 != null || balloon2 != null) && (myNotificationAboutErrors || !isError)) {
-          return; // already showing correct balloon
+        if (myNotificationAboutErrors || !isError) {
+          return; // already showing correct notification
         }
         myNotification.expire();
       }
@@ -413,13 +332,14 @@ final class PubServerService extends NetService {
       final String message = DartBundle.message(myNotificationAboutErrors ? "dart.webdev.server.output.contains.errors"
                                                                           : "dart.webdev.server.output.contains.warnings");
 
-      final Notification notification = NOTIFICATION_GROUP.createNotification(message, NotificationType.WARNING);
-      notification.addAction(NotificationAction.createSimple(DartBundle.message("open.dart.webdev.server.action.text"), () -> {
-                notification.expire();
-                ToolWindowManager.getInstance(myProject).getToolWindow(DART_WEBDEV).activate(null);
-              }));
-      myNotification = notification;
-      notification.notify(myProject);
+      myNotification = NotificationService.getInstance()
+        .newOfType(NOTIFICATION_GROUP, NotificationType.WARNING)
+        .content(LocalizeValue.of(message))
+        .addClosingAction(DartBundle.messageValue("open.dart.webdev.server.action.text"), () -> {
+          final ToolWindow window = ToolWindowManager.getInstance(myProject).getToolWindow(DART_WEBDEV);
+          if (window != null) window.activate(null);
+        })
+        .notifyAndGet(myProject);
     }
   }
 }

@@ -2,6 +2,7 @@
 package com.jetbrains.lang.dart.ide.marker;
 
 import consulo.annotation.component.ExtensionImpl;
+import consulo.ui.image.Image;
 import consulo.language.editor.DaemonBundle;
 import consulo.language.editor.gutter.LineMarkerInfo;
 import consulo.language.editor.gutter.LineMarkerProvider;
@@ -105,7 +106,7 @@ public final class DartServerOverrideMarkerProvider implements LineMarkerProvide
             accessibleName = DartBundle.message("implements.method.in", name, superClass.getName());
         }
 
-        final Icon icon = overrides ? AllIcons.Gutter.OverridingMethod : AllIcons.Gutter.ImplementingMethod;
+        final Image icon = overrides ? AllIcons.Gutter.OverridingMethod : AllIcons.Gutter.ImplementingMethod;
         PsiElement anchor = PsiTreeUtil.getDeepestFirst(componentName);
 
         return new LineMarkerInfo<>(anchor, anchor.getTextRange(), icon, __ -> accessibleName, (e, __) -> {

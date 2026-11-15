@@ -21,7 +21,8 @@ import consulo.ui.ex.awt.JBLabel;
 import consulo.util.collection.ArrayUtil;
 import consulo.util.collection.SmartList;
 import consulo.application.util.concurrent.AppExecutorUtil;
-import consulo.dart.compat.CpuArch;
+import consulo.platform.CpuArchitecture;
+import consulo.platform.Platform;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.ui.BasicComboBoxWithBrowseButton;
 import org.jetbrains.annotations.Contract;
@@ -94,7 +95,7 @@ public final class DartSdkUtil {
     if (getItemFromCombo(dartSdkCombo).isEmpty()) {
       // Suggest default path according to https://dart.dev/get-dart.
       // No need to check folder presence here; even if it doesn't exist - that's the best we can suggest
-      String path = SystemInfo.isMac ? CpuArch.isArm64() ? "/opt/homebrew/opt/dart/libexec"
+      String path = SystemInfo.isMac ? Platform.current().jvm().arch() == CpuArchitecture.AARCH64 ? "/opt/homebrew/opt/dart/libexec"
                                                                   : "/usr/local/opt/dart/libexec"
                                               : SystemInfo.isWindows ? "C:\\tools\\dart-sdk"
                                                                      : SystemInfo.isLinux ? "/usr/lib/dart"

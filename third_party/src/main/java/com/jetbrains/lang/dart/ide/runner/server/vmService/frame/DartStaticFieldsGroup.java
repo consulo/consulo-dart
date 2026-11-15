@@ -2,6 +2,7 @@
 package com.jetbrains.lang.dart.ide.runner.server.vmService.frame;
 
 import com.google.gson.JsonElement;
+import consulo.ui.image.Image;
 import consulo.application.AllIcons;
 import consulo.util.collection.SmartList;
 import consulo.execution.debug.frame.XCompositeNode;
@@ -48,7 +49,7 @@ class DartStaticFieldsGroup extends XValueGroup {
   }
 
   @Override
-  public Icon getIcon() {
+  public Image getIcon() {
     return AllIcons.Nodes.Static;
   }
 

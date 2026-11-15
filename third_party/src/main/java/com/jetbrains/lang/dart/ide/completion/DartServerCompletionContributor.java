@@ -2,6 +2,7 @@
 package com.jetbrains.lang.dart.ide.completion;
 
 import consulo.annotation.component.ExtensionImpl;
+import consulo.ui.image.Image;
 import consulo.application.CommonBundle;
 import consulo.language.editor.AutoPopupController;
 import consulo.language.editor.CodeInsightSettings;
@@ -448,9 +449,9 @@ public final class DartServerCompletionContributor extends CompletionContributor
     }
   }
 
-  private static Icon applyOverlay(Icon base, boolean condition, Icon overlay) {
+  private static Image applyOverlay(Image base, boolean condition, Image overlay) {
     if (condition) {
-      return LayeredIcon.layeredIcon(new Icon[]{base, overlay});
+      return LayeredIcon.layeredIcon(new Image[]{base, overlay});
     }
     return base;
   }
@@ -550,7 +551,7 @@ public final class DartServerCompletionContributor extends CompletionContributor
       }
 
       // icon
-      Icon icon = getBaseImage(element);
+      Image icon = getBaseImage(element);
       if (icon != null) {
         IconManager iconManager = IconManager.getInstance();
         if (suggestion.getKind().equals(CompletionSuggestionKind.OVERRIDE)) {
@@ -702,7 +703,7 @@ public final class DartServerCompletionContributor extends CompletionContributor
       null);
   }
 
-  static Icon getBaseImage(Element element) {
+  static Image getBaseImage(Element element) {
     final String elementKind = element.getKind();
     return switch (elementKind) {
       case ElementKind.CLASS, ElementKind.CLASS_TYPE_ALIAS -> element.isAbstract() ? AllIcons.Nodes.AbstractClass : AllIcons.Nodes.Class;

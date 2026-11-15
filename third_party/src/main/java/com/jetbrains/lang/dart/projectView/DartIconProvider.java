@@ -2,6 +2,7 @@
 package com.jetbrains.lang.dart.projectView;
 
 import consulo.annotation.component.ExtensionImpl;
+import consulo.ui.image.Image;
 import consulo.application.AllIcons;
 import com.intellij.ide.IconProvider;
 import com.intellij.ide.scratch.ScratchFileTypeIcon;
@@ -26,14 +27,14 @@ import static com.jetbrains.lang.dart.util.PubspecYamlUtil.PUBSPEC_YAML;
 
 @ExtensionImpl
 public final class DartIconProvider extends IconProvider {
-  private static final NotNullLazyValue<Icon> DART_NOT_LOCAL_FILE_ICON =
+  private static final NotNullLazyValue<Image> DART_NOT_LOCAL_FILE_ICON =
     NotNullLazyValue.lazy(() -> new ScratchFileTypeIcon(DartFileType.INSTANCE.getIcon()));
-  private static final Icon FOLDER_SYMLINK_ICON = LayeredIcon.layeredIcon(() -> new Icon[]{AllIcons.Nodes.Folder, AllIcons.Nodes.Symlink});
-  static final Icon EXCLUDED_FOLDER_SYMLINK_ICON =
-    LayeredIcon.layeredIcon(() -> new Icon[]{AllIcons.Modules.ExcludeRoot, AllIcons.Nodes.Symlink});
+  private static final Image FOLDER_SYMLINK_ICON = LayeredIcon.layeredIcon(() -> new Image[]{AllIcons.Nodes.Folder, AllIcons.Nodes.Symlink});
+  static final Image EXCLUDED_FOLDER_SYMLINK_ICON =
+    LayeredIcon.layeredIcon(() -> new Image[]{AllIcons.Modules.ExcludeRoot, AllIcons.Nodes.Symlink});
 
   @Override
-  public @Nullable Icon getIcon(final @NotNull PsiElement element, @Iconable.IconFlags final int flags) {
+  public @Nullable Image getIcon(final @NotNull PsiElement element, @Iconable.IconFlags final int flags) {
     if (element instanceof DartFile) {
       VirtualFile file = ((PsiFile)element).getVirtualFile();
       if (file != null && file.getUserData(DartFileInfoKt.DART_NOT_LOCAL_FILE_URI_KEY) != null) {

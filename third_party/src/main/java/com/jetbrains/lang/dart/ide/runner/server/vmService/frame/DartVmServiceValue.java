@@ -2,6 +2,7 @@
 package com.jetbrains.lang.dart.ide.runner.server.vmService.frame;
 
 import consulo.application.AllIcons;
+import consulo.ui.image.Image;
 import consulo.application.ApplicationManager;
 
 import consulo.util.lang.StringUtil;
@@ -35,9 +36,9 @@ import java.util.Objects;
 // See https://youtrack.jetbrains.com/issue/WEB-17629.
 
 public final class DartVmServiceValue extends XNamedValue {
-  private static final LayeredIcon FINAL_FIELD_ICON = LayeredIcon.layeredIcon(() -> new Icon[]{AllIcons.Nodes.Field, AllIcons.Nodes.FinalMark});
-  private static final LayeredIcon STATIC_FIELD_ICON = LayeredIcon.layeredIcon(() -> new Icon[]{AllIcons.Nodes.Field, AllIcons.Nodes.StaticMark});
-  private static final LayeredIcon STATIC_FINAL_FIELD_ICON = LayeredIcon.layeredIcon(() -> new Icon[]{AllIcons.Nodes.Field, AllIcons.Nodes.StaticMark, AllIcons.Nodes.FinalMark});
+  private static final LayeredIcon FINAL_FIELD_ICON = LayeredIcon.layeredIcon(() -> new Image[]{AllIcons.Nodes.Field, AllIcons.Nodes.FinalMark});
+  private static final LayeredIcon STATIC_FIELD_ICON = LayeredIcon.layeredIcon(() -> new Image[]{AllIcons.Nodes.Field, AllIcons.Nodes.StaticMark});
+  private static final LayeredIcon STATIC_FINAL_FIELD_ICON = LayeredIcon.layeredIcon(() -> new Image[]{AllIcons.Nodes.Field, AllIcons.Nodes.StaticMark, AllIcons.Nodes.FinalMark});
 
   private final @NotNull DartVmServiceDebugProcess myDebugProcess;
   private final @NotNull String myIsolateId;
@@ -164,7 +165,7 @@ public final class DartVmServiceValue extends XNamedValue {
     // todo handle other special kinds: Type, TypeParameter, Pattern, may be some others as well
   }
 
-  private Icon getIcon() {
+  private Image getIcon() {
     if (myIsException) return AllIcons.Debugger.Db_exception_breakpoint;
 
     if (myFieldRef != null) {
