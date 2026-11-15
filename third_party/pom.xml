@@ -243,6 +243,7 @@
                         <include>com/jetbrains/lang/dart/lexer/DartLexer.java</include>
                         <include>com/jetbrains/lang/dart/lexer/_*.java</include>
                         <include>com/jetbrains/lang/dart/logging/PluginLogger.java</include>
+                        <include>com/jetbrains/lang/dart/ide/actions/DartPubActionBase.java</include>
                         <include>com/jetbrains/lang/dart/DartStartupActivity.java</include>
                         <include>com/jetbrains/lang/dart/DartStartupActivityKt.java</include>
                         <include>com/jetbrains/lang/dart/ide/devtools/DartDevToolsService.java</include>
