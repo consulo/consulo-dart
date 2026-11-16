@@ -25,8 +25,6 @@ ported to Consulo. Upstream history is kept, upstream files stay at their origin
   Not used from consulo-lsp (not API): the LSP call hierarchy (`DartCallHierarchyProvider` always uses the analysis server) and
   `LspStructureViewFactory` (`DartStructureViewFactory` returns null in LSP mode, consulo-lsp's structure view provider follows).
   `module-info` opens `com.jetbrains.lang.dart.lsp` to lsp4j and gson (JSON-RPC interfaces and params).
-  The `consulo.lsp` plugin is not in the plugin repository yet, so it is not in the workspace dependencies: for the sandbox,
-  copy `consulo-lsp/plugin/target/consulo-plugin-extracted/consulo.lsp` to `third_party/sandbox/config/plugins`.
 - Analytics is dropped; the analysis server is started with `--suppress-analytics`.
 - Dart SDK is a Consulo SDK (`DartSdkType`), Dart support is enabled per module by `DartModuleExtension`.
   Upstream `DartSdk` / `DartSdkLibUtil` keep their public methods but are implemented on top of that.

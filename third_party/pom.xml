@@ -75,6 +75,7 @@
                     <dependencies>
                         <dependency>com.intellij.xml</dependency>
                         <dependency>consulo.markdown</dependency>
+                        <dependency>consulo.lsp</dependency>
                         <dependency>org.jetbrains.plugins.yaml</dependency>
                     </dependencies>
                     <packaging>
