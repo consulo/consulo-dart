@@ -157,6 +157,7 @@ module com.jetbrains.lang.dart {
   exports com.jetbrains.lang.dart.injection;
   exports com.jetbrains.lang.dart.lexer;
   exports com.jetbrains.lang.dart.logging;
+  exports com.jetbrains.lang.dart.lsp;
   exports com.jetbrains.lang.dart.projectView;
   exports com.jetbrains.lang.dart.projectWizard;
   exports com.jetbrains.lang.dart.psi;
