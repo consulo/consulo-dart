@@ -71,6 +71,7 @@ module com.jetbrains.lang.dart {
   requires org.yaml.snakeyaml;
   requires org.jetbrains.plugins.yaml;
   requires consulo.markdown.language.impl;
+  requires consulo.lsp.api;
 
   requires forms.rt;
 

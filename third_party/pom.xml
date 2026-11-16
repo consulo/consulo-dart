@@ -503,5 +503,13 @@
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- LSP client (consulo-lsp plugin), used by the Dart LSP bridge -->
+        <dependency>
+            <groupId>consulo.plugin</groupId>
+            <artifactId>consulo.lsp.api</artifactId>
+            <version>${project.version}</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>
