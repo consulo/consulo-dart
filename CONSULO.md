@@ -18,8 +18,15 @@ ported to Consulo. Upstream history is kept, upstream files stay at their origin
 
 - Java only: upstream Kotlin files are converted to Java, keeping the API Kotlin generates
   (`XxxKt` classes for top-level functions, `INSTANCE` for objects, `getX()` for properties).
-- LSP is not supported: LSP sources are renamed to `.java_` / `.kt_` (kept for merges), `DartConfigurable` LSP checks return false.
-  The `hints` inlay providers and `DartClosingLabelManager` only work with LSP and are disabled the same way.
+- LSP: the upstream LSP bridge (`lsp/`, `hints/`, LSP rename/refactoring helpers) runs on the
+  [consulo-lsp](https://github.com/consulo/consulo-lsp) plugin, which keeps IntelliJ's `com.intellij.platform.lsp` API; upstream's
+  vendored `com.intellij.platform.dartlsp` copy (`thirdPartySrc/platform-lsp`) is not compiled. The bridge works on top of the
+  analysis server, so `DartConfigurable.isExperimentalLspFeaturesEnabled` also requires the analysis server to be enabled.
+  Not used from consulo-lsp (not API): the LSP call hierarchy (`DartCallHierarchyProvider` always uses the analysis server) and
+  `LspStructureViewFactory` (`DartStructureViewFactory` returns null in LSP mode, consulo-lsp's structure view provider follows).
+  `module-info` opens `com.jetbrains.lang.dart.lsp` to lsp4j and gson (JSON-RPC interfaces and params).
+  The `consulo.lsp` plugin is not in the plugin repository yet, so it is not in the workspace dependencies: for the sandbox,
+  copy `consulo-lsp/plugin/target/consulo-plugin-extracted/consulo.lsp` to `third_party/sandbox/config/plugins`.
 - Analytics is dropped; the analysis server is started with `--suppress-analytics`.
 - Dart SDK is a Consulo SDK (`DartSdkType`), Dart support is enabled per module by `DartModuleExtension`.
   Upstream `DartSdk` / `DartSdkLibUtil` keep their public methods but are implemented on top of that.
