@@ -80,6 +80,9 @@ module com.jetbrains.lang.dart {
   requires java.management;
   requires java.net.http;
 
+  // lsp4j reflects over the JSON-RPC interfaces (DartLanguageServer, DartLanguageClient) and gson (de)serializes their params
+  opens com.jetbrains.lang.dart.lsp to org.eclipse.lsp4j.jsonrpc, org.eclipse.lsp4j, com.google.gson;
+
   // org.osgi.framework (bundled copy of Version, thirdPartySrc) is not exported
   exports com.google.dart.server;
   exports com.google.dart.server.generated;
