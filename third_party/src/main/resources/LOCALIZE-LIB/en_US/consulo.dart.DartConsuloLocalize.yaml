@@ -3,6 +3,8 @@ choose.dart.main.file:
     text: Choose Dart File
 config.vmoptions.caption:
     text: VM Options
+new.module.dart.project:
+    text: Dart Project
 run.configuration.dart.file.label:
     text: 'Dart &file:'
 run.configuration.fragment.dart.file:

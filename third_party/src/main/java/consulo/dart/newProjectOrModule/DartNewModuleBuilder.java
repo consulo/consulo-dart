@@ -17,6 +17,7 @@ package consulo.dart.newProjectOrModule;
 
 import com.jetbrains.lang.dart.DartBundle;
 import consulo.annotation.component.ExtensionImpl;
+import consulo.dart.localize.DartConsuloLocalize;
 import consulo.module.creation.scratch.NewModuleBuilder;
 import consulo.module.creation.scratch.NewModuleContext;
 import consulo.module.creation.scratch.NewModuleContextGroup;
@@ -29,7 +30,7 @@ import icons.DartIcons;
 public class DartNewModuleBuilder implements NewModuleBuilder {
   @Override
   public void setupContext(NewModuleContext context) {
-    NewModuleContextGroup group = context.addGroup("dart", DartBundle.messageValue("dart.title"), DartIcons.Dart_16);
-    group.add(DartBundle.messageValue("dart.title"), DartIcons.Dart_16, new DartNewModuleBuilderProcessor());
+    NewModuleContextGroup group = context.addGroup("dart", DartBundle.messageValue("dart.title"));
+    group.add(DartConsuloLocalize.newModuleDartProject(), DartIcons.Dart_16, new DartNewModuleBuilderProcessor());
   }
 }
