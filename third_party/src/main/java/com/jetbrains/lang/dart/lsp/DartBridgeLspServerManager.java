@@ -25,6 +25,7 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Project-level service that manages the lifecycle of the LSP bridge server.
@@ -40,6 +41,7 @@ import java.util.concurrent.Future;
 @Singleton
 public final class DartBridgeLspServerManager implements Disposable {
   private static final Logger logger = PluginLogger.INSTANCE.createLogger(DartBridgeLspServerManager.class);
+  private static final int CLIENT_DISCONNECT_TIMEOUT_SECONDS = 2;
 
   private final @NotNull Project project;
 
@@ -123,10 +125,23 @@ public final class DartBridgeLspServerManager implements Disposable {
     listenFuture = null;
 
     ActiveConnection connection = activeConnection;
-    if (connection != null) {
-      connection.close();
-    }
     activeConnection = null;
+    if (connection != null) {
+      // Consulo: stopServers() sends `shutdown`/`exit` from a pooled thread. Closing the socket right away left that `shutdown`
+      // request unanswered, and the client waited for its 10 seconds timeout. Close once the client has disconnected instead,
+      // or after a short grace period.
+      ApplicationManager.getApplication().executeOnPooledThread(() -> {
+        try {
+          connection.listeningFuture.get(CLIENT_DISCONNECT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        }
+        catch (Exception e) {
+          // Ignore: the connection is closed below anyway.
+        }
+        finally {
+          connection.close();
+        }
+      });
+    }
   }
 
   private void startListening() {
