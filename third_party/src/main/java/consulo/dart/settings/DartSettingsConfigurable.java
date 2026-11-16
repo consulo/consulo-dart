@@ -23,7 +23,10 @@ import consulo.configurable.SimpleConfigurableByProperties;
 import consulo.configurable.StandardConfigurableIds;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import consulo.application.ReadAction;
+import com.jetbrains.lang.dart.lsp.DartBridgeLspServerManager;
+import com.jetbrains.lang.dart.lsp.LspMethod;
 import consulo.dart.analyzer.DartAnalysisServerSettings;
+import consulo.project.ProjectPropertiesComponent;
 import consulo.language.editor.DaemonCodeAnalyzer;
 import consulo.dart.localize.DartConsuloLocalize;
 import consulo.disposer.Disposable;
@@ -38,6 +41,8 @@ import consulo.ui.util.LabeledBuilder;
 import jakarta.inject.Inject;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.stream.Collectors;
 
 /**
  * Project-level Dart settings. The SDK and Dart support per module are set with the Dart module extension,
@@ -67,6 +72,21 @@ public final class DartSettingsConfigurable extends SimpleConfigurableByProperti
     return DartBundle.messageValue("dart.title");
   }
 
+  private static final String DART_LSP_EXPERIMENTAL_ENABLED = "dart.lsp.experimental.enabled";
+
+  // as upstream DartConfigurable.apply() after a change of the experimental LSP features
+  private void restartBridgeServer() {
+    myProject.getApplication().executeOnPooledThread(() -> {
+      DartBridgeLspServerManager bridgeManager = myProject.getInstance(DartBridgeLspServerManager.class);
+      bridgeManager.stopBridgeServer();
+      DartAnalysisServerService dasService = DartAnalysisServerService.getInstance(myProject);
+      dasService.updateClientCapabilities();
+      dasService.updateSubscriptions();
+      DaemonCodeAnalyzer.getInstance(myProject).restart();
+      bridgeManager.startBridgeServer();
+    });
+  }
+
   @RequiredUIAccess
   @Override
   protected @NotNull Component createLayout(@NotNull PropertyBuilder propertyBuilder, @NotNull Disposable uiDisposable) {
@@ -85,6 +105,21 @@ public final class DartSettingsConfigurable extends SimpleConfigurableByProperti
                           });
                         });
     layout.add(analysisServerEnabled);
+
+    // upstream DartConfigurable: experimental LSP features, they work on top of the analysis server
+    CheckBox experimentalLspFeatures = CheckBox.create(DartBundle.messageValue(
+      "settings.page.checkbox.experimental.lsp.features",
+      LspMethod.getExperimentalFeatures().stream().map(LspMethod::getPresentableName).collect(Collectors.joining(", "))));
+    propertyBuilder.add(experimentalLspFeatures,
+                        () -> ProjectPropertiesComponent.getInstance(myProject).getBoolean(DART_LSP_EXPERIMENTAL_ENABLED, true),
+                        value -> {
+                          boolean wasEnabled = DartConfigurable.isExperimentalLspFeaturesEnabled(myProject);
+                          DartConfigurable.setExperimentalLspFeaturesEnabled(myProject, value);
+                          if (wasEnabled != DartConfigurable.isExperimentalLspFeaturesEnabled(myProject)) {
+                            restartBridgeServer();
+                          }
+                        });
+    layout.add(experimentalLspFeatures);
 
     IntBox webdevPort = IntBox.create(DartConfigurable.WEBDEV_PORT_DEFAULT);
     propertyBuilder.add(webdevPort,

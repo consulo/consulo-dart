@@ -16,6 +16,7 @@ import consulo.ui.ex.action.DumbAwareAction;
 import consulo.project.Project;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
+import com.jetbrains.lang.dart.lsp.DartLspService;
 import com.jetbrains.lang.dart.sdk.DartSdk;
 import com.jetbrains.lang.dart.sdk.DartSdkUpdateChecker;
 
@@ -43,8 +44,7 @@ public class AnalysisServerDiagnosticsAction extends DumbAwareAction implements 
       e.getPresentation().setEnabledAndVisible(false);
       return;
     }
-    // Consulo: no LSP server
-    final boolean isRunning = isLegacyServerRunning(project);
+    final boolean isRunning = DartLspService.isServerRunning(project) || isLegacyServerRunning(project);
     e.getPresentation().setEnabledAndVisible(isRunning);
   }
 
@@ -60,8 +60,12 @@ public class AnalysisServerDiagnosticsAction extends DumbAwareAction implements 
   void run(final @NotNull Project project, @Nullable AnActionEvent event) {
     DartSdk sdk = DartSdk.getDartSdk(project);
     String sdkVersion = sdk != null ? sdk.getVersion() : "";
-    // Consulo: no LSP server, its diagnostic port is not available
-    fallbackToLegacy(project);
+    if ((!sdkVersion.isEmpty() && DartSdkUpdateChecker.compareDartSdkVersions(sdkVersion, MIN_LSP_DIAGNOSTIC_SERVER_SDK_VERSION) >= 0) ||
+        !isLegacyServerRunning(project)) {
+      useLspOverLegacy(project);
+    } else {
+      fallbackToLegacy(project);
+    }
 
     if (event != null) {
     } else {
@@ -71,6 +75,30 @@ public class AnalysisServerDiagnosticsAction extends DumbAwareAction implements 
     }
   }
 
+  private void useLspOverLegacy(@NotNull Project project) {
+    DartLspService.getDiagnosticServerPort(project)
+      .thenAccept(port -> {
+        if (project.isDisposed()) return;
+        if (port != null) {
+          BrowserUtil.browse("http://localhost:" + port + "/status");
+        } else if (isLegacyServerRunning(project)) {
+          fallbackToLegacy(project);
+        } else {
+          showErrorNotification(project, DartBundle.message("analysis.server.not.running"));
+        }
+      })
+      .exceptionally(ex -> {
+        if (project.isDisposed()) return null;
+        if (isLegacyServerRunning(project)) {
+          fallbackToLegacy(project);
+        } else {
+          Throwable cause = ex instanceof CompletionException && ex.getCause() != null ? ex.getCause() : ex;
+          String message = cause.getMessage();
+          showErrorNotification(project, message != null ? message : DartBundle.message("analysis.server.not.running"));
+        }
+        return null;
+      });
+  }
   private void fallbackToLegacy(@NotNull Project project) {
     DartAnalysisServerService server = project.getInstanceIfCreated(DartAnalysisServerService.class);
     if (server == null || !server.isServerProcessActive()) {

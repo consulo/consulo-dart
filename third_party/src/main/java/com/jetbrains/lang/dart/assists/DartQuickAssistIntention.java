@@ -81,7 +81,9 @@ public class DartQuickAssistIntention implements IntentionAction, Comparable<Int
       return false;
     }
 
-    // Consulo: no LSP
+    if (DartConfigurable.isLspCodeActionsEnabled(project)) {
+      return false;
+    }
 
     if (!(psiFile instanceof DartFile) || !DartAnalysisServerService.isLocalAnalyzableFile(psiFile.getVirtualFile())) {
       return false;

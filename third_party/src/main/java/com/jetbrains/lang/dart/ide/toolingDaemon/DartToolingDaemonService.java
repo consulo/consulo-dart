@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.ide.devtools.DartDevToolsService;
+import com.jetbrains.lang.dart.lsp.DartLspService;
 import com.jetbrains.lang.dart.logging.PluginLogger;
 import com.jetbrains.lang.dart.sdk.DartSdk;
 import com.jetbrains.lang.dart.sdk.DartSdkLibUtil;
@@ -150,7 +151,7 @@ public final class DartToolingDaemonService implements Disposable {
     DartDevToolsService.getInstance(project).startService(uri);
     if (uri != null) {
       connectToDtdWebSocket(uri);
-      // Consulo: no LSP, DartLspService.connectToDtd is not called
+      DartLspService.connectToDtd(project, uri);
     }
     new DtdEditorService(project, this).setUpService();
   }

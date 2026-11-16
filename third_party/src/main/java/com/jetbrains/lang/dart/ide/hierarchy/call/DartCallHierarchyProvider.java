@@ -17,7 +17,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Consulo: the hierarchy view is built from {@link DartCallHierarchyModel}; no LSP call hierarchy.
+ * Consulo: the hierarchy view is built from {@link DartCallHierarchyModel}. Upstream delegates to the LSP call hierarchy
+ * when the experimental LSP features are on; the consulo-lsp call hierarchy is not API (and not reachable from the editor
+ * yet, see consulo-lsp CONSULO.md), so the analysis server hierarchy is always used.
  */
 @ExtensionImpl
 public final class DartCallHierarchyProvider implements HierarchyProvider<PsiElement> {

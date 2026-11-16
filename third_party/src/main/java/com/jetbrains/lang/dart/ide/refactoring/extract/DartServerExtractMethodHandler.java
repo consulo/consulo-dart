@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.refactoring.extract;
 
+import com.jetbrains.lang.dart.ide.refactoring.DartLspRefactoringHelper;
 import consulo.dataContext.DataContext;
 import consulo.codeEditor.Editor;
 import consulo.codeEditor.SelectionModel;
@@ -33,7 +34,10 @@ public class DartServerExtractMethodHandler implements RefactoringActionHandler 
 
   @Override
   public void invoke(@NotNull Project project, Editor editor, PsiFile file, DataContext dataContext) {
-    // Consulo: no LSP
+    if (DartConfigurable.isLspCodeActionsEnabled(project)) {
+      DartLspRefactoringHelper.performExtractMethod(project, editor, file);
+      return;
+    }
 
     final SelectionModel selectionModel = editor.getSelectionModel();
 

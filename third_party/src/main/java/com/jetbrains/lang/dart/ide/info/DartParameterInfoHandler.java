@@ -44,7 +44,9 @@ public final class DartParameterInfoHandler implements ParameterInfoHandler<PsiE
 
   @Override
   public @Nullable PsiElement findElementForParameterInfo(@NotNull CreateParameterInfoContext context) {
-    // Consulo: no LSP
+    if (DartConfigurable.isExperimentalLspFeaturesEnabled(context.getProject())) {
+      return null;
+    }
     final PsiElement contextElement = context.getFile().findElementAt(context.getEditor().getCaretModel().getOffset());
     return findElementForParameterInfo(contextElement);
   }

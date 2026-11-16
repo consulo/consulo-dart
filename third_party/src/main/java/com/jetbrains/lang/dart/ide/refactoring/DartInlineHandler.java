@@ -1,6 +1,7 @@
 // Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
 package com.jetbrains.lang.dart.ide.refactoring;
 
+import com.jetbrains.lang.dart.ide.refactoring.DartLspRefactoringHelper;
 import consulo.annotation.component.ExtensionImpl;
 import consulo.application.CommonBundle;
 import consulo.language.Language;
@@ -65,7 +66,13 @@ public final class DartInlineHandler extends InlineActionHandler {
   @Override
   public void inlineElement(final @NotNull Project project, final @Nullable Editor editor, PsiElement element) {
     if (editor == null) return;
-    // Consulo: no LSP
+    if (DartConfigurable.isLspCodeActionsEnabled(project)) {
+      final PsiFile file = element != null
+                           ? element.getContainingFile()
+                           : PsiDocumentManager.getInstance(project).getPsiFile(editor.getDocument());
+      DartLspRefactoringHelper.performInline(project, editor, file);
+      return;
+    }
 
     final InlineRefactoringContext context = findContext(editor);
     if (context == null) return;

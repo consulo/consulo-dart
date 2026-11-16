@@ -149,6 +149,12 @@ import org.dartlang.analysis.server.protocol.SourceChange;
 import org.dartlang.analysis.server.protocol.SourceEdit;
 import org.dartlang.analysis.server.protocol.SourceFileEdit;
 import org.dartlang.analysis.server.protocol.TypeHierarchyItem;
+import com.jetbrains.lang.dart.lsp.DartBridgeLspServerManager;
+import com.jetbrains.lang.dart.lsp.DartLspClosingLabel;
+import com.jetbrains.lang.dart.lsp.DartLspClosingLabelsService;
+import com.jetbrains.lang.dart.lsp.DartLspConfigurationSync;
+import org.eclipse.lsp4j.Position;
+import org.eclipse.lsp4j.Range;
 import org.eclipse.lsp4j.SemanticTokensLegend;
 import org.jetbrains.annotations.Contract;
 
@@ -476,7 +482,34 @@ public final class DartAnalysisServerService implements Disposable {
     DartFileInfo fileInfo = DartFileInfoKt.getDartFileInfo(myProject, filePathOrUri);
     myServerData.computedClosingLabels(fileInfo, labels);
 
-    // Consulo: no LSP, the legacy analysis.closingLabels adapter for DartLspClosingLabelsService is not needed
+    // Backward-compatibility adapter for SDKs < 3.14.0-219.0.dev that emit legacy
+    // analysis.closingLabels instead of dart/textDocument/publishClosingLabels.
+    // Note: this method is invoked on the Analysis Server reader thread, which must never call
+    // runReadAction synchronously (otherwise it deadlocks if the EDT holds the write lock while
+    // awaiting an Analysis Server response, e.g. during MoveFileRefactoring).
+    boolean lspClosingLabelsEnabled = !mySdkVersion.isEmpty() &&
+                                      isDartSdkVersionSufficientForLspClosingLabels(mySdkVersion);
+    if (!lspClosingLabelsEnabled) {
+      VirtualFile file = fileInfo.findFile();
+      if (file == null && fileInfo instanceof DartLocalFileInfo localFileInfo) {
+        String path = FileUtil.toSystemIndependentName(localFileInfo.getFilePath());
+        file = VirtualFileManager.getInstance().findFileByUrl("temp://" + path);
+      }
+      if (file != null && file.isValid()) {
+        Document document = FileDocumentManager.getInstance().getCachedDocument(file);
+        if (document != null) {
+          List<DartServerData.DartClosingLabel> convertedLabels = myServerData.getClosingLabels(file);
+          CharSequence text = document.getImmutableCharSequence();
+          List<DartLspClosingLabel> lspLabels = convertedLabels.stream().map(label -> {
+            int endOffset = Math.min(label.getOffset() + label.getLength(), text.length());
+            int endLine = StringUtil.offsetToLineNumber(text, endOffset);
+            Position pos = new Position(endLine, 0);
+            return new DartLspClosingLabel(label.getLabel(), new Range(pos, pos));
+          }).toList();
+          DartLspClosingLabelsService.getInstance(myProject).updateClosingLabels(file, lspLabels);
+        }
+      }
+    }
   }
 
   private static int ensureNotZero(int i) {
@@ -2632,7 +2665,12 @@ public final class DartAnalysisServerService implements Disposable {
         // This must be done after myServer is set, and should be done each time the server starts.
         registerPostfixCompletionTemplates();
 
-        // Consulo: no LSP Bridge Server
+        // Start the LSP Bridge Server unless in unit test mode.
+        // Once initialized, DartLspServerDescriptor.lspServerListener connects the server to DTD
+        // via dart/connectToDtd if DartToolingDaemonService is already running.
+        if (!ApplicationManager.getApplication().isUnitTestMode()) {
+          myProject.getInstance(DartBridgeLspServerManager.class).startBridgeServer();
+        }
       }
       catch (Exception e) {
         stopServer();
@@ -2690,6 +2728,11 @@ public final class DartAnalysisServerService implements Disposable {
 
   void stopServer() {
     synchronized (myLock) {
+      // Stop the LSP Bridge Server
+      DartBridgeLspServerManager bridgeManager = myProject.getInstanceIfCreated(DartBridgeLspServerManager.class);
+      if (bridgeManager != null) {
+        bridgeManager.stopBridgeServer();
+      }
       if (myServer != null) {
         LOG.debug("stopping server");
         myServer.removeAnalysisServerListener(myAnalysisServerListener);
@@ -2726,6 +2769,11 @@ public final class DartAnalysisServerService implements Disposable {
       mySemanticTokensLegend = null;
       mySemanticTokensLegendFuture.set(new CompletableFuture<>());
       setSemanticTokensAdvertised(false);
+      // The next server starts out knowing nothing about the settings of this client.
+      DartLspConfigurationSync configurationSync = myProject.getInstanceIfCreated(DartLspConfigurationSync.class);
+      if (configurationSync != null) {
+        configurationSync.serverStopped();
+      }
       myFilePathWithOverlaidContentToTimestamp.clear();
       myVisibleFileUris.clear();
       myChangedDocuments.clear();
@@ -2967,8 +3015,8 @@ public final class DartAnalysisServerService implements Disposable {
   }
 
   public void updateClientCapabilities() {
-    // Consulo: no LSP Bridge Server, LSP configuration is never supported
-    updateClientCapabilities(false);
+    DartBridgeLspServerManager bridgeManager = myProject.getInstanceIfCreated(DartBridgeLspServerManager.class);
+    updateClientCapabilities(bridgeManager != null && bridgeManager.isClientConnected());
   }
 
   public void updateClientCapabilities(boolean supportsLspConfiguration) {

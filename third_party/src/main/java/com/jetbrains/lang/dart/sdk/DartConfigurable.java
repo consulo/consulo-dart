@@ -19,6 +19,8 @@ package com.jetbrains.lang.dart.sdk;
 import consulo.ide.setting.ShowSettingsUtil;
 import consulo.project.Project;
 import consulo.project.ProjectPropertiesComponent;
+import consulo.dart.analyzer.DartAnalysisServerSettings;
+import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -29,6 +31,7 @@ import org.jetbrains.annotations.NotNull;
 public final class DartConfigurable {
   public static final int WEBDEV_PORT_DEFAULT = 53322;
   private static final String WEBDEV_PORT_PROPERTY_NAME = "dart.webdev.port";
+  private static final String DART_LSP_EXPERIMENTAL_ENABLED = "dart.lsp.experimental.enabled";
 
   private DartConfigurable() {
   }
@@ -46,11 +49,20 @@ public final class DartConfigurable {
     ProjectPropertiesComponent.getInstance(project).setValue(WEBDEV_PORT_PROPERTY_NAME, port, WEBDEV_PORT_DEFAULT);
   }
 
+  /**
+   * Consulo: the LSP bridge runs on top of the analysis server, so the LSP features need the server enabled
+   * ({@link DartAnalysisServerSettings}); the setting itself defaults to true as upstream.
+   */
   public static boolean isExperimentalLspFeaturesEnabled(@NotNull Project project) {
-    return false;
+    return DartAnalysisServerSettings.isEnabled(project) &&
+           ProjectPropertiesComponent.getInstance(project).getBoolean(DART_LSP_EXPERIMENTAL_ENABLED, true);
   }
 
   public static boolean isLspCodeActionsEnabled(@NotNull Project project) {
-    return false;
+    return DartAnalysisServerService.isLspCodeActionsEnabled(project);
+  }
+
+  public static void setExperimentalLspFeaturesEnabled(@NotNull Project project, boolean enabled) {
+    ProjectPropertiesComponent.getInstance(project).setValue(DART_LSP_EXPERIMENTAL_ENABLED, enabled, true);
   }
 }

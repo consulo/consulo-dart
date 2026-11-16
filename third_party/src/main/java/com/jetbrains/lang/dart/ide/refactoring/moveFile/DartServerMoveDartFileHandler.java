@@ -19,6 +19,11 @@ import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
 import com.jetbrains.lang.dart.assists.AssistUtils;
 import com.jetbrains.lang.dart.assists.DartSourceEditException;
 import com.jetbrains.lang.dart.ide.refactoring.status.RefactoringStatus;
+import com.jetbrains.lang.dart.ide.refactoring.DartLspRenamePsiElementProcessor;
+import com.jetbrains.lang.dart.lsp.DartLspService;
+import org.eclipse.lsp4j.FileRename;
+import org.eclipse.lsp4j.RenameFilesParams;
+import org.eclipse.lsp4j.WorkspaceEdit;
 import com.jetbrains.lang.dart.psi.DartFile;
 import com.jetbrains.lang.dart.sdk.DartConfigurable;
 import com.jetbrains.lang.dart.sdk.DartSdk;
@@ -58,7 +63,34 @@ public final class DartServerMoveDartFileHandler extends MoveFileHandler {
 
     final String newFilePath = moveDestination.getVirtualFile().getPath() + "/" + virtualFile.getName();
 
-    // Consulo: no LSP
+    if (DartConfigurable.isExperimentalLspFeaturesEnabled(project)) {
+      // Platform LSP does not currently support workspace/willRenameFiles (IJPL-249183).
+      // If JetBrains implements workspace.fileOperations in the platform, this can be retired.
+      DartAnalysisServerService.getInstance(project).updateFilesContent();
+      final String oldUri = DartLspRenamePsiElementProcessor.getFileUri(virtualFile.getPath());
+      final String newUri = DartLspRenamePsiElementProcessor.getFileUri(newFilePath);
+      LOG.info("prepareMovedFile via LSP: oldUri=" + oldUri + ", newUri=" + newUri);
+      final RenameFilesParams params = new RenameFilesParams(List.of(new FileRename(oldUri, newUri)));
+      try {
+        final WorkspaceEdit workspaceEdit = DartLspRenamePsiElementProcessor.awaitFutureCheckingCanceled(
+            DartLspService.willRenameFiles(project, params), 10);
+        LOG.debug("willRenameFiles response: " + workspaceEdit);
+        if (workspaceEdit != null) {
+          DartLspRenamePsiElementProcessor.applyWorkspaceEdit(project, workspaceEdit);
+        }
+      }
+      catch (ProcessCanceledException e) {
+        LOG.info("willRenameFiles for move was canceled");
+        throw e;
+      }
+      catch (TimeoutException e) {
+        LOG.warn("Timeout waiting for willRenameFiles for Dart move", e);
+      }
+      catch (Exception e) {
+        LOG.error("Error executing willRenameFiles for Dart move", e);
+      }
+      return;
+    }
 
     final MoveFileRefactoring refactoring = new MoveFileRefactoring(project, virtualFile, newFilePath);
 
