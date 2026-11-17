@@ -38,6 +38,7 @@ import consulo.execution.debug.evaluation.XDebuggerEditorsProvider;
 import consulo.execution.debug.evaluation.XDebuggerEvaluator;
 import consulo.execution.debug.frame.XStackFrame;
 import consulo.execution.debug.frame.XSuspendContext;
+import consulo.execution.debug.step.HasRunToPosition;
 import com.jetbrains.lang.dart.DartBundle;
 import com.jetbrains.lang.dart.DartFileType;
 import com.jetbrains.lang.dart.analyzer.DartAnalysisServerService;
@@ -75,7 +76,7 @@ import com.jetbrains.lang.dart.logging.PluginLogger;
  * <p>
  * This classes has intentionally been left extensible for downstream plugins.
  */
-public class DartVmServiceDebugProcess extends XDebugProcess {
+public class DartVmServiceDebugProcess extends XDebugProcess implements HasRunToPosition {
   private static final Logger LOG = PluginLogger.INSTANCE.createLogger(DartVmServiceDebugProcess.class);
 
   private static final String ORG_DARTLANG_APP_PREFIX = "org-dartlang-app://";
